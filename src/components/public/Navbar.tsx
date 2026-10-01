@@ -8,6 +8,8 @@ import { EVENT_INFO } from '@/lib/constants';
 
 import Image from 'next/image';
 
+import WhatsAppIcon from './WhatsAppIcon';
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -83,7 +85,18 @@ export default function Navbar() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2.5">
+            <a
+              href={EVENT_INFO.whatsappCommunityLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold hover:bg-emerald-100 hover:border-emerald-300 transition-all shadow-2xs"
+              title="Join Official Hacktober 2026 WhatsApp Community"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-emerald-600" />
+              <span>Join WhatsApp</span>
+            </a>
+
             <Link
               href="/admin/login"
               className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
@@ -91,6 +104,7 @@ export default function Navbar() {
             >
               <Lock className="w-4 h-4" />
             </Link>
+
             <Link
               href="/register"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 text-white text-sm font-bold shadow-sm hover:bg-teal-700 hover:shadow transition-all active:scale-95"
@@ -102,6 +116,15 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 md:hidden">
+            <a
+              href={EVENT_INFO.whatsappCommunityLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200"
+              title="WhatsApp"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-emerald-600" />
+            </a>
             <Link
               href="/register"
               className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold"
@@ -133,6 +156,15 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+            <a
+              href={EVENT_INFO.whatsappCommunityLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow hover:bg-emerald-500 transition-colors"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-white" />
+              <span>Join WhatsApp Community</span>
+            </a>
             <Link
               href="/register"
               onClick={() => setIsOpen(false)}

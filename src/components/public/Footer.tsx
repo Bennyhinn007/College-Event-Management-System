@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Shield, MapPin, Calendar, Mail, Phone, Lock, ExternalLink } from 'lucide-react';
 import { EVENT_INFO } from '@/lib/constants';
+import WhatsAppIcon from './WhatsAppIcon';
 
 interface FooterProps {
   initialEventInfo?: typeof EVENT_INFO;
@@ -100,6 +101,17 @@ export default function Footer({ initialEventInfo }: FooterProps = {}) {
               <li className="flex items-center gap-2 text-slate-600">
                 <Phone className="w-4 h-4 text-slate-400" />
                 <span>Helpline: {eventInfo.contactPhone}</span>
+              </li>
+              <li>
+                <a
+                  href={eventInfo.whatsappCommunityLink || EVENT_INFO.whatsappCommunityLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-bold text-emerald-700 hover:text-emerald-800 transition-colors"
+                >
+                  <WhatsAppIcon className="w-4 h-4 fill-emerald-600 shrink-0" />
+                  <span>Join WhatsApp Community</span>
+                </a>
               </li>
               <li>
                 <Link href="/#faq" className="hover:text-teal-700 transition-colors">

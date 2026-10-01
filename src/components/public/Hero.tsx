@@ -6,6 +6,7 @@ import { Calendar, MapPin, ArrowRight, ShieldCheck, Sparkles, Terminal, Trophy }
 import { EVENT_INFO } from '@/lib/constants';
 
 import Image from 'next/image';
+import WhatsAppIcon from './WhatsAppIcon';
 
 interface HeroProps {
   initialEventInfo?: typeof EVENT_INFO;
@@ -145,20 +146,43 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6">
             <Link
               href="/register"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-slate-900 text-white font-bold text-base shadow-md hover:bg-teal-700 hover:shadow-lg transition-all active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-slate-900 text-white font-bold text-base shadow-md hover:bg-teal-700 hover:shadow-lg transition-all active:scale-95"
             >
               <span>Register Now</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
+            <a
+              href={eventInfo.whatsappCommunityLink || EVENT_INFO.whatsappCommunityLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-md hover:shadow-emerald-500/20 transition-all active:scale-95 group"
+            >
+              <WhatsAppIcon className="w-5 h-5 fill-white shrink-0 group-hover:scale-110 transition-transform" />
+              <span>Join WhatsApp</span>
+            </a>
             <Link
               href="/events"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white border border-slate-300 text-slate-800 font-bold text-base hover:bg-slate-50 hover:border-slate-400 transition-all active:scale-95 shadow-xs"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-white border border-slate-300 text-slate-800 font-bold text-base hover:bg-slate-50 hover:border-slate-400 transition-all active:scale-95 shadow-xs"
             >
               <span>Explore 10 Events</span>
             </Link>
+          </div>
+
+          {/* WhatsApp Community Quick Banner */}
+          <div className="pt-2 flex items-center justify-center">
+            <a
+              href={eventInfo.whatsappCommunityLink || EVENT_INFO.whatsappCommunityLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50/80 border border-emerald-200/80 text-emerald-800 text-xs font-semibold hover:bg-emerald-100 transition-colors shadow-2xs group"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <span>Official WhatsApp Community is live • Team-ups, live notices & updates</span>
+              <span className="text-emerald-600 group-hover:translate-x-0.5 transition-transform font-bold">&rarr;</span>
+            </a>
           </div>
 
           {/* Live Countdown Timer */}

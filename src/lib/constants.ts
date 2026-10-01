@@ -319,6 +319,7 @@ export const EVENT_INFO = {
   paymentUpiId: '7975449981@axl (Shweta Mulge) / 8618058871@axl (Apeksha) / 9353431169@ybl (Nandini)',
   paymentLink: 'upi://pay?pa=7975449981@axl&pn=Shweta%20Mulge&cu=INR&tn=Hacktober%202026%20Registration',
   paymentQrImage: '/qr/shweta-mulge.jpg',
+  whatsappCommunityLink: 'https://chat.whatsapp.com/DvLGYPby9sl0G21baJqxt7',
 };
 
 export const INITIAL_SCHEDULE = [

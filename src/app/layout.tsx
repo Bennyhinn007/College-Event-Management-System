@@ -56,6 +56,7 @@ export const metadata: Metadata = {
 };
 
 import CyberBackground from '@/components/common/CyberBackground';
+import WhatsAppFloatingButton from '@/components/public/WhatsAppFloatingButton';
 
 export default function RootLayout({
   children,
@@ -69,6 +70,7 @@ export default function RootLayout({
         <div className="relative z-10 flex flex-col min-h-screen">
           {children}
         </div>
+        <WhatsAppFloatingButton />
       </body>
     </html>
   );

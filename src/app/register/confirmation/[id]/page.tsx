@@ -20,6 +20,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { OFFICIAL_EVENTS, EVENT_INFO } from '@/lib/constants';
+import WhatsAppIcon from '@/components/public/WhatsAppIcon';
 
 interface ConfirmationData {
   registration: {
@@ -161,7 +162,7 @@ export default function ConfirmationPage({
           </div>
 
           {/* Action Bar (Screen Only) */}
-          <div className="no-print flex items-center justify-between gap-3 mb-6 p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <div className="no-print flex items-center justify-between gap-3 mb-4 p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg hover:bg-slate-100"
@@ -185,6 +186,40 @@ export default function ConfirmationPage({
                 <Download className="w-3.5 h-3.5" />
                 <span>Save Badge</span>
               </button>
+            </div>
+          </div>
+
+          {/* High-Converting Official WhatsApp Community Banner (Screen Only) */}
+          <div className="no-print mb-6 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 text-white shadow-lg border-2 border-emerald-400/50 relative overflow-hidden">
+            <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-start sm:items-center gap-3.5 text-center sm:text-left">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 backdrop-blur-xs flex items-center justify-center shrink-0 border border-white/30 shadow-inner">
+                  <WhatsAppIcon className="w-7 h-7 sm:w-8 sm:h-8 fill-white" />
+                </div>
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/50 text-[10px] font-black uppercase tracking-wider text-emerald-100 border border-emerald-300/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-ping" />
+                    Essential For All Participants
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-white tracking-tight leading-snug">
+                    Join the Official Hacktober 2026 WhatsApp Group!
+                  </h3>
+                  <p className="text-xs text-emerald-100 max-w-lg leading-relaxed">
+                    Problem statements, team coordination, round timings &amp; venue notices are broadcast exclusively through our community.
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href={EVENT_INFO.whatsappCommunityLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-emerald-900 font-black text-xs uppercase tracking-wider shadow-md hover:bg-emerald-50 hover:scale-105 active:scale-95 transition-all shrink-0"
+              >
+                <WhatsAppIcon className="w-4 h-4 fill-emerald-800" />
+                <span>Join Group Now</span>
+              </a>
             </div>
           </div>
 

@@ -15,6 +15,7 @@ import {
   Check,
 } from 'lucide-react';
 import { OFFICIAL_EVENTS, EVENT_INFO } from '@/lib/constants';
+import WhatsAppIcon from '@/components/public/WhatsAppIcon';
 
 interface CashPassModalProps {
   isOpen: boolean;
@@ -378,15 +379,27 @@ export default function CashPassModal({
               <p className="text-[11px] text-slate-500 leading-relaxed">
                 Scan this QR code with any mobile camera (iPhone / Android) to directly open and save the official badge in the student&apos;s phone browser.
               </p>
-              <a
-                href={passUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] text-teal-700 hover:text-teal-900 font-bold"
-              >
-                <span>Preview Public Pass URL</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <a
+                  href={passUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] text-teal-700 hover:text-teal-900 font-bold"
+                >
+                  <span>Preview Public Pass URL</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+                <span className="text-slate-300">•</span>
+                <a
+                  href={EVENT_INFO.whatsappCommunityLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow-2xs transition-colors"
+                >
+                  <WhatsAppIcon className="w-3.5 h-3.5 fill-white" />
+                  <span>Join Official WhatsApp Group</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
