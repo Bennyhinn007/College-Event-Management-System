@@ -318,7 +318,10 @@ export const mongoRepository = {
     attendance: IAttendance[];
   } | null> {
     await connect();
-    const reg = await getRegistrationModel().findOne({ registrationId }).lean();
+    const query = mongoose.isValidObjectId(registrationId)
+      ? { $or: [{ registrationId }, { _id: registrationId }] }
+      : { registrationId };
+    const reg = await getRegistrationModel().findOne(query).lean();
     if (!reg) return null;
 
     const [participants, team, payment, attendance] = await Promise.all([
@@ -448,34 +451,45 @@ export const mongoRepository = {
   async updatePaymentStatus(registrationId: string, status: PaymentStatus, adminEmail: string, adminNote?: string): Promise<boolean> {
     await connect();
     const now = new Date().toISOString();
-    const reg = await getRegistrationModel().findOneAndUpdate({ registrationId }, { $set: { paymentStatus: status, updatedAt: now } });
+    const isObjectId = mongoose.isValidObjectId(registrationId);
+    const query = isObjectId
+      ? { $or: [{ registrationId }, { _id: registrationId }] }
+      : { registrationId };
+    const reg = await getRegistrationModel().findOneAndUpdate(query, { $set: { paymentStatus: status, updatedAt: now } });
     if (!reg) return false;
+    const actualRegId = reg.registrationId;
     const payUpdate: Record<string, unknown> = { status, verifiedBy: adminEmail, verifiedAt: now };
     if (adminNote) payUpdate.adminNote = adminNote;
-    await getPaymentModel().findOneAndUpdate({ registrationId }, { $set: payUpdate });
-    this.addAuditLog({ adminId: adminEmail, adminEmail, action: `PAYMENT_${status}`, resource: 'PAYMENT', resourceId: registrationId, metadata: { status, adminNote } });
+    await getPaymentModel().findOneAndUpdate({ registrationId: actualRegId }, { $set: payUpdate });
+    this.addAuditLog({ adminId: adminEmail, adminEmail, action: `PAYMENT_${status}`, resource: 'PAYMENT', resourceId: actualRegId, metadata: { status, adminNote } });
     return true;
   },
 
   async toggleArchiveRegistration(registrationId: string, adminEmail: string, archive = true): Promise<boolean> {
     await connect();
     const now = new Date().toISOString();
-    const reg = await getRegistrationModel().findOneAndUpdate({ registrationId }, { $set: { isArchived: archive, updatedAt: now } });
+    const isObjectId = mongoose.isValidObjectId(registrationId);
+    const query = isObjectId
+      ? { $or: [{ registrationId }, { _id: registrationId }] }
+      : { registrationId };
+    const reg = await getRegistrationModel().findOneAndUpdate(query, { $set: { isArchived: archive, updatedAt: now } });
     if (!reg) return false;
-    this.addAuditLog({ adminId: adminEmail, adminEmail, action: archive ? 'REGISTRATION_ARCHIVED' : 'REGISTRATION_RESTORED', resource: 'REGISTRATION', resourceId: registrationId });
+    this.addAuditLog({ adminId: adminEmail, adminEmail, action: archive ? 'REGISTRATION_ARCHIVED' : 'REGISTRATION_RESTORED', resource: 'REGISTRATION', resourceId: reg.registrationId });
     return true;
   },
 
   async deleteRegistration(registrationId: string, adminEmail: string): Promise<boolean> {
     await connect();
-    const reg = await getRegistrationModel().findOne({
-      $or: [{ registrationId }, { _id: registrationId }],
-    });
+    const isObjectId = mongoose.isValidObjectId(registrationId);
+    const query = isObjectId
+      ? { $or: [{ registrationId }, { _id: registrationId }] }
+      : { registrationId };
+    const reg = await getRegistrationModel().findOne(query);
     if (!reg) return false;
     const actualRegId = reg.registrationId;
 
     await Promise.all([
-      getRegistrationModel().deleteOne({ registrationId: actualRegId }),
+      getRegistrationModel().deleteOne({ _id: reg._id }),
       getParticipantModel().deleteMany({ registrationId: actualRegId }),
       getTeamModel().deleteMany({ registrationId: actualRegId }),
       getPaymentModel().deleteMany({ registrationId: actualRegId }),
