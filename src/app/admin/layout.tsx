@@ -50,11 +50,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
         setAdmin(json.user);
 
-        // Guard Cash Admins to only Cash Desk & Schedule
+        // Guard Cash Admins exclusively to Cash Desk
         if (
           json.user.role === 'CASH_ADMIN' &&
-          pathname !== '/admin/cash-desk' &&
-          pathname !== '/admin/schedule'
+          pathname !== '/admin/cash-desk'
         ) {
           router.push('/admin/cash-desk');
         }
@@ -78,29 +77,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   };
 
-  const navItems = [
-    ...(admin?.role !== 'CASH_ADMIN'
-      ? [
+  const navItems =
+    admin?.role === 'CASH_ADMIN'
+      ? [{ label: 'Cash Desk', href: '/admin/cash-desk', icon: Banknote }]
+      : [
           { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+          { label: 'Cash Desk', href: '/admin/cash-desk', icon: Banknote },
           { label: 'Registrations', href: '/admin/registrations', icon: Users },
           { label: 'Teams Roster', href: '/admin/teams', icon: Users },
           { label: 'Payments Queue', href: '/admin/payments', icon: CreditCard },
           { label: 'QR Attendance', href: '/admin/attendance', icon: QrCode },
-        ]
-      : []),
-    { label: 'Cash Desk', href: '/admin/cash-desk', icon: Banknote },
-    { label: 'Event Schedule', href: '/admin/schedule', icon: Calendar },
-    ...(admin?.role !== 'CASH_ADMIN'
-      ? [
+          { label: 'Event Schedule', href: '/admin/schedule', icon: Calendar },
           { label: 'Dynamic Pricing', href: '/admin/pricing', icon: DollarSign },
           ...(admin?.role === 'SUPER_ADMIN'
             ? [{ label: 'Organizer Access', href: '/admin/organizers', icon: UserCheck }]
             : []),
           { label: 'Audit Logs', href: '/admin/audit-logs', icon: ShieldAlert },
           { label: 'Settings', href: '/admin/settings', icon: Settings },
-        ]
-      : []),
-  ];
+        ];
 
   if (isLoginPage) {
     return <>{children}</>;

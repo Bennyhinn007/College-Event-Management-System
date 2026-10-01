@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Calendar, Save, Loader2, CheckCircle2, Clock, MapPin, Plus, Trash2 } from 'lucide-react';
 
 export default function AdminSchedulePage() {
+  const router = useRouter();
   const [schedule, setSchedule] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -12,6 +14,13 @@ export default function AdminSchedulePage() {
   useEffect(() => {
     async function loadSchedule() {
       try {
+        const meRes = await fetch('/api/auth/me');
+        const meJson = await meRes.json();
+        if (meJson.success && meJson.user?.role === 'CASH_ADMIN') {
+          router.replace('/admin/cash-desk');
+          return;
+        }
+
         const res = await fetch('/api/admin/settings');
         const json = await res.json();
         if (json.success && json.data.schedule) {
@@ -25,7 +34,7 @@ export default function AdminSchedulePage() {
     }
 
     loadSchedule();
-  }, []);
+  }, [router]);
 
   const handleDayChange = (dayIdx: number, field: string, val: string) => {
     if (!schedule) return;
