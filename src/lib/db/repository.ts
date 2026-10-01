@@ -263,6 +263,7 @@ export const dbRepository = {
     search?: string;
     eventId?: string;
     paymentStatus?: string;
+    paymentMethod?: string;
     department?: string;
     yearSemester?: string;
     attendanceStatus?: string;
@@ -277,6 +278,10 @@ export const dbRepository = {
       primaryParticipant: IParticipant | null;
       teamName?: string;
       paymentStatus: PaymentStatus;
+      paymentMethod?: 'ONLINE' | 'CASH';
+      collectedBy?: string;
+      paidTo?: string;
+      transactionId?: string;
       amount: number;
     }>;
     total: number;
@@ -316,9 +321,17 @@ export const dbRepository = {
         primaryParticipant: primary,
         teamName: team?.teamName,
         paymentStatus: payment?.status || reg.paymentStatus,
+        paymentMethod: (payment?.paymentMethod as 'ONLINE' | 'CASH') || (payment?.transactionId?.startsWith('CASH') ? 'CASH' : 'ONLINE'),
+        collectedBy: payment?.collectedBy,
+        paidTo: payment?.paidTo,
+        transactionId: payment?.transactionId,
         amount: reg.totalAmount,
       };
     });
+
+    if (params.paymentMethod && params.paymentMethod !== 'ALL') {
+      enriched = enriched.filter((i) => i.paymentMethod === params.paymentMethod);
+    }
 
     // Filter by Department
     if (params.department && params.department !== 'ALL') {

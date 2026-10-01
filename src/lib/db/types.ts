@@ -41,7 +41,9 @@ export interface IPayment {
   fileSize?: number; // File size in bytes
   uploadedAt?: string; // Upload timestamp
   status: PaymentStatus; // PENDING | VERIFIED | REJECTED
-  paidTo?: string; // Coordinator to whom payment was made (Swetha Mulge, Apeksha, Nandini)
+  paidTo?: string; // Coordinator to whom payment was made or Cash Desk
+  paymentMethod?: 'ONLINE' | 'CASH'; // ONLINE or physical CASH
+  collectedBy?: string; // Admin who collected physical cash
   adminNote?: string;
   verifiedBy?: string;
   verifiedAt?: string;
@@ -73,7 +75,7 @@ export interface IRegistration {
   updatedAt: string;
 }
 
-export type AdminRole = 'SUPER_ADMIN' | 'ADMIN' | 'VIEWER';
+export type AdminRole = 'SUPER_ADMIN' | 'ADMIN' | 'CASH_ADMIN' | 'VIEWER';
 
 export interface IAdmin {
   id: string;

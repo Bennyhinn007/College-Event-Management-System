@@ -31,7 +31,11 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Invalid credentials or inactive account');
       }
 
-      router.push('/admin/dashboard');
+      if (data.user?.role === 'CASH_ADMIN') {
+        router.push('/admin/cash-desk');
+      } else {
+        router.push('/admin/dashboard');
+      }
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check credentials.');

@@ -31,6 +31,7 @@ export default function RegistrationsManagementPage() {
   const [search, setSearch] = useState('');
   const [eventId, setEventId] = useState('ALL');
   const [paymentStatus, setPaymentStatus] = useState('ALL');
+  const [paymentMethod, setPaymentMethod] = useState('ALL');
   const [attendanceStatus, setAttendanceStatus] = useState('ALL');
   const [department, setDepartment] = useState('ALL');
 
@@ -49,6 +50,7 @@ export default function RegistrationsManagementPage() {
         search: search.trim(),
         eventId,
         paymentStatus,
+        paymentMethod,
         attendanceStatus,
         department,
       });
@@ -65,7 +67,7 @@ export default function RegistrationsManagementPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, search, eventId, paymentStatus, attendanceStatus, department]);
+  }, [page, search, eventId, paymentStatus, paymentMethod, attendanceStatus, department]);
 
   useEffect(() => {
     fetchRegistrations();
@@ -230,6 +232,22 @@ export default function RegistrationsManagementPage() {
             </select>
           </div>
 
+          {/* Payment Method Filter */}
+          <div>
+            <select
+              value={paymentMethod}
+              onChange={(e) => {
+                setPaymentMethod(e.target.value);
+                setPage(1);
+              }}
+              className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-700 font-medium"
+            >
+              <option value="ALL">All Methods</option>
+              <option value="ONLINE">Online (UPI)</option>
+              <option value="CASH">Physical Cash</option>
+            </select>
+          </div>
+
           {/* Attendance Status Filter */}
           <div>
             <select
@@ -297,17 +315,24 @@ export default function RegistrationsManagementPage() {
                       ₹{item.amount}
                     </td>
                     <td className="py-3 px-4">
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          item.paymentStatus === 'VERIFIED'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : item.paymentStatus === 'REJECTED'
-                            ? 'bg-rose-100 text-rose-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}
-                      >
-                        {item.paymentStatus}
-                      </span>
+                      <div className="flex flex-col gap-0.5">
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold w-fit ${
+                            item.paymentStatus === 'VERIFIED'
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : item.paymentStatus === 'REJECTED'
+                              ? 'bg-rose-100 text-rose-800'
+                              : 'bg-amber-100 text-amber-800'
+                          }`}
+                        >
+                          {item.paymentStatus}
+                        </span>
+                        {item.paymentMethod === 'CASH' && (
+                          <span className="text-[9px] font-bold text-emerald-700 font-mono">
+                            💵 CASH
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-3 px-4">
                       <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700">

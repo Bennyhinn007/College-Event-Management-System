@@ -118,3 +118,47 @@ export const AdminLoginSchema = z.object({
   email: z.string().trim().email('Enter a valid email address').max(100, 'Email address too long'),
   password: z.string().min(6, 'Password must be at least 6 characters').max(128, 'Password too long'),
 });
+
+export const CashRegistrationSchema = z
+  .object({
+    selectedEventIds: z
+      .array(z.string())
+      .min(1, 'Please select at least 1 event')
+      .refine(
+        (ids) => ids.every((id) => VALID_EVENT_IDS.includes(id)),
+        'One or more selected events are invalid'
+      ),
+    primaryParticipant: ParticipantSchema,
+    teamName: z.string().trim().max(60).optional(),
+    teamMembers: z
+      .array(TeamMemberSchema)
+      .max(3, 'Maximum 4 members allowed per team (1 Leader + up to 3 members)')
+      .optional(),
+    cashTendered: z.number().min(0).optional(),
+    notes: z.string().trim().max(250).optional(),
+  })
+  .superRefine((data, ctx) => {
+    const hasTeamEvent = data.selectedEventIds.some((id) => {
+      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+      return ev?.type === 'TEAM';
+    });
+
+    if (hasTeamEvent) {
+      if (!data.teamName || !data.teamName.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['teamName'],
+          message: 'Team Name is required for team competitions',
+        });
+      }
+    } else {
+      if (data.teamMembers && data.teamMembers.length > 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['teamMembers'],
+          message: 'Individual competitions allow only 1 participant.',
+        });
+      }
+    }
+  });
+

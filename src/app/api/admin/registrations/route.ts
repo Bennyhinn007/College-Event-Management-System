@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get('search') || '';
     const eventId = searchParams.get('eventId') || 'ALL';
     const paymentStatus = searchParams.get('paymentStatus') || 'ALL';
+    const paymentMethod = searchParams.get('paymentMethod') || 'ALL';
     const attendanceStatus = searchParams.get('attendanceStatus') || 'ALL';
     const department = searchParams.get('department') || 'ALL';
     const yearSemester = searchParams.get('yearSemester') || 'ALL';
@@ -26,6 +27,7 @@ export async function GET(req: NextRequest) {
       search,
       eventId,
       paymentStatus,
+      paymentMethod,
       attendanceStatus,
       department,
       yearSemester,

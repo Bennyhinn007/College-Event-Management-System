@@ -20,6 +20,7 @@ import {
   X,
   UserCheck,
   ChevronRight,
+  Banknote,
 } from 'lucide-react';
 import type { AdminPayload } from '@/lib/auth/jwt';
 
@@ -48,6 +49,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           return;
         }
         setAdmin(json.user);
+
+        // Guard Cash Admins to only Cash Desk & Schedule
+        if (
+          json.user.role === 'CASH_ADMIN' &&
+          pathname !== '/admin/cash-desk' &&
+          pathname !== '/admin/schedule'
+        ) {
+          router.push('/admin/cash-desk');
+        }
       } catch {
         router.push('/admin/login');
       } finally {
@@ -56,7 +66,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     checkAuth();
-  }, [router]);
+  }, [router, pathname, isLoginPage]);
 
   const handleLogout = async () => {
     try {
@@ -69,18 +79,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const navItems = [
-    { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { label: 'Registrations', href: '/admin/registrations', icon: Users },
-    { label: 'Teams Roster', href: '/admin/teams', icon: Users },
-    { label: 'Payments Queue', href: '/admin/payments', icon: CreditCard },
-    { label: 'QR Attendance', href: '/admin/attendance', icon: QrCode },
-    { label: 'Event Schedule', href: '/admin/schedule', icon: Calendar },
-    { label: 'Dynamic Pricing', href: '/admin/pricing', icon: DollarSign },
-    ...(admin?.role === 'SUPER_ADMIN'
-      ? [{ label: 'Organizer Access', href: '/admin/organizers', icon: UserCheck }]
+    ...(admin?.role !== 'CASH_ADMIN'
+      ? [
+          { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+          { label: 'Registrations', href: '/admin/registrations', icon: Users },
+          { label: 'Teams Roster', href: '/admin/teams', icon: Users },
+          { label: 'Payments Queue', href: '/admin/payments', icon: CreditCard },
+          { label: 'QR Attendance', href: '/admin/attendance', icon: QrCode },
+        ]
       : []),
-    { label: 'Audit Logs', href: '/admin/audit-logs', icon: ShieldAlert },
-    { label: 'Settings', href: '/admin/settings', icon: Settings },
+    { label: 'Cash Desk', href: '/admin/cash-desk', icon: Banknote },
+    { label: 'Event Schedule', href: '/admin/schedule', icon: Calendar },
+    ...(admin?.role !== 'CASH_ADMIN'
+      ? [
+          { label: 'Dynamic Pricing', href: '/admin/pricing', icon: DollarSign },
+          ...(admin?.role === 'SUPER_ADMIN'
+            ? [{ label: 'Organizer Access', href: '/admin/organizers', icon: UserCheck }]
+            : []),
+          { label: 'Audit Logs', href: '/admin/audit-logs', icon: ShieldAlert },
+          { label: 'Settings', href: '/admin/settings', icon: Settings },
+        ]
+      : []),
   ];
 
   if (isLoginPage) {
@@ -162,6 +181,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     ? 'bg-purple-100 text-purple-800'
                     : admin.role === 'ADMIN'
                     ? 'bg-teal-100 text-teal-800'
+                    : admin.role === 'CASH_ADMIN'
+                    ? 'bg-emerald-100 text-emerald-800'
                     : 'bg-slate-200 text-slate-700'
                 }`}
               >

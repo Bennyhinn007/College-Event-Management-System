@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!['SUPER_ADMIN', 'ADMIN', 'VIEWER'].includes(role)) {
+    if (!['SUPER_ADMIN', 'ADMIN', 'CASH_ADMIN', 'VIEWER'].includes(role)) {
       return NextResponse.json({ success: false, error: 'Invalid role' }, { status: 400 });
     }
 

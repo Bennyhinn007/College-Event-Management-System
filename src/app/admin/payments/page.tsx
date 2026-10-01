@@ -153,6 +153,11 @@ export default function PaymentsVerificationQueue() {
                       USN: <span className="font-mono font-semibold">{item.primaryParticipant?.usn}</span>
                       {' • '}
                       Amount: <strong className="text-slate-900">₹{item.amount}</strong>
+                      {item.paymentMethod === 'CASH' && (
+                        <span className="ml-2 font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 text-[10px]">
+                          💵 Physical Cash
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -200,6 +205,14 @@ export default function PaymentsVerificationQueue() {
                   </strong>
                 </div>
                 <div className="flex justify-between">
+                  <span className="text-slate-400">Payment Channel:</span>
+                  <strong className="text-slate-900 font-semibold">
+                    {selectedPayment.payment?.paymentMethod === 'CASH' || selectedPayment.payment?.transactionId?.startsWith('CASH')
+                      ? '💵 Physical Cash Desk'
+                      : '📱 Online (UPI / Bank)'}
+                  </strong>
+                </div>
+                <div className="flex justify-between">
                   <span className="text-slate-400">Transaction ID (UTR):</span>
                   <strong className="font-mono text-slate-900 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
                     {selectedPayment.payment?.transactionId || 'N/A'}
@@ -213,12 +226,21 @@ export default function PaymentsVerificationQueue() {
                 </div>
               </div>
 
-              {/* Receipt Screenshot Box */}
+              {/* Receipt Screenshot Box / Cash Desk Proof */}
               <div className="space-y-1.5">
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-                  Uploaded Bank Screenshot
+                  Payment Verification Proof
                 </span>
-                {selectedPayment.payment?.screenshotUrl ? (
+                {selectedPayment.payment?.paymentMethod === 'CASH' || selectedPayment.payment?.transactionId?.startsWith('CASH') ? (
+                  <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-950 space-y-1 text-center">
+                    <span className="font-extrabold text-xs block text-emerald-900">
+                      💵 Physical Cash Received & Verified On-Spot
+                    </span>
+                    <span className="text-[11px] text-emerald-700 block">
+                      Collected by: {selectedPayment.payment?.collectedBy || selectedPayment.payment?.paidTo || 'Desk Volunteer'}
+                    </span>
+                  </div>
+                ) : selectedPayment.payment?.screenshotUrl ? (
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-2 overflow-hidden">
                     <img
                       src={selectedPayment.payment.screenshotUrl}

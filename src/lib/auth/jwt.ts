@@ -50,10 +50,11 @@ export async function getAdminSessionFromRequest(req: NextRequest): Promise<Admi
   return await verifyAdminToken(token);
 }
 
-// Role Hierarchy: SUPER_ADMIN > ADMIN > VIEWER
+// Role Hierarchy: SUPER_ADMIN > ADMIN > CASH_ADMIN > VIEWER
 const ROLE_LEVELS: Record<AdminRole, number> = {
-  SUPER_ADMIN: 3,
-  ADMIN: 2,
+  SUPER_ADMIN: 4,
+  ADMIN: 3,
+  CASH_ADMIN: 2,
   VIEWER: 1,
 };
 

@@ -90,13 +90,16 @@ const PaymentSchema = new Schema(
     registrationId: { type: String, required: true, index: true },
     amount: { type: Number, required: true },
     transactionId: { type: String, required: true },
-    screenshotUrl: { type: String, required: true },
-    screenshotMime: { type: String, required: true },
+    screenshotUrl: { type: String, default: '' },
+    screenshotMime: { type: String, default: 'text/plain' },
     cloudinaryPublicId: { type: String },
     originalFilename: { type: String },
     fileSize: { type: Number },
     uploadedAt: { type: String },
     status: { type: String, enum: ['PENDING', 'VERIFIED', 'REJECTED'], default: 'PENDING' },
+    paidTo: { type: String },
+    paymentMethod: { type: String, enum: ['ONLINE', 'CASH'], default: 'ONLINE' },
+    collectedBy: { type: String },
     adminNote: { type: String },
     verifiedBy: { type: String },
     verifiedAt: { type: String },
@@ -124,7 +127,7 @@ const AdminSchema = new Schema(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     passwordHash: { type: String, required: true },
     fullName: { type: String, required: true },
-    role: { type: String, enum: ['SUPER_ADMIN', 'ADMIN', 'VIEWER'], default: 'VIEWER' },
+    role: { type: String, enum: ['SUPER_ADMIN', 'ADMIN', 'CASH_ADMIN', 'VIEWER'], default: 'VIEWER' },
     isActive: { type: Boolean, default: true },
     createdAt: { type: String },
     lastLogin: { type: String },
@@ -338,6 +341,7 @@ export const mongoRepository = {
     search?: string;
     eventId?: string;
     paymentStatus?: string;
+    paymentMethod?: string;
     department?: string;
     yearSemester?: string;
     attendanceStatus?: string;
@@ -352,6 +356,10 @@ export const mongoRepository = {
       primaryParticipant: IParticipant | null;
       teamName?: string;
       paymentStatus: PaymentStatus;
+      paymentMethod?: 'ONLINE' | 'CASH';
+      collectedBy?: string;
+      paidTo?: string;
+      transactionId?: string;
       amount: number;
     }>;
     total: number;
@@ -395,10 +403,16 @@ export const mongoRepository = {
         primaryParticipant: primary ? lean2plain<IParticipant>(primary) : null,
         teamName:   team?.teamName,
         paymentStatus: pay?.status ?? reg.paymentStatus,
+        paymentMethod: (pay?.paymentMethod as 'ONLINE' | 'CASH') || (pay?.transactionId?.startsWith('CASH') ? 'CASH' : 'ONLINE'),
+        collectedBy: pay?.collectedBy,
+        paidTo: pay?.paidTo,
+        transactionId: pay?.transactionId,
         amount:     reg.totalAmount,
       };
     });
 
+    if (params.paymentMethod && params.paymentMethod !== 'ALL')
+      enriched = enriched.filter((i) => i.paymentMethod === params.paymentMethod);
     if (params.department && params.department !== 'ALL')
       enriched = enriched.filter((i) => i.primaryParticipant?.department === params.department);
     if (params.yearSemester && params.yearSemester !== 'ALL')

@@ -175,6 +175,7 @@ export default function AdminOrganizersPage() {
                       >
                         <option value="SUPER_ADMIN">SUPER_ADMIN (Full Control)</option>
                         <option value="ADMIN">ADMIN (Registrations/Attendance)</option>
+                        <option value="CASH_ADMIN">CASH_ADMIN (Cash Desk Only)</option>
                         <option value="VIEWER">VIEWER (Read-Only)</option>
                       </select>
                     </td>
@@ -268,6 +269,7 @@ export default function AdminOrganizersPage() {
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
                 >
                   <option value="ADMIN">ADMIN (Registrations, Payments & Attendance)</option>
+                  <option value="CASH_ADMIN">CASH_ADMIN (Cash Desk Registration & Counter Only)</option>
                   <option value="VIEWER">VIEWER (Read-Only Observer)</option>
                   <option value="SUPER_ADMIN">SUPER_ADMIN (Full Authority)</option>
                 </select>
