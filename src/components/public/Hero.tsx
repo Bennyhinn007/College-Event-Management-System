@@ -21,10 +21,12 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
   }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    // If not provided or to ensure freshest data on client navigation
+    // If initialEventInfo was already provided by SSR/ISR, no need for redundant client fetch
+    if (initialEventInfo) return;
+
     async function refreshSettings() {
       try {
-        const res = await fetch('/api/settings', { cache: 'no-store' });
+        const res = await fetch('/api/settings');
         const json = await res.json();
         if (json.success && json.data?.eventInfo) {
           setEventInfo((prev) => ({ ...prev, ...json.data.eventInfo }));
@@ -34,7 +36,7 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
       }
     }
     refreshSettings();
-  }, []);
+  }, [initialEventInfo]);
 
   useEffect(() => {
     const targetDate = new Date(eventInfo.startDate || '2026-10-29T09:00:00+05:30').getTime();

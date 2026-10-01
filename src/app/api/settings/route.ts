@@ -7,8 +7,8 @@ import {
   OFFICIAL_EVENTS,
 } from '@/lib/constants';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Revalidate settings every 60 seconds (or on-demand when admin updates)
+export const revalidate = 60;
 
 export async function GET() {
   try {
@@ -57,7 +57,7 @@ export async function GET() {
       },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );
@@ -75,7 +75,7 @@ export async function GET() {
       },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
         },
       }
     );

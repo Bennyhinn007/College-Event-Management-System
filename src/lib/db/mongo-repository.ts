@@ -603,13 +603,21 @@ export const mongoRepository = {
   },
 
   // ── Settings ───────────────────────────────────────────────────────────────
+  _settingsCache: null as { data: Record<string, unknown>; expiresAt: number } | null,
+
   async getSettings(): Promise<Record<string, unknown>> {
+    if (this._settingsCache && Date.now() < this._settingsCache.expiresAt) {
+      return this._settingsCache.data;
+    }
     await connect();
     const docs = await getSettingModel().find({}).lean();
-    return Object.fromEntries(docs.map((d) => [d.key, d.value]));
+    const data = Object.fromEntries(docs.map((d) => [d.key, d.value]));
+    this._settingsCache = { data, expiresAt: Date.now() + 60_000 };
+    return data;
   },
 
   async updateSetting(key: string, value: unknown, adminEmail: string): Promise<void> {
+    this._settingsCache = null; // Invalidate cache immediately on update
     await connect();
     await getSettingModel().findOneAndUpdate({ key }, { $set: { value, updatedAt: new Date().toISOString() } }, { upsert: true });
     this.addAuditLog({ adminId: adminEmail, adminEmail, action: `SETTING_UPDATED_${key.toUpperCase()}`, resource: 'SETTING', resourceId: key, metadata: { key } });

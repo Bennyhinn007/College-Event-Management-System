@@ -4,8 +4,8 @@ import EventCards from '@/components/public/EventCards';
 import { dbRepository } from '@/lib/db/repository-selector';
 import { EVENT_INFO, INITIAL_PRICING_CONFIG, PricingTierConfig } from '@/lib/constants';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: Cache statically at edge CDN, revalidate in background every 60s
+export const revalidate = 60;
 
 export const metadata = {
   title: '10 Official Events | Hacktober 2026 | National Level Event | GNDEC Bidar',

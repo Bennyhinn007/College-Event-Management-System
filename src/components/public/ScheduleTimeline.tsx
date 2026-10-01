@@ -18,9 +18,12 @@ export default function ScheduleTimeline({
   const [activeDayIndex, setActiveDayIndex] = useState(0);
 
   useEffect(() => {
+    // If already provided by SSR/ISR, skip redundant client fetch
+    if (initialSchedule && initialEventInfo) return;
+
     async function refreshSettings() {
       try {
-        const res = await fetch('/api/settings', { cache: 'no-store' });
+        const res = await fetch('/api/settings');
         const json = await res.json();
         if (json.success) {
           if (json.data?.schedule && Array.isArray(json.data.schedule)) {
@@ -35,7 +38,7 @@ export default function ScheduleTimeline({
       }
     }
     refreshSettings();
-  }, []);
+  }, [initialSchedule, initialEventInfo]);
 
   const safeIndex = Math.min(activeDayIndex, Math.max(0, schedule.length - 1));
   const currentDay = schedule[safeIndex] || {

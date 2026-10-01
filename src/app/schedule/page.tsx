@@ -4,8 +4,8 @@ import ScheduleTimeline from '@/components/public/ScheduleTimeline';
 import { dbRepository } from '@/lib/db/repository-selector';
 import { EVENT_INFO, INITIAL_SCHEDULE } from '@/lib/constants';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: Cache statically at edge CDN, revalidate in background every 60s
+export const revalidate = 60;
 
 export const metadata = {
   title: 'Event Schedule | Hacktober 2026 | National Level Event | GNDEC Bidar',

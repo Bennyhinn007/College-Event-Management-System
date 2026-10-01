@@ -13,8 +13,8 @@ import {
   PricingTierConfig,
 } from '@/lib/constants';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: Cache statically at edge CDN, revalidate in background every 60s (or immediately on admin update)
+export const revalidate = 60;
 
 export default async function HomePage() {
   let eventInfo = EVENT_INFO;

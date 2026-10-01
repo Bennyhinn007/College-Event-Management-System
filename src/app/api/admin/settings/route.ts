@@ -41,6 +41,17 @@ export async function PATCH(req: NextRequest) {
     }
 
     await dbRepository.updateSetting(key, value, session.email);
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'page');
+      revalidatePath('/events', 'page');
+      revalidatePath('/schedule', 'page');
+      revalidatePath('/register', 'page');
+    } catch (e) {
+      console.warn('[Admin Settings] revalidatePath error:', e);
+    }
+
     return NextResponse.json({ success: true, message: `Setting ${key} updated successfully.` });
   } catch (error: any) {
     return NextResponse.json(

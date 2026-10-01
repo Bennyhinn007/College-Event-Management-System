@@ -5,10 +5,12 @@ import mongoose from 'mongoose';
 import dns from 'node:dns';
 
 // Fix Node.js SRV resolution issue on Windows / ISP DNS (querySrv ECONNREFUSED)
-try {
-  dns.setServers(['8.8.8.8', '1.1.1.1']);
-} catch {
-  // Ignore in case environment restricts custom DNS servers
+if (process.platform === 'win32') {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+  } catch {
+    // Ignore in case environment restricts custom DNS servers
+  }
 }
 
 interface MongooseCache {
@@ -40,7 +42,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     );
   }
 
-  if (cached!.conn) {
+  if (cached!.conn && mongoose.connection.readyState === 1) {
     return cached!.conn;
   }
 
