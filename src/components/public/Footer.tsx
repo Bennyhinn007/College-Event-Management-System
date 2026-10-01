@@ -30,7 +30,7 @@ export default function Footer({ initialEventInfo }: FooterProps = {}) {
                   HACKTOBER <span className="text-teal-600">2026</span>
                 </span>
                 <p className="text-[11px] text-teal-800 font-semibold uppercase tracking-wider">
-                  Cyber Samurai Association
+                  Cyber Samurai Association • Cybersecurity Awareness Month
                 </p>
               </div>
             </div>
@@ -44,11 +44,11 @@ export default function Footer({ initialEventInfo }: FooterProps = {}) {
             <div className="space-y-2 pt-2 text-xs text-slate-500">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-teal-600 shrink-0" />
-                <span>{eventInfo.dates}</span>
+                <span>{eventInfo.dates || '29, 30 & 31 October 2026'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-teal-600 shrink-0" />
-                <span>{eventInfo.venue || 'Guru Nanak Dev Engineering College, Mailoor Road, Bidar, Karnataka'}</span>
+                <span>{eventInfo.venue || 'Guru Nanak Dev Engineering College, Bidar'}</span>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@ export default function Footer({ initialEventInfo }: FooterProps = {}) {
               </li>
               <li>
                 <Link href="/events" className="hover:text-teal-700 transition-colors">
-                  5 Signature Events
+                  10 Official Events
                 </Link>
               </li>
               <li>

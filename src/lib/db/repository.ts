@@ -14,7 +14,7 @@ import type {
   PaymentStatus,
   AttendanceStatus,
 } from './types';
-import { INITIAL_PRICING_CONFIG, INITIAL_SCHEDULE, EVENT_INFO } from '../constants';
+import { INITIAL_PRICING_CONFIG, INITIAL_SCHEDULE, EVENT_INFO, OFFICIAL_EVENTS } from '../constants';
 
 const DATA_DIR = path.join(process.cwd(), '.data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
@@ -530,13 +530,10 @@ export const dbRepository = {
 
     const totalRevenue = paidRegs.reduce((sum, r) => sum + r.totalAmount, 0);
 
-    const eventCounts: Record<string, number> = {
-      'cyber-quiz': 0,
-      'cyber-debate': 0,
-      'mini-hackathon': 0,
-      'cyber-hunt': 0,
-      'tech-debug': 0,
-    };
+    const eventCounts: Record<string, number> = {};
+    OFFICIAL_EVENTS.forEach((e) => {
+      eventCounts[e.id] = 0;
+    });
 
     activeRegs.forEach((r) => {
       r.eventIds.forEach((eId) => {

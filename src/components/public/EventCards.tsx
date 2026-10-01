@@ -1,100 +1,111 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
-  BrainCircuit,
-  MessageSquareText,
   Terminal,
-  ShieldAlert,
   Bug,
+  MessageSquareText,
+  Briefcase,
+  ShieldAlert,
+  Code,
+  Cpu,
+  Video,
+  Palette,
+  BrainCircuit,
+  Clock,
+  Sparkles,
   Users,
   User,
-  CheckCircle2,
-  X,
   ArrowRight,
-  Info,
+  CreditCard,
+  Trophy,
 } from 'lucide-react';
-import { OFFICIAL_EVENTS, EventDefinition, INITIAL_PRICING_CONFIG, PricingTierConfig } from '@/lib/constants';
+import { OFFICIAL_EVENTS, EventDefinition } from '@/lib/constants';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
-  BrainCircuit: <BrainCircuit className="w-6 h-6 text-teal-600" />,
-  MessageSquareText: <MessageSquareText className="w-6 h-6 text-blue-600" />,
   Terminal: <Terminal className="w-6 h-6 text-emerald-600" />,
-  ShieldAlert: <ShieldAlert className="w-6 h-6 text-indigo-600" />,
   Bug: <Bug className="w-6 h-6 text-rose-600" />,
+  MessageSquareText: <MessageSquareText className="w-6 h-6 text-blue-600" />,
+  Briefcase: <Briefcase className="w-6 h-6 text-amber-600" />,
+  ShieldAlert: <ShieldAlert className="w-6 h-6 text-indigo-600" />,
+  Code: <Code className="w-6 h-6 text-teal-600" />,
+  Cpu: <Cpu className="w-6 h-6 text-violet-600" />,
+  Video: <Video className="w-6 h-6 text-pink-600" />,
+  Palette: <Palette className="w-6 h-6 text-orange-600" />,
+  BrainCircuit: <BrainCircuit className="w-6 h-6 text-cyan-600" />,
 };
 
 interface EventCardsProps {
-  initialPricing?: Record<number, PricingTierConfig>;
+  initialPricing?: Record<string, unknown>;
 }
 
 export default function EventCards({ initialPricing }: EventCardsProps = {}) {
-  const [pricing, setPricing] = useState<Record<number, PricingTierConfig>>(
-    initialPricing || INITIAL_PRICING_CONFIG
-  );
-  const [selectedEvent, setSelectedEvent] = useState<EventDefinition | null>(null);
-
-  useEffect(() => {
-    async function refreshPricing() {
-      try {
-        const res = await fetch('/api/settings', { cache: 'no-store' });
-        const json = await res.json();
-        if (json.success && json.data?.pricing) {
-          setPricing(json.data.pricing);
-        }
-      } catch (e) {
-        // Fallback
-      }
-    }
-    refreshPricing();
-  }, []);
-
-  const p1 = pricing[1]?.price !== null && pricing[1]?.price !== undefined ? `₹${pricing[1].price}` : 'TBD';
-  const p2 = pricing[2]?.price !== null && pricing[2]?.price !== undefined ? `₹${pricing[2].price}` : 'TBD';
-  const p3 = pricing[3]?.price !== null && pricing[3]?.price !== undefined ? `₹${pricing[3].price}` : 'TBD';
-  const p4 = pricing[4]?.price !== null && pricing[4]?.price !== undefined ? `₹${pricing[4].price}` : 'TBD';
-  const p5 = pricing[5]?.price !== null && pricing[5]?.price !== undefined ? `₹${pricing[5].price}` : 'TBD';
+  const individualCount = OFFICIAL_EVENTS.filter((e) => e.type === 'INDIVIDUAL').length;
+  const teamCount = OFFICIAL_EVENTS.filter((e) => e.type === 'TEAM').length;
 
   return (
     <section id="events" className="py-16 lg:py-24 bg-slate-50/80 border-b border-slate-200 relative bg-cyber-grid">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-wider mb-3">
-            <span>5 Official Contests</span>
+            <span>10 Official Competitions</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Challenge Your Technical Intellect
           </h2>
           <p className="mt-3 text-base text-slate-600">
-            Engineered by the Department of CSE & Cybersecurity to test offensive capabilities, logic precision, defensive strategy, and team hackathon execution.
+            Official competitions for Hacktober 2026 at Guru Nanak Dev Engineering College, Bidar (29, 30 & 31 October 2026).
           </p>
 
-          {/* Pricing Info Banner */}
-          <div className="mt-6 p-4 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-slate-700 cyber-corner">
-            <span className="text-slate-500 font-medium">Official Pricing Tiers:</span>
-            <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-900 border border-slate-200">
-              1 Event: <strong>{p1}</strong>
+          {/* Category Summary Pill */}
+          <div className="mt-6 p-3 sm:p-4 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-slate-700 cyber-corner">
+            <span className="text-slate-500 font-medium">Competition Formats:</span>
+            <span className="px-3 py-1 rounded-md bg-slate-100 text-slate-900 border border-slate-200 flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-slate-600" />
+              <span>{individualCount} Individual Events (1 Participant)</span>
             </span>
-            <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-900 border border-slate-200">
-              2 Events: <strong>{p2}</strong>
-            </span>
-            <span className="px-2.5 py-1 rounded-md bg-teal-50 text-teal-900 border border-teal-200">
-              3 Events: <strong>{p3}</strong> (Popular)
-            </span>
-            <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-900 border border-slate-200">
-              4 Events: <strong>{p4}</strong>
-            </span>
-            <span className="px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-900 border border-indigo-200">
-              All 5 Events: <strong>{p5}</strong> (Best Value)
+            <span className="px-3 py-1 rounded-md bg-teal-50 text-teal-900 border border-teal-200 flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-teal-700" />
+              <span>{teamCount} Team Events (Up to 4 Members)</span>
             </span>
           </div>
         </div>
 
-        {/* 5 Event Cards Grid */}
+        {/* Prominent Winners & Prizes Banner */}
+        <div className="mb-10 sm:mb-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-amber-500/10 border-2 border-amber-300 shadow-sm relative overflow-hidden cyber-corner text-center sm:text-left">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white shadow-md shrink-0">
+                <Trophy className="w-8 h-8 text-amber-50" />
+              </div>
+              <div className="space-y-1 text-center sm:text-left">
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase tracking-wider">
+                  <span>Grand Prize Pool</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
+                  <span>🏆 Exciting Prizes Await!</span>
+                </h3>
+                <p className="text-sm sm:text-base font-bold text-slate-800 max-w-2xl">
+                  Winners of the Hacktober 2026 events can win exciting cash prizes and gadgets worth up to ₹15,000!
+                </p>
+              </div>
+            </div>
+            <div className="shrink-0 text-center sm:text-right">
+              <span className="block text-[11px] font-mono font-bold text-amber-800 uppercase tracking-widest">
+                PRIZES & GADGETS
+              </span>
+              <span className="text-3xl sm:text-4xl font-black font-mono text-slate-900 drop-shadow-xs">
+                UP TO ₹15,000
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 10 Event Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {OFFICIAL_EVENTS.map((event) => {
+          {OFFICIAL_EVENTS.map((event, idx) => {
             const isTeam = event.type === 'TEAM';
             return (
               <div
@@ -112,61 +123,78 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
                   {/* Icon & Participation Badge */}
                   <div className="flex items-start justify-between gap-4">
                     <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
-                      {ICON_MAP[event.icon]}
+                      {ICON_MAP[event.icon] || <BrainCircuit className="w-6 h-6 text-teal-600" />}
                     </div>
-                    <div>
-                      {isTeam ? (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold">
-                          <Users className="w-3.5 h-3.5" />
-                          <span>Team Event (Offline Groups)</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold">
-                          <User className="w-3.5 h-3.5" />
-                          <span>Individual (1 Person)</span>
-                        </span>
-                      )}
-                    </div>
+                    <span className="text-[11px] font-mono font-bold text-slate-400">
+                      #{String(idx + 1).padStart(2, '0')}
+                    </span>
                   </div>
 
-                  {/* Title & Short Description */}
-                  <div>
+                  {/* Title & Event Type Badge */}
+                  <div className="space-y-2">
                     <h3 className="text-xl font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
                       {event.name}
                     </h3>
-                    <p className="mt-2 text-sm text-slate-600 leading-relaxed line-clamp-3">
-                      {event.shortDescription}
-                    </p>
+                    <div className="inline-block px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200">
+                      {event.eventType}
+                    </div>
                   </div>
 
-                  {/* Highlights */}
-                  <div className="pt-2 border-t border-slate-100 space-y-2 text-xs text-slate-500">
-                    <div className="flex items-center justify-between">
-                      <span>Venue:</span>
-                      <span className="font-semibold text-slate-700">{event.venue}</span>
+                  {/* Event Metadata (Duration, Format, Team Size, Registration Fee) */}
+                  <div className="pt-3 border-t border-slate-100 space-y-2.5 text-xs text-slate-600">
+                    {/* Duration if applicable */}
+                    {event.duration && (
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-teal-600 shrink-0" />
+                        <span className="font-medium text-slate-700">⏱️ {event.duration}</span>
+                      </div>
+                    )}
+
+                    {/* Format if applicable */}
+                    {event.format && (
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <span className="font-medium text-slate-700">📋 {event.format}</span>
+                      </div>
+                    )}
+
+                    {/* Participation Type */}
+                    <div className="flex items-center gap-2">
+                      {isTeam ? (
+                        <>
+                          <Users className="w-4 h-4 text-teal-600 shrink-0" />
+                          <span className="font-semibold text-teal-900 bg-teal-50 px-2 py-0.5 rounded border border-teal-200/60">
+                            👥 Team of 4
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <User className="w-4 h-4 text-slate-600 shrink-0" />
+                          <span className="font-semibold text-slate-800 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                            👤 Individual
+                          </span>
+                        </>
+                      )}
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span>Time:</span>
-                      <span className="font-semibold text-slate-700">{event.time}</span>
+
+                    {/* Registration Fee */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <CreditCard className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span className="text-sm font-extrabold text-slate-900 font-mono">
+                        💰 {event.feeDisplay}
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Card Actions */}
-                <div className="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-                  <button
-                    onClick={() => setSelectedEvent(event)}
-                    className="text-xs font-bold text-slate-700 hover:text-slate-900 inline-flex items-center gap-1 py-2 px-3 rounded-lg hover:bg-slate-100 transition-colors"
-                  >
-                    <Info className="w-3.5 h-3.5 text-teal-600" />
-                    <span>View Details & Rules</span>
-                  </button>
+                {/* Card Action Button: Register Now */}
+                <div className="pt-6 mt-4 border-t border-slate-100">
                   <Link
                     href={`/register?event=${event.id}`}
-                    className="inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-teal-700 transition-colors shadow-xs"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-teal-700 transition-colors shadow-xs group-hover:shadow"
                   >
-                    <span>Select</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>Register Now</span>
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -174,84 +202,6 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
           })}
         </div>
       </div>
-
-      {/* Event Details Modal */}
-      {selectedEvent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto space-y-6">
-            {/* Modal Header */}
-            <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center">
-                  {ICON_MAP[selectedEvent.icon]}
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.name}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
-                      {selectedEvent.type === 'TEAM'
-                        ? 'Team (Max 4 members per team)'
-                        : 'Individual Event'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* Description */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                Event Overview
-              </h4>
-              <p className="text-sm text-slate-700 leading-relaxed">{selectedEvent.description}</p>
-            </div>
-
-            {/* Event Rules */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                Event-Specific Rules
-              </h4>
-              <ul className="space-y-2">
-                {selectedEvent.rules.map((rule, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                    <span>{rule}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Eligibility */}
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
-              <span className="font-bold text-slate-900 block">Eligibility:</span>
-              <p>{selectedEvent.eligibility}</p>
-            </div>
-
-            {/* Footer Buttons */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900"
-              >
-                Close
-              </button>
-              <Link
-                href={`/register?event=${selectedEvent.id}`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-teal-700 transition-colors shadow-sm"
-              >
-                <span>Register for this Event</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

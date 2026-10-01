@@ -179,7 +179,7 @@ export default function AdminDashboardPage() {
         <div className="lg:col-span-7 p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-5">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-bold text-slate-900">Event Participation Breakdown</h3>
-            <span className="text-xs text-slate-500 font-medium">5 Signature Contests</span>
+            <span className="text-xs text-slate-500 font-medium">10 Official Events</span>
           </div>
 
           <div className="space-y-4">

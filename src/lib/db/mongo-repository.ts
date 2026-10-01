@@ -13,7 +13,7 @@
 import mongoose, { Schema, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { connectToDatabase } from './mongodb';
-import { INITIAL_PRICING_CONFIG, INITIAL_SCHEDULE, EVENT_INFO } from '../constants';
+import { INITIAL_PRICING_CONFIG, INITIAL_SCHEDULE, EVENT_INFO, OFFICIAL_EVENTS } from '../constants';
 import type {
   IRegistration,
   IParticipant,
@@ -35,7 +35,9 @@ const RegistrationSchema = new Schema(
   {
     registrationId: { type: String, required: true, unique: true, index: true },
     eventIds: [{ type: String }],
+    eventName: { type: String },
     type: { type: String, enum: ['INDIVIDUAL', 'TEAM', 'MIXED'], default: 'INDIVIDUAL' },
+    teamSize: { type: Number, default: 1 },
     totalAmount: { type: Number, required: true },
     paymentStatus: { type: String, enum: ['PENDING', 'VERIFIED', 'REJECTED'], default: 'PENDING' },
     attendanceStatus: {
@@ -490,7 +492,8 @@ export const mongoRepository = {
     const revenueAgg = await getRegistrationModel().aggregate([{ $match: { isArchived: { $ne: true }, paymentStatus: 'VERIFIED' } }, { $group: { _id: null, total: { $sum: '$totalAmount' } } }]);
     const totalRevenue: number = revenueAgg[0]?.total ?? 0;
 
-    const eventCounts: Record<string, number> = { 'cyber-quiz': 0, 'cyber-debate': 0, 'mini-hackathon': 0, 'cyber-hunt': 0, 'tech-debug': 0 };
+    const eventCounts: Record<string, number> = {};
+    OFFICIAL_EVENTS.forEach((e) => { eventCounts[e.id] = 0; });
     const eventAgg = await getRegistrationModel().aggregate([{ $match: { isArchived: { $ne: true } } }, { $unwind: '$eventIds' }, { $group: { _id: '$eventIds', count: { $sum: 1 } } }]);
     for (const r of eventAgg) eventCounts[r._id] = r.count;
 

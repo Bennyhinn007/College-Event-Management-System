@@ -2,36 +2,40 @@
 
 import { useState } from 'react';
 import { ChevronDown, HelpCircle, Mail, MapPin, Phone, QrCode } from 'lucide-react';
-import { EVENT_INFO, PAYMENT_ORGANIZERS } from '@/lib/constants';
+import { EVENT_INFO, EVENT_COORDINATORS, PAYMENT_ORGANIZERS } from '@/lib/constants';
 
 const FAQ_ITEMS = [
   {
-    q: 'How does the dynamic pricing tier work?',
-    a: 'Registration fees are tiered based on the total number of events you select: 1 Event costs ₹79, 2 Events cost ₹150, 3 Events cost ₹199, 4 Events cost ₹300, and all 5 Events cost ₹350.',
+    q: 'How does event pricing work?',
+    a: 'Each event has a specific registration fee: Individual events range from ₹79 to ₹199 per person (Learnathon ₹199, Debugging ₹99, Painting ₹99, Quiz ₹99, Debate ₹79, Reels & Memes ₹79), while Team events (Hackathon, Business & Master Case Study, Cyber Hunt, and Project Expo) range from ₹199 to ₹600 per team. Team event fees are charged once per team regardless of whether you have 1, 2, 3, or 4 members.',
   },
   {
     q: 'Which UPI IDs and payment QR codes should I use to pay?',
-    a: 'You can transfer the registration fee to any of our 3 official student coordinators via PhonePe, Google Pay, Paytm, or BHIM UPI: Swetha Mulge (7975449981@axl), Apeksha (8618058871@axl), or Nandini (9353431169@ybl). All 3 QR codes are available directly on the registration portal.',
+    a: 'You can transfer the registration fee to any of our 3 official payment coordinators via PhonePe, Google Pay, Paytm, or BHIM UPI: Swetha Mulge (7975449981@axl), Apeksha (8618058871@axl), or Nandini (9353431169@ybl). All 3 QR codes are available directly on the registration portal.',
   },
   {
-    q: 'How does registration work for team competitions like Mini Hackathon and Cyber Hunt?',
-    a: 'Every student registers individually on this website for their chosen events. Team groupings (up to 4 members) for Mini Hackathon and Cyber Hunt will be formed and coordinated offline directly at the event venue. You do not need to enter team members online.',
+    q: 'How does registration work for team events?',
+    a: 'When you select any team event (Hackathon, Business & Master Case Study, Cyber Hunt, or Project Expo), you can name your team and register up to 4 members (1 Team Leader + up to 3 team members) directly in the online registration form. The registration fee is charged once for the entire team.',
   },
   {
-    q: 'What is the team size limit for Mini Hackathon and Cyber Hunt?',
-    a: 'When teams form offline at the venue, each group can have a maximum of 4 registered participants. All team members must hold a valid individual registration pass.',
+    q: 'What is the team size limit for team events?',
+    a: 'Team events allow a maximum of 4 members per team (1 Team Leader plus up to 3 additional members). Individual events allow exactly 1 participant per registration.',
   },
   {
     q: 'What happens after I submit my registration and payment screenshot?',
     a: 'You will receive a unique Registration ID (format: HT26-XXXXXX) along with a verification QR pass. Your payment status will be marked as PENDING. Once the organizing committee verifies your transaction UTR against bank records, your status will update to VERIFIED.',
   },
   {
-    q: 'What should I bring on event days (3 & 5 October 2026)?',
+    q: 'Is Hacktober 2026 a National Level Event?',
+    a: 'Yes! The entire Hacktober 2026 event and all its competitions are conducted as a National Level Event as part of Cybersecurity Awareness Month at Guru Nanak Dev Engineering College, Bidar.',
+  },
+  {
+    q: 'What should I bring on event days (29, 30 & 31 October 2026)?',
     a: 'All participants must bring their original College Student ID card and their digital or printed Hacktober 2026 Confirmation Pass containing their QR code for event check-in.',
   },
   {
     q: 'What are the prizes for winning participants?',
-    a: 'Per official guidelines, prizes will be announced as an exciting surprise by the Department of CSE & Cyber during the event!',
+    a: 'Winners of the Hacktober 2026 events can win exciting cash prizes and gadgets worth up to ₹15,000!',
   },
 ];
 
@@ -103,9 +107,9 @@ export default function FaqSection({ initialEventInfo }: FaqSectionProps = {}) {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-slate-900 block">Campus Address</span>
+                    <span className="font-bold text-slate-900 block">Campus Venue</span>
                     <p className="text-slate-600">
-                      Guru Nanak Dev Engineering College, Mailoor Road, Bidar, Karnataka — 585403
+                      Guru Nanak Dev Engineering College, Bidar
                     </p>
                   </div>
                 </div>
@@ -126,9 +130,37 @@ export default function FaqSection({ initialEventInfo }: FaqSectionProps = {}) {
                   </div>
                 </div>
 
+                {/* Event Coordinators */}
                 <div className="pt-2 border-t border-slate-200">
                   <span className="font-bold text-slate-900 block mb-2 text-xs uppercase tracking-wider">
-                    Student Coordinators (Payment & Queries)
+                    Student Coordinators (Events)
+                  </span>
+                  <div className="space-y-2">
+                    {EVENT_COORDINATORS.map((coord) => (
+                      <div
+                        key={coord.id}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200 text-xs shadow-2xs"
+                      >
+                        <div>
+                          <strong className="text-slate-900 block">{coord.name}</strong>
+                          <span className="text-[11px] text-teal-700 font-medium">{coord.role}</span>
+                        </div>
+                        <a
+                          href={`tel:+91${coord.phone}`}
+                          className="font-mono font-bold text-teal-700 hover:text-teal-900 flex items-center gap-1 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200/60"
+                        >
+                          <Phone className="w-3 h-3" />
+                          <span>+91 {coord.phone}</span>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Payment Coordinators */}
+                <div className="pt-2 border-t border-slate-200">
+                  <span className="font-bold text-slate-900 block mb-2 text-xs uppercase tracking-wider">
+                    Student Coordinators (Payment)
                   </span>
                   <div className="space-y-2">
                     {PAYMENT_ORGANIZERS.map((org) => (

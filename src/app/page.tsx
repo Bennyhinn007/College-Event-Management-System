@@ -19,7 +19,7 @@ export const revalidate = 0;
 export default async function HomePage() {
   let eventInfo = EVENT_INFO;
   let schedule = INITIAL_SCHEDULE;
-  let pricing = INITIAL_PRICING_CONFIG;
+  let pricing: Record<string, unknown> = INITIAL_PRICING_CONFIG;
 
   try {
     const settings = await dbRepository.getSettings();
@@ -34,7 +34,7 @@ export default async function HomePage() {
         schedule = settings.schedule as typeof INITIAL_SCHEDULE;
       }
       if (settings.pricing && typeof settings.pricing === 'object') {
-        pricing = settings.pricing as Record<number, PricingTierConfig>;
+        pricing = settings.pricing as Record<string, unknown>;
       }
     }
   } catch (err) {

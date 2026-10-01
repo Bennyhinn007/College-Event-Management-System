@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Event Schedule | Hacktober 2026 | GNDEC Bidar',
-  description: 'Official itinerary and timeline for Hacktober 2026 (3 & 5 October 2026).',
+  title: 'Event Schedule | Hacktober 2026 | National Level Event | GNDEC Bidar',
+  description: 'Official itinerary and timeline for Hacktober 2026 (29, 30 & 31 October 2026) — National Level Event conducted as part of Cybersecurity Awareness Month at Guru Nanak Dev Engineering College, Bidar.',
 };
 
 export default async function SchedulePage() {
@@ -40,13 +40,13 @@ export default async function SchedulePage() {
         <div className="py-12 bg-slate-50 border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full">
-              {eventInfo.dates || '3 & 5 October 2026'}
+              {eventInfo.dates || '29, 30 & 31 October 2026'}
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
               Event Timeline & Itinerary
             </h1>
             <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
-              Follow session milestones across {schedule.length} intensive days at Guru Nanak Dev Engineering College, Bidar.
+              Follow session milestones across {schedule.length} intensive days at {eventInfo.venue || 'Guru Nanak Dev Engineering College, Bidar'}.
             </p>
           </div>
         </div>

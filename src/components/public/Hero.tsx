@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowRight, ShieldCheck, Sparkles, Terminal } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, ShieldCheck, Sparkles, Terminal, Trophy } from 'lucide-react';
 import { EVENT_INFO } from '@/lib/constants';
 
 import Image from 'next/image';
@@ -37,7 +37,7 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
   }, []);
 
   useEffect(() => {
-    const targetDate = new Date(eventInfo.startDate || '2026-10-03T09:00:00+05:30').getTime();
+    const targetDate = new Date(eventInfo.startDate || '2026-10-29T09:00:00+05:30').getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -103,27 +103,41 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
           </p>
 
           {/* Master Title in Mokoto Font & Tagline */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-4 pt-2">
             <h1 className="font-mokoto text-4xl sm:text-6xl lg:text-7xl tracking-wider text-slate-900 uppercase drop-shadow-xs">
               HACKTOBER <span className="text-teal-600">2026</span>
             </h1>
-            <p className="text-lg sm:text-xl font-bold tracking-tight text-slate-700 max-w-2xl mx-auto">
+
+            {/* Visual Highlight: NATIONAL LEVEL EVENT & Cybersecurity Awareness Month */}
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="inline-flex items-center gap-2 px-5 py-2 sm:px-6 sm:py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 border-2 border-amber-500 shadow-md">
+                <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-amber-950 shrink-0" />
+                <span className="font-black text-sm sm:text-lg uppercase tracking-wider text-amber-950">
+                  NATIONAL LEVEL EVENT
+                </span>
+              </div>
+              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-teal-800 bg-teal-50 border border-teal-200/80 px-4 py-1 rounded-full">
+                Cybersecurity Awareness Month
+              </span>
+            </div>
+
+            <p className="text-lg sm:text-xl font-bold tracking-tight text-slate-700 max-w-2xl mx-auto pt-1">
               {eventInfo.tagline}
             </p>
           </div>
 
           {/* Date & Location Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-slate-700 pt-2">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-xs">
-              <Calendar className="w-4 h-4 text-teal-600" />
-              <span>{eventInfo.dates}</span>
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-sm font-medium text-slate-700 pt-3">
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 shadow-xs">
+              <Calendar className="w-4 h-4 text-teal-600 shrink-0" />
+              <span className="font-bold text-slate-900">{eventInfo.dates || '29, 30 & 31 October 2026'}</span>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-xs">
-              <MapPin className="w-4 h-4 text-teal-600" />
-              <span>{eventInfo.venue || 'GNDEC Campus, Bidar'}</span>
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 shadow-xs">
+              <MapPin className="w-4 h-4 text-teal-600 shrink-0" />
+              <span className="font-bold text-slate-900">{eventInfo.venue || 'Guru Nanak Dev Engineering College, Bidar'}</span>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 shadow-xs">
-              <Sparkles className="w-4 h-4 text-amber-600" />
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 shadow-xs font-semibold">
+              <Sparkles className="w-4 h-4 text-teal-600 shrink-0" />
               <span>{eventInfo.prizeNotice}</span>
             </div>
           </div>
@@ -141,7 +155,7 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
               href="/events"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white border border-slate-300 text-slate-800 font-bold text-base hover:bg-slate-50 hover:border-slate-400 transition-all active:scale-95 shadow-xs"
             >
-              <span>Explore 5 Events</span>
+              <span>Explore 10 Events</span>
             </Link>
           </div>
 
@@ -152,7 +166,7 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
               <div className="flex items-center justify-between text-[11px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-4 pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-1.5 text-teal-700">
                   <Terminal className="w-3.5 h-3.5" />
-                  <span>COUNTDOWN // 03-OCT-2026</span>
+                  <span>COUNTDOWN // 29-OCT-2026</span>
                 </div>
                 <div className="flex items-center gap-1 text-[10px] text-teal-600 bg-teal-50 px-2 py-0.5 rounded border border-teal-200/60">
                   <ShieldCheck className="w-3 h-3 text-teal-600" />

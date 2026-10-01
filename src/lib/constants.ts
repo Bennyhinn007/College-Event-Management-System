@@ -5,142 +5,164 @@ export interface EventDefinition {
   id: string;
   name: string;
   slug: string;
+  eventType: string;
   type: 'INDIVIDUAL' | 'TEAM';
   maxTeamSize: number;
   minTeamSize: number;
-  shortDescription: string;
-  description: string;
-  rules: string[];
-  eligibility: string;
-  coordinator: string; // [TBD]
-  time: string; // [TBD]
-  venue: string; // [TBD]
+  fee: number;
+  feeDisplay: string;
+  duration?: string;
+  format?: string;
   icon: string;
 }
 
 export const OFFICIAL_EVENTS: EventDefinition[] = [
   {
-    id: 'cyber-quiz',
-    name: 'Cybersecurity Quiz',
-    slug: 'cybersecurity-quiz',
-    type: 'INDIVIDUAL',
+    id: 'hackathon',
+    name: 'Hackathon',
+    slug: 'hackathon',
+    eventType: 'Hackathon',
+    type: 'TEAM',
     minTeamSize: 1,
-    maxTeamSize: 1,
-    shortDescription: 'High-octane technical quiz testing fundamentals of networking, cryptography, forensics, and modern cybersecurity.',
-    description: 'A multi-round intellectual battle evaluating knowledge in ethical hacking, network protocols, defensive ops, and real-world vulnerability landscapes.',
-    rules: [
-      'Individual participation only (1 participant per registration).',
-      'Preliminary round consists of objective cybersecurity and network protocol questions.',
-      'Negative marking applies in final buzzer rounds.',
-      'Use of mobile devices or unauthorized internet access during the round is strictly prohibited.',
-    ],
-    eligibility: 'All undergraduate and postgraduate engineering/technology students with valid college ID.',
-    coordinator: '[TBD]',
-    time: 'TBD',
-    venue: 'TBD',
-    icon: 'BrainCircuit',
+    maxTeamSize: 4,
+    fee: 600,
+    feeDisplay: '₹600 / Team',
+    duration: '6 Hours',
+    icon: 'Terminal',
   },
   {
-    id: 'cyber-debate',
-    name: 'Cybersecurity Debate',
-    slug: 'cybersecurity-debate',
+    id: 'technical-debugging',
+    name: 'Technical Debugging',
+    slug: 'technical-debugging',
+    eventType: 'Technical Competition',
     type: 'INDIVIDUAL',
     minTeamSize: 1,
     maxTeamSize: 1,
-    shortDescription: 'Debate on critical cyber ethics, AI governance, surveillance vs privacy, and national cyber sovereignty.',
-    description: 'Articulate logical, evidence-grounded arguments on contemporary technological controversies, digital surveillance, offensive cyber actions, and ethical responsibility.',
-    rules: [
-      'Individual participation only.',
-      'Topics will be assigned through a transparent draw prior to each round.',
-      'Constructive speech: 3 minutes; Rebuttal: 2 minutes; Closing: 1 minute.',
-      'Unparliamentary language or personal attacks results in immediate disqualification.',
-    ],
-    eligibility: 'Open to all enrolled students with valid institutional identification.',
-    coordinator: '[TBD]',
-    time: 'TBD',
-    venue: 'TBD',
+    fee: 99,
+    feeDisplay: '₹99 / Person',
+    icon: 'Bug',
+  },
+  {
+    id: 'cybersecurity-debate',
+    name: 'Cybersecurity Debate',
+    slug: 'cybersecurity-debate',
+    eventType: 'Debate',
+    type: 'INDIVIDUAL',
+    minTeamSize: 1,
+    maxTeamSize: 1,
+    fee: 79,
+    feeDisplay: '₹79 / Person',
     icon: 'MessageSquareText',
   },
   {
-    id: 'mini-hackathon',
-    name: 'Mini Hackathon',
-    slug: 'mini-hackathon',
+    id: 'business-master-case-study',
+    name: 'Business & Master Case Study',
+    slug: 'business-master-case-study',
+    eventType: 'Case Study Competition',
     type: 'TEAM',
-    minTeamSize: 2,
+    minTeamSize: 1,
     maxTeamSize: 4,
-    shortDescription: 'Fast-paced collaborative sprint to design, build, and deploy secure tech prototypes addressing real-world problem statements.',
-    description: 'Teams of up to 4 members collaborate to engineer functional prototypes in cloud security, IoT protection, blockchain integrity, or cyber threat intelligence.',
-    rules: [
-      'Individual online registration. Teams (up to 4 members) are formed offline directly at the event venue.',
-      'All code must be authored during the event timeframe. Pre-built proprietary solutions are disallowed.',
-      'Open-source libraries and APIs are permitted provided proper attribution is documented.',
-      'Final submission must include a live demo and public GitHub repository.',
-    ],
-    eligibility: 'Inter-college and intra-department teams permitted. Valid ID required for every member.',
-    coordinator: '[TBD]',
-    time: 'TBD',
-    venue: 'TBD',
-    icon: 'Terminal',
+    fee: 199,
+    feeDisplay: '₹199 / Team',
+    icon: 'Briefcase',
   },
   {
     id: 'cyber-hunt',
     name: 'Cyber Hunt',
     slug: 'cyber-hunt',
+    eventType: 'Cybersecurity Competition',
+    format: '50 Cyber Hunt Challenges',
     type: 'TEAM',
-    minTeamSize: 2,
+    minTeamSize: 1,
     maxTeamSize: 4,
-    shortDescription: 'Challenging capture-the-flag (CTF) and campus cryptographic scavenger hunt solving steganography and logic puzzles.',
-    description: 'Navigate through cryptograms, web exploitation challenges, forensics puzzles, and physical campus clues to decrypt the master flag.',
-    rules: [
-      'Individual online registration. Teams (up to 4 members) are formed offline directly at the event venue.',
-      'Participants may interact ONLY with systems explicitly authorized in writing by the organizers.',
-      'Attacking event infrastructure or scoring servers results in immediate disqualification and security review.',
-      'Flag sharing between distinct teams is strictly prohibited.',
-    ],
-    eligibility: 'Teams of up to 4 registered students formed offline at venue.',
-    coordinator: '[TBD]',
-    time: 'TBD',
-    venue: 'TBD',
+    fee: 360,
+    feeDisplay: '₹360 / Team',
     icon: 'ShieldAlert',
   },
   {
-    id: 'tech-debug',
-    name: 'Technical Debugging',
-    slug: 'technical-debugging',
+    id: 'learnathon',
+    name: 'Learnathon',
+    slug: 'learnathon',
+    eventType: 'Website Building Competition',
+    duration: '60 Minutes',
     type: 'INDIVIDUAL',
     minTeamSize: 1,
     maxTeamSize: 1,
-    shortDescription: 'Time-critical debugging contest finding and remediating vulnerabilities, race conditions, and logic bugs in complex codebases.',
-    description: 'Analyze buggy source code across C++, Python, and JavaScript. Diagnose memory leaks, fix buffer overflows, solve concurrency deadlocks, and pass automated unit tests.',
-    rules: [
-      'Individual participation only.',
-      'Solutions are evaluated on test coverage, execution efficiency, and time taken.',
-      'Participants must use the supplied standardized sandbox environment.',
-      'Plagiarism checks will be automatically executed against all submitted patches.',
-    ],
-    eligibility: 'Individual students with basic to advanced programming proficiency.',
-    coordinator: '[TBD]',
-    time: 'TBD',
-    venue: 'TBD',
-    icon: 'Bug',
+    fee: 199,
+    feeDisplay: '₹199 / Person',
+    icon: 'Code',
+  },
+  {
+    id: 'project-expo',
+    name: 'Project Expo',
+    slug: 'project-expo',
+    eventType: 'Project Exhibition',
+    type: 'TEAM',
+    minTeamSize: 1,
+    maxTeamSize: 4,
+    fee: 200,
+    feeDisplay: '₹200 / Team',
+    icon: 'Cpu',
+  },
+  {
+    id: 'reels-memes',
+    name: 'Reels & Memes',
+    slug: 'reels-memes',
+    eventType: 'Creative Competition',
+    type: 'INDIVIDUAL',
+    minTeamSize: 1,
+    maxTeamSize: 1,
+    fee: 79,
+    feeDisplay: '₹79 / Person',
+    icon: 'Video',
+  },
+  {
+    id: 'on-spot-painting-sketch',
+    name: 'On-Spot Painting & Sketch',
+    slug: 'on-spot-painting-sketch',
+    eventType: 'Art Competition',
+    type: 'INDIVIDUAL',
+    minTeamSize: 1,
+    maxTeamSize: 1,
+    fee: 99,
+    feeDisplay: '₹99 / Person',
+    icon: 'Palette',
+  },
+  {
+    id: 'cybersecurity-quiz',
+    name: 'Cybersecurity Quiz',
+    slug: 'cybersecurity-quiz',
+    eventType: 'Cybersecurity Quiz',
+    type: 'INDIVIDUAL',
+    minTeamSize: 1,
+    maxTeamSize: 1,
+    fee: 99,
+    feeDisplay: '₹99 / Person',
+    icon: 'BrainCircuit',
   },
 ];
 
-// Centralized Pricing Configuration
+// Centralized Event Pricing Record
+export const INITIAL_PRICING_CONFIG: Record<string, number> = {
+  'hackathon': 600,
+  'technical-debugging': 99,
+  'cybersecurity-debate': 79,
+  'business-master-case-study': 199,
+  'cyber-hunt': 360,
+  'learnathon': 199,
+  'project-expo': 200,
+  'reels-memes': 79,
+  'on-spot-painting-sketch': 99,
+  'cybersecurity-quiz': 99,
+};
+
 export interface PricingTierConfig {
-  eventCount: number;
-  price: number | null; // null represents unfinalized TBD
+  eventId?: string;
+  eventCount?: number;
+  price: number | null;
   status: 'ACTIVE' | 'TBD';
   notice?: string;
 }
-
-export const INITIAL_PRICING_CONFIG: Record<number, PricingTierConfig> = {
-  1: { eventCount: 1, price: 79, status: 'ACTIVE' },
-  2: { eventCount: 2, price: 150, status: 'ACTIVE' },
-  3: { eventCount: 3, price: 199, status: 'ACTIVE' },
-  4: { eventCount: 4, price: 300, status: 'ACTIVE' },
-  5: { eventCount: 5, price: 350, status: 'ACTIVE' },
-};
 
 export interface PricingCalculationResult {
   count: number;
@@ -149,11 +171,12 @@ export interface PricingCalculationResult {
   displayAmount: string;
   notice: string | null;
   canProceed: boolean;
+  breakdown?: Array<{ id: string; name: string; fee: number; isTeam: boolean }>;
 }
 
 export function calculateRegistrationPrice(
   selectedEventIds: string[],
-  customConfig?: Record<number, PricingTierConfig>
+  customConfig?: Record<string, unknown>
 ): PricingCalculationResult {
   const count = selectedEventIds.length;
   if (count === 0) {
@@ -164,30 +187,49 @@ export function calculateRegistrationPrice(
       displayAmount: '₹0',
       notice: 'Please select at least 1 event.',
       canProceed: false,
+      breakdown: [],
     };
   }
 
-  const config = customConfig || INITIAL_PRICING_CONFIG;
-  const tier = config[count];
+  let total = 0;
+  const breakdown: Array<{ id: string; name: string; fee: number; isTeam: boolean }> = [];
 
-  if (!tier || tier.status === 'TBD' || tier.price === null) {
-    return {
-      count,
-      isConfigured: false,
-      amount: null,
-      displayAmount: 'TBD',
-      notice: tier?.notice || 'Pricing for this combination will be confirmed by the organizers.',
-      canProceed: false,
-    };
+  for (const id of selectedEventIds) {
+    const event = OFFICIAL_EVENTS.find((e) => e.id === id);
+    if (!event) continue;
+
+    let fee = event.fee;
+    if (customConfig && typeof customConfig === 'object') {
+      const customVal = (customConfig as Record<string, unknown>)[id];
+      if (typeof customVal === 'number') {
+        fee = customVal;
+      } else if (
+        customVal &&
+        typeof customVal === 'object' &&
+        'price' in customVal &&
+        typeof (customVal as { price: unknown }).price === 'number'
+      ) {
+        fee = (customVal as { price: number }).price;
+      }
+    }
+
+    total += fee;
+    breakdown.push({
+      id: event.id,
+      name: event.name,
+      fee,
+      isTeam: event.type === 'TEAM',
+    });
   }
 
   return {
     count,
     isConfigured: true,
-    amount: tier.price,
-    displayAmount: `₹${tier.price}`,
+    amount: total,
+    displayAmount: `₹${total}`,
     notice: null,
     canProceed: true,
+    breakdown,
   };
 }
 
@@ -209,7 +251,7 @@ export const PAYMENT_ORGANIZERS: PaymentOrganizer[] = [
     qrImage: '/qr/swetha-mulge.jpg',
     phone: '7975449981',
     app: 'PhonePe / Any UPI App',
-    note: 'Student Coordinator',
+    note: 'Payment Coordinator',
   },
   {
     id: 'apeksha',
@@ -218,7 +260,7 @@ export const PAYMENT_ORGANIZERS: PaymentOrganizer[] = [
     qrImage: '/qr/apeksha.jpg',
     phone: '8618058871',
     app: 'PhonePe / Any UPI App',
-    note: 'Student Coordinator',
+    note: 'Payment Coordinator',
   },
   {
     id: 'nandini',
@@ -227,23 +269,53 @@ export const PAYMENT_ORGANIZERS: PaymentOrganizer[] = [
     qrImage: '/qr/nandini.jpg',
     phone: '9353431169',
     app: 'PhonePe / Any UPI App',
-    note: 'Student Coordinator',
+    note: 'Payment Coordinator',
+  },
+];
+
+export interface EventCoordinator {
+  id: string;
+  name: string;
+  phone: string;
+  role: string;
+}
+
+export const EVENT_COORDINATORS: EventCoordinator[] = [
+  {
+    id: 'bennyhinn',
+    name: 'Bennyhinn',
+    phone: '7019025650',
+    role: 'Event Coordinator',
+  },
+  {
+    id: 'rishikesh-auradkar',
+    name: 'Rishikesh Auradkar',
+    phone: '8431008974',
+    role: 'Event Coordinator',
+  },
+  {
+    id: 'shweta',
+    name: 'Shweta',
+    phone: '7975449981',
+    role: 'Event Coordinator',
   },
 ];
 
 export const EVENT_INFO = {
   name: 'Hacktober 2026',
   tagline: 'Think. Hack. Defend. Debug.',
-  dates: '3 & 5 October 2026',
-  datesShort: '3 & 5 October 2026',
-  startDate: '2026-10-03T09:00:00+05:30',
-  endDate: '2026-10-05T18:00:00+05:30',
+  classification: 'NATIONAL LEVEL EVENT',
+  initiative: 'Cybersecurity Awareness Month',
+  dates: '29, 30 & 31 October 2026',
+  datesShort: '29–31 October 2026',
+  startDate: '2026-10-29T09:00:00+05:30',
+  endDate: '2026-10-31T18:00:00+05:30',
   institution: 'Guru Nanak Dev Engineering College, Bidar',
   department: 'Department of CSE, IoT and Cybersecurity including Blockchain Technology',
-  prizeNotice: 'Prizes will be announced as a surprise.',
-  venue: 'Department of CSE & Cyber Laboratories, GNDEC Bidar',
+  prizeNotice: 'Cash prizes and gadgets worth up to ₹15,000!',
+  venue: 'Guru Nanak Dev Engineering College, Bidar',
   contactEmail: 'hacktober@gndec.ac.in',
-  contactPhone: '+91 7975449981 / +91 8618058871 / +91 9353431169',
+  contactPhone: '+91 7019025650 / +91 8431008974 / +91 7975449981',
   paymentUpiId: '7975449981@axl (Swetha Mulge) / 8618058871@axl (Apeksha) / 9353431169@ybl (Nandini)',
   paymentLink: 'upi://pay?pa=7975449981@axl&pn=Swetha%20Mulge&cu=INR&tn=Hacktober%202026%20Registration',
   paymentQrImage: '/qr/swetha-mulge.jpg',
@@ -252,22 +324,32 @@ export const EVENT_INFO = {
 export const INITIAL_SCHEDULE = [
   {
     day: 'Day 1',
-    date: '3 October 2026',
+    date: '29 October 2026',
     items: [
-      { event: 'Inauguration & Keynote Address', time: '2:30 PM', venue: 'Main Auditorium, GNDEC Bidar', type: 'GENERAL' },
-      { event: 'Cybersecurity Quiz (Prelims & Finals)', time: 'TBD', venue: 'Seminar Hall', type: 'EVENT' },
-      { event: 'Mini Hackathon (Problem Briefing & Kickoff)', time: 'TBD', venue: 'CSE Computing Lab', type: 'EVENT' },
-      { event: 'Cyber Hunt (Phase 1 — Crypto & Forensics CTF)', time: 'TBD', venue: 'Campus & Cyber Lab', type: 'EVENT' },
+      { event: 'Inauguration & Keynote Address (Cybersecurity Awareness Month)', time: '9:30 AM', venue: 'Main Auditorium, GNDEC Bidar', type: 'GENERAL' },
+      { event: 'Hackathon (Kickoff & Problem Statements)', time: '11:00 AM', venue: 'CSE Computing Lab', type: 'EVENT' },
+      { event: 'Technical Debugging', time: '2:00 PM', venue: 'IoT & Blockchain Lab', type: 'EVENT' },
+      { event: 'Cybersecurity Debate', time: '3:30 PM', venue: 'Seminar Hall', type: 'EVENT' },
     ],
   },
   {
     day: 'Day 2',
-    date: '5 October 2026',
+    date: '30 October 2026',
     items: [
-      { event: 'Technical Debugging (Live Coding Gauntlet)', time: 'TBD', venue: 'IoT & Blockchain Lab', type: 'EVENT' },
-      { event: 'Mini Hackathon (Final Project Presentations & Judging)', time: 'TBD', venue: 'CSE Computing Lab', type: 'EVENT' },
-      { event: 'Cybersecurity Debate (Preliminary & Grand Finals)', time: 'TBD', venue: 'Seminar Hall', type: 'EVENT' },
-      { event: 'Valedictory & Prize Distribution (Surprise Announcements)', time: 'TBD', venue: 'Main Auditorium', type: 'GENERAL' },
+      { event: 'Business & Master Case Study', time: '10:00 AM', venue: 'Department Conference Hall', type: 'EVENT' },
+      { event: 'Cyber Hunt (50 Cyber Hunt Challenges)', time: '11:30 AM', venue: 'Campus & Cyber Lab', type: 'EVENT' },
+      { event: 'Learnathon (Website Building Competition)', time: '2:30 PM', venue: 'Computing Lab', type: 'EVENT' },
+    ],
+  },
+  {
+    day: 'Day 3',
+    date: '31 October 2026',
+    items: [
+      { event: 'Project Expo', time: '10:00 AM', venue: 'Exhibition Hall', type: 'EVENT' },
+      { event: 'Reels & Memes', time: '11:30 AM', venue: 'Media Center', type: 'EVENT' },
+      { event: 'On-Spot Painting & Sketch', time: '1:30 PM', venue: 'Design Studio', type: 'EVENT' },
+      { event: 'Cybersecurity Quiz', time: '3:00 PM', venue: 'Seminar Hall', type: 'EVENT' },
+      { event: 'Valedictory & Prize Distribution', time: '4:30 PM', venue: 'Main Auditorium', type: 'GENERAL' },
     ],
   },
 ];

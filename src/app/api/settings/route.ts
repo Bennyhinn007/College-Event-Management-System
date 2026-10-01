@@ -18,8 +18,32 @@ export async function GET() {
       ...EVENT_INFO,
       ...((settings.eventInfo as Record<string, unknown>) || {}),
     };
-    const schedule = settings.schedule || INITIAL_SCHEDULE;
-    const pricing = settings.pricing || INITIAL_PRICING_CONFIG;
+    if (!eventInfo.prizeNotice || eventInfo.prizeNotice.toLowerCase().includes('surprise')) {
+      eventInfo.prizeNotice = EVENT_INFO.prizeNotice;
+    }
+
+    let schedule = settings.schedule as typeof INITIAL_SCHEDULE;
+    if (
+      !schedule ||
+      !Array.isArray(schedule) ||
+      schedule.some((day) =>
+        day.items?.some((item: any) =>
+          item.event?.toLowerCase().includes('mini hackathon')
+        )
+      )
+    ) {
+      schedule = INITIAL_SCHEDULE;
+    }
+
+    let pricing = settings.pricing as Record<string, unknown> | undefined;
+    if (
+      !pricing ||
+      typeof pricing !== 'object' ||
+      '1' in pricing ||
+      !('hackathon' in pricing)
+    ) {
+      pricing = INITIAL_PRICING_CONFIG;
+    }
 
     return NextResponse.json(
       {

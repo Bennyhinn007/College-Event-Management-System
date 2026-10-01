@@ -1,11 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { DollarSign, CheckCircle2, AlertCircle, Save, Loader2, Info } from 'lucide-react';
-import type { PricingTierConfig } from '@/lib/constants';
+import { DollarSign, CheckCircle2, AlertCircle, Save, Loader2, Info, Users, User } from 'lucide-react';
+import { OFFICIAL_EVENTS, EventDefinition } from '@/lib/constants';
+
+interface EventPricingItem {
+  price: number | null;
+  status: 'ACTIVE' | 'TBD';
+}
 
 export default function AdminPricingPage() {
-  const [pricing, setPricing] = useState<Record<number, PricingTierConfig> | null>(null);
+  const [pricing, setPricing] = useState<Record<string, EventPricingItem> | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -15,9 +20,31 @@ export default function AdminPricingPage() {
       try {
         const res = await fetch('/api/admin/settings');
         const json = await res.json();
-        if (json.success && json.data.pricing) {
-          setPricing(json.data.pricing);
+        const serverPricing = json.success && json.data.pricing ? json.data.pricing : {};
+
+        // Normalize pricing record for all 10 official events
+        const normalized: Record<string, EventPricingItem> = {};
+        for (const ev of OFFICIAL_EVENTS) {
+          const val = serverPricing[ev.id];
+          if (val && typeof val === 'object' && 'price' in val) {
+            normalized[ev.id] = {
+              price: typeof val.price === 'number' ? val.price : null,
+              status: val.status === 'TBD' ? 'TBD' : 'ACTIVE',
+            };
+          } else if (typeof val === 'number') {
+            normalized[ev.id] = {
+              price: val,
+              status: 'ACTIVE',
+            };
+          } else {
+            normalized[ev.id] = {
+              price: ev.fee,
+              status: 'ACTIVE',
+            };
+          }
         }
+
+        setPricing(normalized);
       } catch (err) {
         console.error('Error loading pricing settings:', err);
       } finally {
@@ -28,15 +55,28 @@ export default function AdminPricingPage() {
     loadSettings();
   }, []);
 
-  const handlePriceChange = (count: number, value: string) => {
+  const handlePriceChange = (eventId: string, value: string) => {
     if (!pricing) return;
     const num = value === '' ? null : parseInt(value, 10);
     setPricing({
       ...pricing,
-      [count]: {
-        ...pricing[count],
+      [eventId]: {
+        ...pricing[eventId],
         price: isNaN(num as number) ? null : num,
         status: num !== null && !isNaN(num) ? 'ACTIVE' : 'TBD',
+      },
+    });
+  };
+
+  const handleStatusToggle = (eventId: string) => {
+    if (!pricing) return;
+    const current = pricing[eventId];
+    const newStatus = current.status === 'ACTIVE' ? 'TBD' : 'ACTIVE';
+    setPricing({
+      ...pricing,
+      [eventId]: {
+        ...current,
+        status: newStatus,
       },
     });
   };
@@ -53,7 +93,7 @@ export default function AdminPricingPage() {
       });
       const json = await res.json();
       if (json.success) {
-        setMsg({ type: 'success', text: 'Dynamic pricing tiers updated successfully.' });
+        setMsg({ type: 'success', text: 'Event pricing configuration updated successfully.' });
       } else {
         setMsg({ type: 'error', text: json.error || 'Failed to update pricing.' });
       }
@@ -73,15 +113,15 @@ export default function AdminPricingPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-            Centralized Pricing Engine
+            Event Pricing Engine
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Configure dynamic registration fee tiers for 1, 2, 3, 4, and 5 events.
+            Configure registration fees for all 10 official Hacktober 2026 events.
           </p>
         </div>
 
@@ -112,63 +152,86 @@ export default function AdminPricingPage() {
         </div>
       )}
 
-      {/* Info notice about pricing tiers */}
+      {/* Info notice about pricing */}
       <div className="p-4 rounded-xl bg-teal-50 border border-teal-200 text-teal-950 text-xs flex items-start gap-3">
         <Info className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <strong className="block">Dynamic Pricing Tier Matrix:</strong>
+          <strong className="block">Per-Event Fee Structure:</strong>
           <p>
-            All 5 event combinations are currently active: 1 Event (₹79), 2 Events (₹150), 3 Events (₹199), 4 Events (₹300), and 5 Events (₹350). You can adjust prices or mark any tier as TBD at any time, and changes apply instantly without code deployment.
+            Fees are configured per event. Individual events are charged per person (1 participant), while team events are charged once per team (up to 4 members). Adjusting prices here applies instantly across all registration portals.
           </p>
         </div>
       </div>
 
       {/* Pricing Cards List */}
       <div className="space-y-3">
-        {[1, 2, 3, 4, 5].map((count) => {
-          const tier = pricing[count];
-          const isTbd = !tier || tier.status === 'TBD' || tier.price === null;
+        {OFFICIAL_EVENTS.map((event, index) => {
+          const item = pricing[event.id] || { price: event.fee, status: 'ACTIVE' };
+          const isTbd = item.status === 'TBD' || item.price === null;
+          const isTeam = event.type === 'TEAM';
 
           return (
             <div
-              key={count}
+              key={event.id}
               className={`p-5 rounded-2xl bg-white border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs ${
                 isTbd ? 'border-dashed border-amber-300 bg-amber-50/20' : 'border-slate-200'
               }`}
             >
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
+              <div className="space-y-1.5 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-slate-400">
+                    #{index + 1}
+                  </span>
                   <span className="font-bold text-sm text-slate-900">
-                    {count} Event{count > 1 ? 's' : ''} Package
+                    {event.name}
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">
+                    {event.eventType}
                   </span>
                   <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      isTbd
-                        ? 'bg-amber-100 text-amber-800'
-                        : 'bg-emerald-100 text-emerald-800'
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${
+                      isTeam
+                        ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                        : 'bg-blue-50 text-blue-700 border border-blue-200'
                     }`}
                   >
-                    {isTbd ? 'STATUS: UNFINALIZED (TBD)' : 'STATUS: ACTIVE'}
+                    {isTeam ? <Users className="w-3 h-3" /> : <User className="w-3 h-3" />}
+                    {isTeam ? 'Team (Max 4)' : 'Individual'}
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => handleStatusToggle(event.id)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer transition-colors ${
+                      isTbd
+                        ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                        : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                    }`}
+                    title="Click to toggle status"
+                  >
+                    {isTbd ? 'STATUS: TBD' : 'STATUS: ACTIVE'}
+                  </button>
                 </div>
-                <p className="text-xs text-slate-500">
-                  {isTbd
-                    ? 'Displays "Pricing for this combination will be confirmed by organizers" and blocks registration.'
-                    : `Active registration price of ₹${tier.price}.`}
-                </p>
+                <div className="text-xs text-slate-500 flex flex-wrap gap-x-4 gap-y-1">
+                  {event.duration && <span>Duration: {event.duration}</span>}
+                  {event.format && <span>Format: {event.format}</span>}
+                  <span>Fee Unit: {isTeam ? '₹ / team' : '₹ / person'}</span>
+                </div>
               </div>
 
               {/* Price input */}
-              <div className="flex items-center gap-2 sm:w-48">
+              <div className="flex items-center gap-2 sm:w-44 shrink-0">
                 <span className="text-sm font-bold text-slate-700">₹</span>
                 <input
                   type="number"
-                  min="1"
-                  placeholder="e.g. 149"
-                  value={tier?.price ?? ''}
-                  onChange={(e) => handlePriceChange(count, e.target.value)}
+                  min="0"
+                  placeholder="e.g. 99"
+                  value={item.price ?? ''}
+                  onChange={(e) => handlePriceChange(event.id, e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm font-mono font-bold focus:ring-2 focus:ring-slate-900"
                 />
+                <span className="text-xs font-medium text-slate-500 whitespace-nowrap">
+                  {isTeam ? '/team' : '/person'}
+                </span>
               </div>
             </div>
           );

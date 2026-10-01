@@ -8,13 +8,13 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Events Catalog | Hacktober 2026 | GNDEC Bidar',
-  description: 'Explore the 5 signature events of Hacktober 2026: Cybersecurity Quiz, Debate, Mini Hackathon, Cyber Hunt, and Technical Debugging.',
+  title: '10 Official Events | Hacktober 2026 | National Level Event | GNDEC Bidar',
+  description: 'Explore the 10 official competitions of Hacktober 2026 — National Level Event conducted as part of Cybersecurity Awareness Month at Guru Nanak Dev Engineering College, Bidar on 29, 30 & 31 October 2026.',
 };
 
 export default async function EventsPage() {
   let eventInfo = EVENT_INFO;
-  let pricing = INITIAL_PRICING_CONFIG;
+  let pricing: Record<string, unknown> = INITIAL_PRICING_CONFIG;
 
   try {
     const settings = await dbRepository.getSettings();
@@ -26,7 +26,7 @@ export default async function EventsPage() {
         };
       }
       if (settings.pricing && typeof settings.pricing === 'object') {
-        pricing = settings.pricing as Record<number, PricingTierConfig>;
+        pricing = settings.pricing as Record<string, unknown>;
       }
     }
   } catch (err) {
@@ -39,14 +39,14 @@ export default async function EventsPage() {
       <main className="flex-1">
         <div className="py-12 bg-slate-50 border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
-              Full Event Specifications
+            <span className="text-xs font-bold uppercase tracking-wider text-teal-800 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
+              10 Official Competitions • {eventInfo.dates || '29, 30 & 31 October 2026'}
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
               Official Events & Competitions
             </h1>
             <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
-              Choose your challenges across individual cybersecurity battles and 4-member collaborative team hackathons.
+              Choose your challenges across individual cybersecurity battles and 4-member collaborative team hackathons at {eventInfo.venue || 'Guru Nanak Dev Engineering College, Bidar'}.
             </p>
           </div>
         </div>

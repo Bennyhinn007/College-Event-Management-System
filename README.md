@@ -1,6 +1,6 @@
-# HACKTOBER 2026 — Full-Stack Event Management Platform
+# HACKTOBER 2026 — National Level Event Management Platform
 
-Official web portal and administrative management system for **HACKTOBER 2026** (3–5 October 2026), organized by the **Department of Computer Science and Engineering, IoT and Cybersecurity including Blockchain Technology** under the **Cyber Samurai Association** at **Guru Nanak Dev Engineering College, Bidar**.
+Official web portal and administrative management system for **HACKTOBER 2026** (29, 30 & 31 October 2026), a **NATIONAL LEVEL EVENT** conducted as part of **Cybersecurity Awareness Month**, organized by the **Department of Computer Science and Engineering, IoT and Cybersecurity including Blockchain Technology** under the **Cyber Samurai Association** at **Guru Nanak Dev Engineering College, Bidar**.
 
 ![Hacktober 2026 Logo](/public/logo-circle.png)
 
@@ -14,7 +14,7 @@ Official web portal and administrative management system for **HACKTOBER 2026** 
 * **High-Contrast Academic Light Theme**: Crisp `#FFFFFF` canvas, surface slate `#F8FAFC`, institutional navy `#1E3A5F`, and cybersecurity teal `#0D9488`.
 * **Ambient Cybersecurity Theme**: 48px precision grid with micro-crosshairs, vector circuit traces, telemetry watermarks (`CIPHER: AES-256-GCM`, `PROTOCOL: TLS_1.3`), and soft radial glows.
 * **Mokoto Typography**: Futuristic cyberpunk stencil display font (`font-mokoto`) applied to brand headings.
-* **Live Countdown Ticker**: Targeted to 3 October 2026, 09:00 AM IST.
+* **Live Countdown Ticker**: Targeted to 29 October 2026, 09:00 AM IST.
 * **5 Signature Competitions**:
   1. *Cybersecurity Quiz* (Individual, Max 1)
   2. *Cyber Debate* (Individual, Max 1)
@@ -141,7 +141,8 @@ npx tsx tests/e2e-http.ts
 
 ## 🏛️ Institutional Accreditation
 
-* **Institution**: Guru Nanak Dev Engineering College, Mailoor Road, Bidar, Karnataka - 585402
+* **Institution**: Guru Nanak Dev Engineering College, Bidar
 * **Department**: Department of Computer Science and Engineering (IoT and Cybersecurity Including Blockchain Technology)
 * **Association**: Cyber Samurai Association
-* **Event Dates**: 3–5 October 2026
+* **Event Dates**: 29, 30 & 31 October 2026
+* **Classification**: National Level Event (Cybersecurity Awareness Month)

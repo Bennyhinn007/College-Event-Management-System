@@ -55,38 +55,64 @@ export const TeamMemberSchema = z.object({
   yearSemester: z.string().trim().min(1, 'Member year/semester is required'),
 });
 
-export const RegistrationWizardSchema = z.object({
-  selectedEventIds: z
-    .array(z.string())
-    .min(1, 'Please select at least 1 event')
-    .refine(
-      (ids) => ids.every((id) => VALID_EVENT_IDS.includes(id)),
-      'One or more selected events are invalid'
-    ),
-  primaryParticipant: ParticipantSchema,
-  teamName: z.string().trim().max(60).optional(),
-  teamMembers: z.array(TeamMemberSchema).max(3).optional(),
-  transactionId: z
-    .string()
-    .trim()
-    .min(6, 'Transaction ID / UTR must be at least 6 characters')
-    .max(50, 'Transaction ID is too long'),
-  paidTo: z.string().trim().max(100).optional(),
-  screenshotName: z.string().trim().max(150).optional(),
-  screenshotData: z
-    .string()
-    .min(10, 'Payment screenshot proof is required')
-    .max(7_500_000, 'Screenshot file size exceeds 5MB limit')
-    .refine((val) => {
-      const allowedPrefixes = [
-        'data:image/png;base64,',
-        'data:image/jpeg;base64,',
-        'data:image/jpg;base64,',
-        'data:image/webp;base64,',
-      ];
-      return allowedPrefixes.some((prefix) => val.toLowerCase().startsWith(prefix));
-    }, 'Screenshot must be a valid image file (PNG, JPG, JPEG, WEBP)'),
-});
+export const RegistrationWizardSchema = z
+  .object({
+    selectedEventIds: z
+      .array(z.string())
+      .min(1, 'Please select at least 1 event')
+      .refine(
+        (ids) => ids.every((id) => VALID_EVENT_IDS.includes(id)),
+        'One or more selected events are invalid'
+      ),
+    primaryParticipant: ParticipantSchema,
+    teamName: z.string().trim().max(60).optional(),
+    teamMembers: z.array(TeamMemberSchema).max(3, 'Maximum 4 members allowed per team (1 Leader + up to 3 members)').optional(),
+    transactionId: z
+      .string()
+      .trim()
+      .min(6, 'Transaction ID / UTR must be at least 6 characters')
+      .max(50, 'Transaction ID is too long'),
+    paidTo: z.string().trim().max(100).optional(),
+    screenshotName: z.string().trim().max(150).optional(),
+    screenshotData: z
+      .string()
+      .min(10, 'Payment screenshot proof is required')
+      .max(7_500_000, 'Screenshot file size exceeds 5MB limit')
+      .refine((val) => {
+        const allowedPrefixes = [
+          'data:image/png;base64,',
+          'data:image/jpeg;base64,',
+          'data:image/jpg;base64,',
+          'data:image/webp;base64,',
+        ];
+        return allowedPrefixes.some((prefix) => val.toLowerCase().startsWith(prefix));
+      }, 'Screenshot must be a valid image file (PNG, JPG, JPEG, WEBP)'),
+  })
+  .superRefine((data, ctx) => {
+    const hasTeamEvent = data.selectedEventIds.some((id) => {
+      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+      return ev?.type === 'TEAM';
+    });
+
+    if (hasTeamEvent) {
+      if (!data.teamName || !data.teamName.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['teamName'],
+          message: 'Team Name is required for team events',
+        });
+      }
+    } else {
+      // Individual events only allow 1 participant
+      if (data.teamMembers && data.teamMembers.length > 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['teamMembers'],
+          message: 'Individual events allow exactly 1 participant. Team members are not permitted.',
+        });
+      }
+    }
+  });
 
 export const AdminLoginSchema = z.object({
   email: z.string().trim().email('Enter a valid email address').max(100, 'Email address too long'),

@@ -42,7 +42,7 @@ export default function AdminTeamsPage() {
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">Team Management</h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Registered team rosters for Mini Hackathon and Cyber Hunt (Maximum 4 members per team).
+            Registered team rosters for Hackathon, Case Study, Cyber Hunt, and Project Expo (Maximum 4 members per team).
           </p>
         </div>
 

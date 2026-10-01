@@ -53,13 +53,11 @@ export default function Navbar() {
               />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mokoto text-xl sm:text-2xl text-slate-900 group-hover:text-teal-700 transition-colors uppercase">
-                  HACKTOBER <span className="text-teal-600">2026</span>
-                </span>
-              </div>
+              <span className="font-mokoto text-xl sm:text-2xl text-slate-900 group-hover:text-teal-700 transition-colors uppercase block">
+                HACKTOBER <span className="text-teal-600">2026</span>
+              </span>
               <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate max-w-[240px] sm:max-w-md">
-                GNDEC Bidar • Cyber Samurai Association
+                GNDEC Bidar • Cybersecurity Awareness Month
               </p>
             </div>
           </Link>

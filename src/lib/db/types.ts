@@ -62,7 +62,9 @@ export interface IRegistration {
   id: string;
   registrationId: string; // HT26-XXXXXX
   eventIds: string[];
+  eventName?: string;
   type: 'INDIVIDUAL' | 'TEAM' | 'MIXED';
+  teamSize?: number;
   totalAmount: number;
   paymentStatus: PaymentStatus;
   attendanceStatus: 'NOT_MARKED' | 'PARTIAL' | 'COMPLETED';

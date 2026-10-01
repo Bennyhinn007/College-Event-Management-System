@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useTransition, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/public/Navbar';
 import Footer from '@/components/public/Footer';
@@ -8,42 +8,52 @@ import Image from 'next/image';
 import {
   OFFICIAL_EVENTS,
   calculateRegistrationPrice,
-  EVENT_INFO,
-  EventDefinition,
   PAYMENT_ORGANIZERS,
   PaymentOrganizer,
-  INITIAL_PRICING_CONFIG,
-  PricingTierConfig,
+  ALLOWED_SEMESTERS,
 } from '@/lib/constants';
 import {
   Shield,
   CheckCircle2,
   User,
+  Users,
   ArrowRight,
   ArrowLeft,
   AlertCircle,
   QrCode,
   Upload,
   Loader2,
-  Lock,
   Copy,
   Check,
   ExternalLink,
   Download,
   Smartphone,
   Eye,
-  Info,
   Phone,
   X,
   Sparkles,
+  Plus,
+  Trash2,
+  Clock,
+  CreditCard,
 } from 'lucide-react';
+
+interface TeamMember {
+  fullName: string;
+  email: string;
+  phone: string;
+  usn: string;
+  college: string;
+  department: string;
+  yearSemester: string;
+}
 
 function RegisterWizard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialEvent = searchParams.get('event');
 
-  // Step state: 1 = Event Selection, 2 = Participant Details, 3 = Payment & Summary
+  // Step state: 1 = Event Selection, 2 = Participant Details, 3 = Team Config (if team event), 4 = Payment & Summary
   const [currentStep, setCurrentStep] = useState(1);
 
   // Form State
@@ -61,6 +71,10 @@ function RegisterWizard() {
     yearSemester: '5th Sem',
   });
 
+  // Team Details State (only used if hasTeamEvent is true)
+  const [teamName, setTeamName] = useState('');
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+
   const [transactionId, setTransactionId] = useState('');
   const [screenshotData, setScreenshotData] = useState<string>('');
   const [screenshotName, setScreenshotName] = useState<string>('');
@@ -69,6 +83,12 @@ function RegisterWizard() {
   const [copiedUpi, setCopiedUpi] = useState<string | null>(null);
   const [viewAllQrs, setViewAllQrs] = useState(false);
   const [modalQr, setModalQr] = useState<PaymentOrganizer | null>(null);
+
+  // Check if any selected event is a TEAM event
+  const hasTeamEvent = selectedEventIds.some((id) => {
+    const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+    return ev?.type === 'TEAM';
+  });
 
   const handleCopyUpi = (upiId: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -84,7 +104,7 @@ function RegisterWizard() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   // Dynamic Pricing Config synced with admin database
-  const [pricingConfig, setPricingConfig] = useState<Record<number, PricingTierConfig>>(INITIAL_PRICING_CONFIG);
+  const [pricingConfig, setPricingConfig] = useState<Record<string, unknown>>({});
 
   useEffect(() => {
     async function loadPricing() {
@@ -95,7 +115,7 @@ function RegisterWizard() {
           setPricingConfig(json.data.pricing);
         }
       } catch (err) {
-        // Fallback to INITIAL_PRICING_CONFIG
+        // Fallback to default event fees
       }
     }
     loadPricing();
@@ -113,17 +133,48 @@ function RegisterWizard() {
     }
   };
 
+  const addTeamMember = () => {
+    if (teamMembers.length >= 3) return;
+    setTeamMembers([
+      ...teamMembers,
+      {
+        fullName: '',
+        email: '',
+        phone: '',
+        usn: '',
+        college: participant.college || 'Guru Nanak Dev Engineering College, Bidar',
+        department: participant.department || '',
+        yearSemester: '5th Sem',
+      },
+    ]);
+  };
+
+  const removeTeamMember = (index: number) => {
+    setTeamMembers(teamMembers.filter((_, idx) => idx !== index));
+    const newErrors = { ...errors };
+    Object.keys(newErrors).forEach((key) => {
+      if (key.startsWith(`member_${index}_`)) {
+        delete newErrors[key];
+      }
+    });
+    setErrors(newErrors);
+  };
+
+  const updateTeamMember = (index: number, field: keyof TeamMember, val: string) => {
+    const updated = [...teamMembers];
+    updated[index] = { ...updated[index], [field]: val };
+    setTeamMembers(updated);
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setErrors((prev) => ({ ...prev, screenshot: 'Screenshot file must be under 5MB.' }));
       return;
     }
 
-    // Validate format
     const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
     if (!validTypes.includes(file.type)) {
       setErrors((prev) => ({
@@ -162,9 +213,7 @@ function RegisterWizard() {
       }
       if (!pricing.canProceed) {
         setErrors({
-          pricing:
-            pricing.notice ||
-            'Registration is blocked for this event combination until pricing is configured by organizers.',
+          pricing: pricing.notice || 'Please select a valid event.',
         });
         return;
       }
@@ -173,7 +222,7 @@ function RegisterWizard() {
       return;
     }
 
-    // Step 2 Validation
+    // Step 2 Validation (Participant Details)
     if (currentStep === 2) {
       const newErrors: Record<string, string> = {};
       if (!participant.fullName.trim()) newErrors.fullName = 'Full Name is required.';
@@ -191,7 +240,61 @@ function RegisterWizard() {
         return;
       }
 
-      setCurrentStep(3); // Advance directly to Payment Proof
+      if (hasTeamEvent) {
+        setCurrentStep(3); // Team configuration step
+      } else {
+        setCurrentStep(4); // Advance to payment step (team step bypassed)
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Step 3 Validation (Team Configuration)
+    if (currentStep === 3 && hasTeamEvent) {
+      const newErrors: Record<string, string> = {};
+      if (!teamName.trim()) {
+        newErrors.teamName = 'Team Name is required for team events.';
+      }
+
+      const usnSet = new Set([participant.usn.toUpperCase().trim()]);
+      const emailSet = new Set([participant.email.toLowerCase().trim()]);
+
+      teamMembers.forEach((m, idx) => {
+        if (!m.fullName.trim()) newErrors[`member_${idx}_name`] = 'Member name is required.';
+        if (!m.email.trim() || !m.email.includes('@'))
+          newErrors[`member_${idx}_email`] = 'Valid member email is required.';
+        if (!m.phone.trim() || m.phone.length < 10)
+          newErrors[`member_${idx}_phone`] = 'Valid 10-digit phone required.';
+        if (!m.usn.trim()) newErrors[`member_${idx}_usn`] = 'Member USN is required.';
+        if (!m.college.trim()) newErrors[`member_${idx}_college`] = 'Member college is required.';
+        if (!m.department.trim()) newErrors[`member_${idx}_department`] = 'Member department is required.';
+
+        const mUsn = m.usn.toUpperCase().trim();
+        const mEmail = m.email.toLowerCase().trim();
+
+        if (mUsn) {
+          if (usnSet.has(mUsn)) {
+            newErrors[`member_${idx}_usn`] = 'Duplicate USN entered (already used).';
+          } else {
+            usnSet.add(mUsn);
+          }
+        }
+
+        if (mEmail) {
+          if (emailSet.has(mEmail)) {
+            newErrors[`member_${idx}_email`] = 'Duplicate email entered (already used).';
+          } else {
+            emailSet.add(mEmail);
+          }
+        }
+      });
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+
+      setCurrentStep(4); // Proceed to payment
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -200,7 +303,13 @@ function RegisterWizard() {
   const handleBack = () => {
     setErrors({});
     setServerError(null);
-    if (currentStep === 3) {
+    if (currentStep === 4) {
+      if (hasTeamEvent) {
+        setCurrentStep(3);
+      } else {
+        setCurrentStep(2);
+      }
+    } else if (currentStep === 3) {
       setCurrentStep(2);
     } else if (currentStep === 2) {
       setCurrentStep(1);
@@ -232,7 +341,9 @@ function RegisterWizard() {
       const payload = {
         selectedEventIds,
         primaryParticipant: participant,
-        transactionId: transactionId.trim(),
+        teamName: hasTeamEvent ? teamName.trim() : undefined,
+        teamMembers: hasTeamEvent && teamMembers.length > 0 ? teamMembers : undefined,
+        transactionId: transactionId.trim().toUpperCase(),
         paidTo: paidToOrganizer || PAYMENT_ORGANIZERS[selectedOrganizerIndex].name,
         screenshotData,
         screenshotName: screenshotName || undefined,
@@ -258,6 +369,20 @@ function RegisterWizard() {
     }
   };
 
+  // Steps definition based on whether team events are selected
+  const stepsList = hasTeamEvent
+    ? [
+        { step: 1, title: 'Events & Pricing' },
+        { step: 2, title: 'Leader Details' },
+        { step: 3, title: 'Team Configuration' },
+        { step: 4, title: 'Payment Proof' },
+      ]
+    : [
+        { step: 1, title: 'Events & Pricing' },
+        { step: 2, title: 'Participant Details' },
+        { step: 4, title: 'Payment Proof' },
+      ];
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
@@ -267,7 +392,7 @@ function RegisterWizard() {
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-xs font-bold uppercase tracking-wider text-teal-800 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
-              Registration Portal
+              Registration Portal • 29, 30 & 31 October 2026
             </span>
             <h1 className="font-mokoto text-2xl sm:text-3xl tracking-wider text-slate-900 uppercase mt-3">
               HACKTOBER <span className="text-teal-600">2026</span> REGISTRATION
@@ -280,11 +405,7 @@ function RegisterWizard() {
           {/* Stepper Wizard Bar */}
           <div className="mb-8 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between relative">
-              {[
-                { step: 1, title: 'Events & Pricing' },
-                { step: 2, title: 'Participant Details' },
-                { step: 3, title: 'Payment Proof' },
-              ].map((item) => {
+              {stepsList.map((item, idx) => {
                 const isActive = currentStep === item.step;
                 const isDone = currentStep > item.step;
                 return (
@@ -298,7 +419,7 @@ function RegisterWizard() {
                           : 'bg-slate-100 text-slate-400 border border-slate-200'
                       }`}
                     >
-                      {isDone ? <CheckCircle2 className="w-5 h-5" /> : item.step}
+                      {isDone ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
                     </div>
                     <span
                       className={`text-[11px] font-semibold mt-2 text-center hidden sm:block ${
@@ -324,14 +445,14 @@ function RegisterWizard() {
             )}
 
             {/* ======================================================== */}
-            {/* STEP 1: EVENT SELECTION & DYNAMIC PRICING */}
+            {/* STEP 1: EVENT SELECTION & PRICING */}
             {/* ======================================================== */}
             {currentStep === 1 && (
               <div className="space-y-6 animate-in fade-in">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900">Step 1: Select Your Events</h2>
                   <p className="text-xs text-slate-500 mt-1">
-                    Select 1 or more events. The system calculates the fee dynamically according to official tiers.
+                    Select 1 or more events. Team events are charged once per team (maximum 4 members). Individual events allow exactly 1 participant.
                   </p>
                 </div>
 
@@ -360,64 +481,80 @@ function RegisterWizard() {
                           <input
                             type="checkbox"
                             checked={isSelected}
-                            onChange={() => {}} // handled by parent div
+                            onChange={() => {}}
                             className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 mt-0.5 cursor-pointer"
                           />
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
+                          <div className="space-y-1.5">
+                            <div className="flex flex-wrap items-center gap-2">
                               <h3 className="text-base font-bold text-slate-900">{event.name}</h3>
+                              <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                                {event.eventType}
+                              </span>
                               {isTeam ? (
-                                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
-                                  Team Event (Offline Groups)
+                                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 flex items-center gap-1">
+                                  <Users className="w-3 h-3" />
+                                  <span>Team of 4</span>
                                 </span>
                               ) : (
-                                <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                                  Individual
+                                <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 flex items-center gap-1">
+                                  <User className="w-3 h-3" />
+                                  <span>Individual</span>
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-slate-600 leading-relaxed max-w-xl">
-                              {event.shortDescription}
-                            </p>
+
+                            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                              {event.duration && (
+                                <span className="flex items-center gap-1 text-slate-700 font-medium">
+                                  <Clock className="w-3.5 h-3.5 text-teal-600" />
+                                  <span>⏱️ {event.duration}</span>
+                                </span>
+                              )}
+                              {event.format && (
+                                <span className="flex items-center gap-1 text-slate-700 font-medium">
+                                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                                  <span>📋 {event.format}</span>
+                                </span>
+                              )}
+                            </div>
                           </div>
+                        </div>
+
+                        <div className="text-right shrink-0">
+                          <span className="text-sm sm:text-base font-extrabold text-slate-900 font-mono block">
+                            {event.feeDisplay}
+                          </span>
+                          <span className="text-[10px] text-slate-400">
+                            {isTeam ? 'Per Team' : 'Per Participant'}
+                          </span>
                         </div>
                       </div>
                     );
                   })}
                 </div>
 
-                {/* Offline Team Formation Notice Banner */}
-                <div className="p-3.5 rounded-xl bg-teal-50/80 border border-teal-200 text-teal-950 text-xs flex items-start gap-2.5">
-                  <Shield className="w-4 h-4 text-teal-700 shrink-0 mt-0.5" />
-                  <p>
-                    <strong>Individual Registration:</strong> Every participant registers individually. If you choose team competitions (<em>Mini Hackathon</em> or <em>Cyber Hunt</em>), team groupings (up to 4 members) are coordinated offline directly at the event venue.
-                  </p>
-                </div>
-
-                {/* Dynamic Price Summary Box */}
+                {/* Price Summary Box */}
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="space-y-1 text-center sm:text-left">
                     <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
-                      Selected Events: {selectedEventIds.length} of 5
+                      Selected Events: {selectedEventIds.length} of 10
                     </span>
                     <div className="flex items-baseline gap-2 justify-center sm:justify-start">
-                      <span className="text-sm font-medium text-slate-600">Calculated Fee:</span>
+                      <span className="text-sm font-medium text-slate-600">Total Registration Fee:</span>
                       <span className="text-3xl font-black text-slate-900 font-mono">
                         {pricing.displayAmount}
                       </span>
                     </div>
                   </div>
 
-                  {/* Tier guidance message */}
                   <div className="text-xs text-right max-w-xs text-slate-500">
-                    {pricing.notice && (
-                      <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-medium text-xs text-left">
-                        {pricing.notice}
-                      </div>
-                    )}
-                    {!pricing.notice && selectedEventIds.length > 0 && (
-                      <span className="text-teal-700 font-semibold">
-                        ✓ Tier confirmed (1=₹79, 2=₹150, 3=₹199, 4=₹300, 5=₹350)
+                    {hasTeamEvent ? (
+                      <span className="text-teal-700 font-semibold block">
+                        ✓ Team events charged per team (up to 4 members)
+                      </span>
+                    ) : (
+                      <span className="text-slate-600 block">
+                        ✓ Individual participation (1 participant per event)
                       </span>
                     )}
                   </div>
@@ -433,16 +570,18 @@ function RegisterWizard() {
             )}
 
             {/* ======================================================== */}
-            {/* STEP 2: PARTICIPANT INFORMATION */}
+            {/* STEP 2: PARTICIPANT INFORMATION (LEADER) */}
             {/* ======================================================== */}
             {currentStep === 2 && (
               <div className="space-y-6 animate-in fade-in">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900">
-                    Step 2: Participant Information
+                    {hasTeamEvent ? 'Step 2: Team Leader Information' : 'Step 2: Participant Information'}
                   </h2>
                   <p className="text-xs text-slate-500 mt-1">
-                    Enter your personal and academic contact details for your participant accreditation pass.
+                    {hasTeamEvent
+                      ? 'Enter the details of the Team Leader (Member 1). Additional team members can be added in the next step.'
+                      : 'Enter your personal and academic contact details for your participant pass.'}
                   </p>
                 </div>
 
@@ -541,7 +680,7 @@ function RegisterWizard() {
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. CSE / EEE / Cyber / AI"
+                      placeholder="e.g. CSE / IoT / Cyber / AI"
                       value={participant.department}
                       onChange={(e) =>
                         setParticipant({ ...participant, department: e.target.value })
@@ -565,10 +704,11 @@ function RegisterWizard() {
                       }
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 bg-white"
                     >
-                      <option value="1st Sem">1st Sem</option>
-                      <option value="3rd Sem">3rd Sem</option>
-                      <option value="5th Sem">5th Sem</option>
-                      <option value="7th Sem">7th Sem</option>
+                      {ALLOWED_SEMESTERS.map((sem) => (
+                        <option key={sem} value={sem}>
+                          {sem}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -576,13 +716,214 @@ function RegisterWizard() {
             )}
 
             {/* ======================================================== */}
-            {/* STEP 3: PAYMENT PROOF & FINAL CONFIRMATION */}
+            {/* STEP 3: TEAM CONFIGURATION (ONLY FOR TEAM EVENTS) */}
             {/* ======================================================== */}
-            {currentStep === 3 && (
+            {currentStep === 3 && hasTeamEvent && (
+              <div className="space-y-6 animate-in fade-in">
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900">Step 3: Team Configuration</h2>
+                  <p className="text-xs text-slate-500 mt-1">
+                    You have selected team competitions. Each team allows a{' '}
+                    <strong className="text-slate-900 font-bold">maximum of 4 members</strong> (1 Leader + up to 3 additional members).
+                  </p>
+                </div>
+
+                {/* Team Name */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700">
+                    Team Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. CyberKnights"
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900"
+                  />
+                  {errors.teamName && (
+                    <p className="text-[11px] text-red-600 font-medium">{errors.teamName}</p>
+                  )}
+                </div>
+
+                {/* Team Leader Summary Pill */}
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="font-bold text-slate-900 block text-sm">
+                      Leader (Member 1): {participant.fullName}
+                    </span>
+                    <span className="text-slate-500 font-mono">
+                      USN: {participant.usn} • {participant.department}
+                    </span>
+                  </div>
+                  <span className="px-2.5 py-1 rounded bg-teal-100 text-teal-800 font-bold text-xs">
+                    Team Leader
+                  </span>
+                </div>
+
+                {/* Additional Members List */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                      Additional Members ({teamMembers.length} / 3 max)
+                    </span>
+                    {teamMembers.length < 3 && (
+                      <button
+                        type="button"
+                        onClick={addTeamMember}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors shadow-2xs"
+                      >
+                        <Plus className="w-3.5 h-3.5 text-teal-600" />
+                        <span>Add Team Member</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {teamMembers.length === 0 && (
+                    <div className="p-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 text-center space-y-2">
+                      <Users className="w-8 h-8 text-slate-400 mx-auto" />
+                      <p className="text-xs text-slate-600 font-medium">
+                        No additional members added yet. Click &quot;Add Team Member&quot; above to include up to 3 more participants in your team.
+                      </p>
+                      <span className="text-[11px] text-slate-400 block">
+                        (Total allowed: up to 4 members per team including the leader)
+                      </span>
+                    </div>
+                  )}
+
+                  {teamMembers.map((member, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-4 relative"
+                    >
+                      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <span className="text-xs font-bold text-slate-900">
+                          Member {idx + 2} of 4
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeTeamMember(idx)}
+                          className="text-red-500 hover:text-red-700 p-1 rounded"
+                          title="Remove Member"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                            Full Name *
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Member Name"
+                            value={member.fullName}
+                            onChange={(e) => updateTeamMember(idx, 'fullName', e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-slate-900"
+                          />
+                          {errors[`member_${idx}_name`] && (
+                            <p className="text-[10px] text-red-600 mt-0.5">
+                              {errors[`member_${idx}_name`]}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                            Email *
+                          </label>
+                          <input
+                            type="email"
+                            placeholder="member@example.com"
+                            value={member.email}
+                            onChange={(e) => updateTeamMember(idx, 'email', e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-slate-900"
+                          />
+                          {errors[`member_${idx}_email`] && (
+                            <p className="text-[10px] text-red-600 mt-0.5">
+                              {errors[`member_${idx}_email`]}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                            Phone Number *
+                          </label>
+                          <input
+                            type="tel"
+                            placeholder="9876543210"
+                            value={member.phone}
+                            onChange={(e) => updateTeamMember(idx, 'phone', e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-slate-900"
+                          />
+                          {errors[`member_${idx}_phone`] && (
+                            <p className="text-[10px] text-red-600 mt-0.5">
+                              {errors[`member_${idx}_phone`]}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                            USN / Student ID *
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="3GN23CS..."
+                            value={member.usn}
+                            onChange={(e) =>
+                              updateTeamMember(idx, 'usn', e.target.value.toUpperCase())
+                            }
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-mono uppercase focus:ring-1 focus:ring-slate-900"
+                          />
+                          {errors[`member_${idx}_usn`] && (
+                            <p className="text-[10px] text-red-600 mt-0.5">
+                              {errors[`member_${idx}_usn`]}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                            College *
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="College Name"
+                            value={member.college}
+                            onChange={(e) => updateTeamMember(idx, 'college', e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-slate-900"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                            Department *
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. CSE / IoT / Cyber"
+                            value={member.department}
+                            onChange={(e) => updateTeamMember(idx, 'department', e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-slate-900"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ======================================================== */}
+            {/* STEP 4: PAYMENT PROOF & REVIEW */}
+            {/* ======================================================== */}
+            {currentStep === 4 && (
               <div className="space-y-6 animate-in fade-in">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900">
-                    Step 3: Payment Verification & Review
+                    Step {hasTeamEvent ? '4' : '3'}: Payment Verification & Review
                   </h2>
                   <p className="text-xs text-slate-500 mt-1">
                     Complete your UPI transfer and submit the transaction receipt for organizer verification.
@@ -602,7 +943,7 @@ function RegisterWizard() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                      <span className="text-slate-500 block">Candidate Name:</span>
+                      <span className="text-slate-500 block">Candidate / Leader:</span>
                       <strong className="text-slate-900 text-sm">{participant.fullName}</strong>
                       <span className="text-slate-600 block">USN: {participant.usn}</span>
                       <span className="text-slate-500 block text-[11px] mt-0.5">
@@ -615,7 +956,22 @@ function RegisterWizard() {
                       <strong className="text-2xl font-black text-slate-900 font-mono">
                         {pricing.displayAmount}
                       </strong>
+                      <span className="text-[11px] text-slate-400 block">
+                        {hasTeamEvent ? 'Per team pricing applied' : 'Per person fee applied'}
+                      </span>
                     </div>
+
+                    {hasTeamEvent && teamName && (
+                      <div className="sm:col-span-2 p-3 rounded-xl bg-white border border-slate-200">
+                        <span className="text-slate-500 block text-[11px] font-semibold">
+                          Registered Team:
+                        </span>
+                        <strong className="text-slate-900 block text-sm">{teamName}</strong>
+                        <span className="text-slate-600 text-xs">
+                          Total Team Size: {1 + teamMembers.length} member{teamMembers.length > 0 ? 's' : ''} (1 Leader + {teamMembers.length} member{teamMembers.length === 1 ? '' : 's'})
+                        </span>
+                      </div>
+                    )}
 
                     <div className="sm:col-span-2">
                       <span className="text-slate-500 block mb-1">Selected Events:</span>
@@ -625,9 +981,10 @@ function RegisterWizard() {
                           return (
                             <span
                               key={id}
-                              className="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-800 font-medium"
+                              className="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-800 font-medium text-xs flex items-center gap-1.5"
                             >
-                              {ev?.name}
+                              <span>{ev?.name}</span>
+                              <strong className="text-teal-700 font-mono">({ev?.feeDisplay})</strong>
                             </span>
                           );
                         })}
@@ -651,7 +1008,7 @@ function RegisterWizard() {
                           </span>
                         </div>
                         <p className="text-xs text-slate-500">
-                          Transfer <strong className="text-slate-900 font-semibold font-mono">₹{pricing.amount}</strong> to any of the 3 authorized coordinators below
+                          Transfer <strong className="text-slate-900 font-semibold font-mono">{pricing.displayAmount}</strong> to any of the 3 authorized coordinators below
                         </p>
                       </div>
                     </div>
@@ -743,7 +1100,6 @@ function RegisterWizard() {
                                     />
                                   </div>
 
-                                  {/* Hover Zoom Overlay */}
                                   <button
                                     type="button"
                                     onClick={() => setModalQr(active)}
@@ -786,7 +1142,7 @@ function RegisterWizard() {
                                   <div>
                                     <span className="text-[11px] text-slate-500 font-semibold block">Payable Amount:</span>
                                     <strong className="text-xl font-black text-slate-900 font-mono">
-                                      ₹{pricing.amount}
+                                      {pricing.displayAmount}
                                     </strong>
                                   </div>
                                   <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-200">
@@ -861,7 +1217,7 @@ function RegisterWizard() {
                                 </a>
 
                                 <p className="text-[11px] text-slate-500 leading-relaxed bg-white/70 p-2.5 rounded-lg border border-slate-200/60">
-                                  💡 <strong>Tip:</strong> You can pay using <strong>any UPI app</strong> (PhonePe, Google Pay, Paytm, BHIM, Cred) to any of our 3 coordinators. After paying, paste the 12-digit UTR/Transaction ID below.
+                                  💡 <strong>Tip:</strong> Transfer exactly <strong>{pricing.displayAmount}</strong> using any UPI app to the selected coordinator. Then enter the 12-digit UTR and upload the screenshot proof below.
                                 </p>
                               </div>
                             </div>
@@ -876,7 +1232,7 @@ function RegisterWizard() {
                     <div className="space-y-4">
                       <div className="p-3 rounded-xl bg-teal-50 border border-teal-200 text-xs text-teal-900 flex items-center justify-between">
                         <span>You can scan and pay any of the 3 authorized coordinators below:</span>
-                        <strong className="font-mono font-bold text-teal-950">₹{pricing.amount}</strong>
+                        <strong className="font-mono font-bold text-teal-950">{pricing.displayAmount}</strong>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1048,6 +1404,7 @@ function RegisterWizard() {
                       {/* Screenshot thumbnail preview */}
                       {screenshotData && (
                         <div className="flex items-center gap-2.5 p-2 rounded-lg bg-slate-100 border border-slate-200 text-xs">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={screenshotData}
                             alt="Receipt Preview"
@@ -1159,7 +1516,7 @@ function RegisterWizard() {
                 <div />
               )}
 
-              {currentStep < 3 ? (
+              {currentStep < 4 ? (
                 <button
                   type="button"
                   onClick={handleNext}

@@ -156,7 +156,7 @@ export default function ConfirmationPage({
               Official Participant Pass
             </h1>
             <p className="text-xs text-slate-500">
-              Please download or print this badge. Present the QR pass at GNDEC Bidar on 3 October 2026.
+              Please download or print this badge. Present the QR pass at Guru Nanak Dev Engineering College, Bidar on 29 October 2026.
             </p>
           </div>
 
@@ -207,14 +207,19 @@ export default function ConfirmationPage({
                   />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-teal-800 uppercase tracking-wider block">
-                    GNDEC Bidar • Cyber Samurai Association
-                  </span>
+                  <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-950 bg-amber-400 border border-amber-500/80 px-2 py-0.5 rounded-full">
+                      🏆 NATIONAL LEVEL EVENT
+                    </span>
+                    <span className="text-[10px] font-bold text-teal-800 uppercase tracking-wider">
+                      Cybersecurity Awareness Month
+                    </span>
+                  </div>
                   <h2 className="font-mokoto text-lg sm:text-xl text-slate-900 tracking-wider">
                     HACKTOBER 2026 PASS
                   </h2>
                   <p className="text-[11px] text-slate-600 font-medium">
-                    {EVENT_INFO.department}
+                    Guru Nanak Dev Engineering College, Bidar • {EVENT_INFO.department}
                   </p>
                 </div>
               </div>
@@ -357,14 +362,14 @@ export default function ConfirmationPage({
                 <span className="text-slate-400 block text-[10px] uppercase font-bold">
                   Event Dates
                 </span>
-                <span className="text-slate-700 font-medium">3–5 Oct 2026</span>
+                <span className="text-slate-700 font-medium">29, 30 & 31 Oct 2026</span>
               </div>
 
               <div>
                 <span className="text-slate-400 block text-[10px] uppercase font-bold">
-                  Venue City
+                  Venue
                 </span>
-                <span className="text-slate-700 font-medium">Bidar, Karnataka</span>
+                <span className="text-slate-700 font-medium">GNDEC, Bidar</span>
               </div>
             </div>
 

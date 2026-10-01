@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { RegistrationWizardSchema } from '@/lib/validation';
 import { dbRepository } from '@/lib/db/repository-selector';
 import { generateRegistrationId, generateSafeToken } from '@/lib/idGenerator';
-import { calculateRegistrationPrice } from '@/lib/constants';
+import { calculateRegistrationPrice, OFFICIAL_EVENTS, INITIAL_PRICING_CONFIG } from '@/lib/constants';
 import { uploadPaymentScreenshot } from '@/lib/storage/cloudinary';
 
 export async function POST(req: NextRequest) {
@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
       selectedEventIds,
       primaryParticipant,
       teamName,
+      teamMembers,
       transactionId,
       paidTo,
       screenshotData,
@@ -28,7 +29,15 @@ export async function POST(req: NextRequest) {
 
     // Calculate dynamic pricing from repository settings
     const settings = await dbRepository.getSettings();
-    const pricingConfig = settings.pricing as Parameters<typeof calculateRegistrationPrice>[1];
+    let pricingConfig = settings.pricing as Record<string, unknown> | undefined;
+    if (
+      !pricingConfig ||
+      typeof pricingConfig !== 'object' ||
+      '1' in pricingConfig ||
+      !('hackathon' in pricingConfig)
+    ) {
+      pricingConfig = INITIAL_PRICING_CONFIG;
+    }
     const pricing = calculateRegistrationPrice(selectedEventIds, pricingConfig);
 
     if (!pricing.canProceed || pricing.amount === null) {
@@ -40,6 +49,32 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Determine event types and team details
+    const hasTeamEvent = selectedEventIds.some((id) => {
+      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+      return ev?.type === 'TEAM';
+    });
+    const allTeamEvents = selectedEventIds.every((id) => {
+      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+      return ev?.type === 'TEAM';
+    });
+
+    const regType: 'TEAM' | 'INDIVIDUAL' | 'MIXED' = hasTeamEvent
+      ? allTeamEvents
+        ? 'TEAM'
+        : 'MIXED'
+      : 'INDIVIDUAL';
+
+    const primaryTeamEventId = selectedEventIds.find((id) => {
+      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+      return ev?.type === 'TEAM';
+    });
+
+    const eventNames = selectedEventIds
+      .map((id) => OFFICIAL_EVENTS.find((e) => e.id === id)?.name || id)
+      .join(', ');
+    const teamSize = hasTeamEvent ? 1 + (teamMembers?.length || 0) : 1;
 
     // Generate unique non-sequential ID
     const registrationId = generateRegistrationId();
@@ -67,7 +102,9 @@ export async function POST(req: NextRequest) {
       registration: {
         registrationId,
         eventIds: selectedEventIds,
-        type: 'INDIVIDUAL',
+        eventName: eventNames,
+        type: regType,
+        teamSize,
         totalAmount: pricing.amount,
         paymentStatus: 'PENDING',
       },
@@ -82,9 +119,9 @@ export async function POST(req: NextRequest) {
         githubProfile: primaryParticipant.githubProfile || '',
         linkedinProfile: primaryParticipant.linkedinProfile || '',
       },
-      teamName: teamName || undefined,
-      teamEventId: undefined,
-      teamMembers: undefined,
+      teamName: hasTeamEvent && teamName ? teamName.trim() : undefined,
+      teamEventId: hasTeamEvent ? primaryTeamEventId : undefined,
+      teamMembers: hasTeamEvent && teamMembers && teamMembers.length > 0 ? teamMembers : undefined,
       payment: {
         amount: pricing.amount,
         transactionId: transactionId.trim().toUpperCase(),

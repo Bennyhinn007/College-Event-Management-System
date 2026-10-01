@@ -40,7 +40,7 @@ export default function ScheduleTimeline({
   const safeIndex = Math.min(activeDayIndex, Math.max(0, schedule.length - 1));
   const currentDay = schedule[safeIndex] || {
     day: 'Day 1',
-    date: eventInfo.dates || '3 October 2026',
+    date: eventInfo.dates || '29 October 2026',
     items: [],
   };
 
@@ -56,7 +56,7 @@ export default function ScheduleTimeline({
             Event Schedule & Itinerary
           </h2>
           <p className="mt-2 text-sm text-slate-600">
-            Hacktober 2026 runs on <strong>{eventInfo.dates || '3 & 5 October 2026'}</strong>.
+            Hacktober 2026 runs on <strong>{eventInfo.dates || '29, 30 & 31 October 2026'}</strong> at <strong>{eventInfo.venue || 'Guru Nanak Dev Engineering College, Bidar'}</strong>.
           </p>
 
           <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium">

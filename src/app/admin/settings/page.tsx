@@ -114,7 +114,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.dates || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, dates: e.target.value })}
-                placeholder="3 & 5 October 2026"
+                placeholder="29, 30 & 31 October 2026"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:ring-2 focus:ring-slate-900"
               />
               <span className="text-[10px] text-slate-400 mt-0.5 block">
@@ -130,7 +130,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.datesShort || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, datesShort: e.target.value })}
-                placeholder="3 & 5 October 2026"
+                placeholder="29, 30 & 31 October 2026"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:ring-2 focus:ring-slate-900"
               />
             </div>
@@ -143,7 +143,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.venue || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, venue: e.target.value })}
-                placeholder="Department of CSE & Cyber Laboratories, GNDEC Bidar"
+                placeholder="Guru Nanak Dev Engineering College, Bidar"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-slate-900"
               />
             </div>

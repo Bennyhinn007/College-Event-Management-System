@@ -204,7 +204,7 @@ export default function RegistrationsManagementPage() {
               }}
               className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-700 font-medium"
             >
-              <option value="ALL">All Events (5)</option>
+              <option value="ALL">All Events ({OFFICIAL_EVENTS.length})</option>
               {OFFICIAL_EVENTS.map((ev) => (
                 <option key={ev.id} value={ev.id}>
                   {ev.name}
