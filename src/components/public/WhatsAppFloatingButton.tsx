@@ -15,13 +15,13 @@ export default function WhatsAppFloatingButton() {
   const link = EVENT_INFO.whatsappCommunityLink;
 
   return (
-    <div className="no-print fixed bottom-5 right-5 z-40 group">
+    <div className="no-print fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 group">
       <a
         href={link}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Join Hacktober 2026 WhatsApp Community"
-        className="flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 active:scale-95 border-2 border-emerald-400/40 relative"
+        className="flex items-center justify-center gap-2 p-3 sm:px-4 sm:py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 active:scale-95 border-2 border-emerald-400/40 relative"
       >
         {/* Animated pulse ping */}
         <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">

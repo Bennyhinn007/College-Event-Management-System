@@ -132,6 +132,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </button>
       </div>
 
+      {/* Mobile Backdrop Overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-20 md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       {/* Desktop & Mobile Sidebar */}
       <aside
         className={`w-64 bg-white border-r border-slate-200 shrink-0 flex flex-col z-30 transition-transform md:translate-x-0 fixed md:static inset-y-0 left-0 ${

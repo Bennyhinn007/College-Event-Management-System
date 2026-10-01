@@ -43,8 +43,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Brand Logo & Title */}
-          <Link href="/" className="flex items-center gap-3.5 group">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-teal-50 flex items-center justify-center shadow-xs border border-teal-200 shrink-0 transition-transform group-hover:scale-105">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-teal-50 flex items-center justify-center shadow-xs border border-teal-200 shrink-0 transition-transform group-hover:scale-105">
               <Image
                 src="/logo-circle.png"
                 alt="Hacktober 2026 Logo - Cyber Samurai Association GNDEC"
@@ -54,11 +54,11 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <div>
-              <span className="font-mokoto text-xl sm:text-2xl text-slate-900 group-hover:text-teal-700 transition-colors uppercase block">
+            <div className="min-w-0">
+              <span className="font-mokoto text-base sm:text-2xl text-slate-900 group-hover:text-teal-700 transition-colors uppercase block">
                 HACKTOBER <span className="text-teal-600">2026</span>
               </span>
-              <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate max-w-[240px] sm:max-w-md">
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate max-w-[140px] sm:max-w-md">
                 GNDEC Bidar • Cybersecurity Awareness Month
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-1.5 sm:gap-2 md:hidden">
             <a
               href={EVENT_INFO.whatsappCommunityLink}
               target="_blank"
@@ -127,13 +127,13 @@ export default function Navbar() {
             </a>
             <Link
               href="/register"
-              className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold"
+              className="hidden min-[380px]:inline-flex px-2.5 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold"
             >
               REGISTER
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none"
+              className="p-1.5 sm:p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none"
               aria-label="Toggle Menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

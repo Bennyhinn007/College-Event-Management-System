@@ -73,21 +73,21 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
         </div>
 
         {/* Prominent Winners & Prizes Banner */}
-        <div className="mb-10 sm:mb-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-amber-500/10 border-2 border-amber-300 shadow-sm relative overflow-hidden cyber-corner text-center sm:text-left">
+        <div className="mb-10 sm:mb-12 p-4 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-amber-500/10 border-2 border-amber-300 shadow-sm relative overflow-hidden cyber-corner text-center sm:text-left">
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
           <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white shadow-md shrink-0">
-                <Trophy className="w-8 h-8 text-amber-50" />
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white shadow-md shrink-0">
+                <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-amber-50" />
               </div>
               <div className="space-y-1 text-center sm:text-left">
                 <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase tracking-wider">
                   <span>Grand Prize Pool</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
+                <h3 className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
                   <span>🏆 Exciting Prizes Await!</span>
                 </h3>
-                <p className="text-sm sm:text-base font-bold text-slate-800 max-w-2xl">
+                <p className="text-xs sm:text-base font-bold text-slate-800 max-w-2xl">
                   Winners of the Hacktober 2026 events can win exciting cash prizes and gadgets worth up to ₹15,000!
                 </p>
               </div>
@@ -96,7 +96,7 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
               <span className="block text-[11px] font-mono font-bold text-amber-800 uppercase tracking-widest">
                 PRIZES & GADGETS
               </span>
-              <span className="text-3xl sm:text-4xl font-black font-mono text-slate-900 drop-shadow-xs">
+              <span className="text-2xl sm:text-4xl font-black font-mono text-slate-900 drop-shadow-xs">
                 UP TO ₹15,000
               </span>
             </div>
@@ -110,7 +110,7 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
             return (
               <div
                 key={event.id}
-                className="group rounded-2xl bg-white border border-slate-200/90 p-6 sm:p-7 shadow-xs card-hover flex flex-col justify-between relative overflow-hidden cyber-corner"
+                className="group rounded-2xl bg-white border border-slate-200/90 p-4 sm:p-7 shadow-xs card-hover flex flex-col justify-between relative overflow-hidden cyber-corner"
               >
                 {/* Top Accent Line */}
                 <div

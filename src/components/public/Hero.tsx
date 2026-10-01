@@ -87,27 +87,27 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
             </div>
 
             {/* Institutional Header Pill */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+            <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center text-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-[11px] sm:text-xs font-semibold text-slate-700 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse shrink-0" />
               <span>Guru Nanak Dev Engineering College, Bidar</span>
-              <span className="text-slate-300">•</span>
+              <span className="text-slate-300 hidden sm:inline">•</span>
               <span className="text-teal-700 font-bold">Cyber Samurai Association</span>
             </div>
 
             {/* Motto */}
-            <div className="text-[11px] font-mono tracking-widest text-teal-800 uppercase bg-teal-50 px-3 py-1 rounded-md border border-teal-200/60">
+            <div className="text-[10px] sm:text-[11px] font-mono tracking-widest text-teal-800 uppercase bg-teal-50 px-3 py-1 rounded-md border border-teal-200/60">
               ज्ञानं रक्षति सर्वदः • Knowledge Protects Always
             </div>
           </div>
 
           {/* Department */}
-          <p className="text-xs sm:text-sm font-semibold text-slate-600 tracking-wider uppercase max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm font-semibold text-slate-600 tracking-wider uppercase max-w-2xl mx-auto px-2">
             {eventInfo.department}
           </p>
 
           {/* Master Title in Mokoto Font & Tagline */}
           <div className="space-y-4 pt-2">
-            <h1 className="font-mokoto text-4xl sm:text-6xl lg:text-7xl tracking-wider text-slate-900 uppercase drop-shadow-xs">
+            <h1 className="font-mokoto text-3xl sm:text-6xl lg:text-7xl tracking-wider text-slate-900 uppercase drop-shadow-xs break-words">
               HACKTOBER <span className="text-teal-600">2026</span>
             </h1>
 
@@ -177,17 +177,17 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
               href={eventInfo.whatsappCommunityLink || EVENT_INFO.whatsappCommunityLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50/80 border border-emerald-200/80 text-emerald-800 text-xs font-semibold hover:bg-emerald-100 transition-colors shadow-2xs group"
+              className="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-50/90 border border-emerald-200/80 text-emerald-800 text-[11px] sm:text-xs font-semibold hover:bg-emerald-100 transition-colors shadow-2xs group text-center"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-              <span>Official WhatsApp Community is live • Team-ups, live notices & updates</span>
+              <span>Official WhatsApp Community is live • Notices &amp; Updates</span>
               <span className="text-emerald-600 group-hover:translate-x-0.5 transition-transform font-bold">&rarr;</span>
             </a>
           </div>
 
           {/* Live Countdown Timer */}
           <div className="pt-8">
-            <div className="p-6 rounded-2xl bg-white border border-teal-200/80 shadow-sm max-w-xl mx-auto cyber-corner relative">
+            <div className="p-4 sm:p-6 rounded-2xl bg-white border border-teal-200/80 shadow-sm max-w-xl mx-auto cyber-corner relative">
               {/* Telemetry pill */}
               <div className="flex items-center justify-between text-[11px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-4 pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-1.5 text-teal-700">
@@ -199,30 +199,30 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
                   <span>NODE_ARMED</span>
                 </div>
               </div>
-              <div className="grid grid-cols-4 gap-3 text-center">
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="block text-2xl sm:text-3xl font-black text-slate-900 font-mono">
+              <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+                <div className="p-2 sm:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="block text-xl sm:text-3xl font-black text-slate-900 font-mono">
                     {String(timeLeft.days).padStart(2, '0')}
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase">Days</span>
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase">Days</span>
                 </div>
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="block text-2xl sm:text-3xl font-black text-slate-900 font-mono">
+                <div className="p-2 sm:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="block text-xl sm:text-3xl font-black text-slate-900 font-mono">
                     {String(timeLeft.hours).padStart(2, '0')}
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase">Hours</span>
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase">Hours</span>
                 </div>
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="block text-2xl sm:text-3xl font-black text-slate-900 font-mono">
+                <div className="p-2 sm:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="block text-xl sm:text-3xl font-black text-slate-900 font-mono">
                     {String(timeLeft.minutes).padStart(2, '0')}
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase">Mins</span>
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase">Mins</span>
                 </div>
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="block text-2xl sm:text-3xl font-black text-slate-900 font-mono">
+                <div className="p-2 sm:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="block text-xl sm:text-3xl font-black text-slate-900 font-mono">
                     {String(timeLeft.seconds).padStart(2, '0')}
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase">Secs</span>
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase">Secs</span>
                 </div>
               </div>
             </div>

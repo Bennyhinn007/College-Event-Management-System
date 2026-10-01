@@ -594,6 +594,7 @@ function RegisterWizard() {
                     <input
                       type="text"
                       placeholder="e.g. Rahul Sharma"
+                      autoComplete="name"
                       value={participant.fullName}
                       onChange={(e) => setParticipant({ ...participant, fullName: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900"
@@ -610,6 +611,10 @@ function RegisterWizard() {
                     </label>
                     <input
                       type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      autoCapitalize="none"
+                      spellCheck={false}
                       placeholder="e.g. rahul@example.com"
                       value={participant.email}
                       onChange={(e) => setParticipant({ ...participant, email: e.target.value })}
@@ -627,6 +632,8 @@ function RegisterWizard() {
                     </label>
                     <input
                       type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
                       placeholder="e.g. 9876543210"
                       value={participant.phone}
                       onChange={(e) => setParticipant({ ...participant, phone: e.target.value })}
@@ -644,6 +651,9 @@ function RegisterWizard() {
                     </label>
                     <input
                       type="text"
+                      autoCapitalize="characters"
+                      autoCorrect="off"
+                      spellCheck={false}
                       placeholder="e.g. 3GN23CS042"
                       value={participant.usn}
                       onChange={(e) =>
@@ -663,6 +673,7 @@ function RegisterWizard() {
                     </label>
                     <input
                       type="text"
+                      autoComplete="organization"
                       placeholder="e.g. Guru Nanak Dev Engineering College, Bidar"
                       value={participant.college}
                       onChange={(e) => setParticipant({ ...participant, college: e.target.value })}
@@ -816,6 +827,7 @@ function RegisterWizard() {
                           </label>
                           <input
                             type="text"
+                            autoComplete="name"
                             placeholder="Member Name"
                             value={member.fullName}
                             onChange={(e) => updateTeamMember(idx, 'fullName', e.target.value)}
@@ -834,6 +846,10 @@ function RegisterWizard() {
                           </label>
                           <input
                             type="email"
+                            inputMode="email"
+                            autoComplete="email"
+                            autoCapitalize="none"
+                            spellCheck={false}
                             placeholder="member@example.com"
                             value={member.email}
                             onChange={(e) => updateTeamMember(idx, 'email', e.target.value)}
@@ -852,6 +868,8 @@ function RegisterWizard() {
                           </label>
                           <input
                             type="tel"
+                            inputMode="tel"
+                            autoComplete="tel"
                             placeholder="9876543210"
                             value={member.phone}
                             onChange={(e) => updateTeamMember(idx, 'phone', e.target.value)}
@@ -870,6 +888,9 @@ function RegisterWizard() {
                           </label>
                           <input
                             type="text"
+                            autoCapitalize="characters"
+                            autoCorrect="off"
+                            spellCheck={false}
                             placeholder="3GN23CS..."
                             value={member.usn}
                             onChange={(e) =>
@@ -890,6 +911,7 @@ function RegisterWizard() {
                           </label>
                           <input
                             type="text"
+                            autoComplete="organization"
                             placeholder="College Name"
                             value={member.college}
                             onChange={(e) => updateTeamMember(idx, 'college', e.target.value)}
@@ -1369,6 +1391,10 @@ function RegisterWizard() {
                       </label>
                       <input
                         type="text"
+                        inputMode="text"
+                        autoCapitalize="characters"
+                        autoCorrect="off"
+                        spellCheck={false}
                         placeholder="e.g. 427189034561"
                         value={transactionId}
                         onChange={(e) => setTransactionId(e.target.value.toUpperCase())}
@@ -1501,13 +1527,13 @@ function RegisterWizard() {
             )}
 
             {/* Bottom Stepper Action Buttons */}
-            <div className="pt-6 border-t border-slate-200 flex items-center justify-between gap-4">
+            <div className="pt-6 border-t border-slate-200 flex items-center justify-between gap-3 sm:gap-4">
               {currentStep > 1 ? (
                 <button
                   type="button"
                   onClick={handleBack}
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-colors shrink-0"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -1520,7 +1546,7 @@ function RegisterWizard() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="inline-flex items-center gap-1.5 px-7 py-3 rounded-xl bg-slate-900 text-white font-bold text-xs sm:text-sm hover:bg-teal-700 transition-all shadow-sm active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-slate-900 text-white font-bold text-xs sm:text-sm hover:bg-teal-700 transition-all shadow-sm active:scale-95 shrink-0"
                 >
                   <span>Continue</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1530,7 +1556,7 @@ function RegisterWizard() {
                   type="button"
                   onClick={handleSubmitRegistration}
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-teal-600 text-white font-bold text-sm hover:bg-teal-700 transition-all shadow-md active:scale-95 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-teal-600 text-white font-bold text-xs sm:text-sm hover:bg-teal-700 transition-all shadow-md active:scale-95 disabled:opacity-50 shrink-0"
                 >
                   {isSubmitting ? (
                     <>

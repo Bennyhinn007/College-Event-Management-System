@@ -162,10 +162,10 @@ export default function ConfirmationPage({
           </div>
 
           {/* Action Bar (Screen Only) */}
-          <div className="no-print flex items-center justify-between gap-3 mb-4 p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <div className="no-print flex flex-wrap items-center justify-between gap-2 sm:gap-3 mb-4 p-3 sm:p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg hover:bg-slate-100"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 px-2.5 sm:px-3 py-2 rounded-lg hover:bg-slate-100"
             >
               <Home className="w-4 h-4" />
               <span>Return Home</span>
@@ -174,14 +174,14 @@ export default function ConfirmationPage({
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrint}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 shadow-xs"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Print Pass</span>
               </button>
               <button
                 onClick={handlePrint}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-teal-700 shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-teal-700 shadow-xs"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Save Badge</span>
@@ -190,7 +190,7 @@ export default function ConfirmationPage({
           </div>
 
           {/* High-Converting Official WhatsApp Community Banner (Screen Only) */}
-          <div className="no-print mb-6 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 text-white shadow-lg border-2 border-emerald-400/50 relative overflow-hidden">
+          <div className="no-print mb-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 text-white shadow-lg border-2 border-emerald-400/50 relative overflow-hidden">
             <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
             <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-start sm:items-center gap-3.5 text-center sm:text-left">
@@ -224,14 +224,14 @@ export default function ConfirmationPage({
           </div>
 
           {/* Official Pass Card (Printable) */}
-          <div className="bg-white rounded-3xl border-2 border-slate-900 shadow-md p-6 sm:p-8 space-y-6 print-badge relative overflow-hidden">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border-2 border-slate-900 shadow-md p-4 sm:p-8 space-y-6 print-badge relative overflow-hidden">
             {/* Watermark Pattern */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-slate-100 rounded-full blur-3xl -z-10 pointer-events-none" />
 
             {/* Header: Institution & Logo */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b-2 border-slate-200 gap-4">
               <div className="flex items-center gap-3.5">
-                <div className="w-14 h-14 rounded-full overflow-hidden bg-teal-50 border border-teal-200 shrink-0 shadow-2xs">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-teal-50 border border-teal-200 shrink-0 shadow-2xs">
                   <Image
                     src="/logo-circle.png"
                     alt="Cyber Samurai Association Logo"
@@ -273,7 +273,7 @@ export default function ConfirmationPage({
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               {/* Candidate Bio Column */}
               <div className="md:col-span-8 space-y-4 text-xs">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <span className="text-slate-400 block font-semibold text-[11px]">
                       Participant Name
@@ -292,7 +292,7 @@ export default function ConfirmationPage({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <span className="text-slate-400 block font-semibold text-[11px]">College</span>
                     <span className="text-slate-800 font-medium block mt-0.5">

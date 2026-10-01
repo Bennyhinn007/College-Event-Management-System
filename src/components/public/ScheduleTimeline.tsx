@@ -76,7 +76,7 @@ export default function ScheduleTimeline({
                 <button
                   key={day.day || idx}
                   onClick={() => setActiveDayIndex(idx)}
-                  className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     safeIndex === idx
                       ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
                       : 'text-slate-600 hover:text-slate-900'
@@ -111,10 +111,10 @@ export default function ScheduleTimeline({
               currentDay.items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-5 rounded-xl bg-white border border-slate-200 shadow-xs card-hover flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs card-hover flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
                 >
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span
                         className={`text-[11px] font-bold px-2 py-0.5 rounded ${
                           item.type === 'EVENT'
@@ -124,17 +124,17 @@ export default function ScheduleTimeline({
                       >
                         {item.type}
                       </span>
-                      <h3 className="text-base font-bold text-slate-900">{item.event}</h3>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900">{item.event}</h3>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs text-slate-500 shrink-0">
+                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 text-xs text-slate-500">
                     <div className="flex items-center gap-1.5">
-                      <Clock className="w-4 h-4 text-slate-400" />
+                      <Clock className="w-4 h-4 text-slate-400 shrink-0" />
                       <span>Time: <strong className="text-slate-700">{item.time}</strong></span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-slate-400" />
+                      <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
                       <span>Venue: <strong className="text-slate-700">{item.venue}</strong></span>
                     </div>
                   </div>
