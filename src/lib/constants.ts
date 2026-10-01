@@ -245,10 +245,10 @@ export interface PaymentOrganizer {
 
 export const PAYMENT_ORGANIZERS: PaymentOrganizer[] = [
   {
-    id: 'swetha-mulge',
-    name: 'Swetha Mulge',
+    id: 'shweta-mulge',
+    name: 'Shweta Mulge',
     upiId: '7975449981@axl',
-    qrImage: '/qr/swetha-mulge.jpg',
+    qrImage: '/qr/shweta-mulge.jpg',
     phone: '7975449981',
     app: 'PhonePe / Any UPI App',
     note: 'Payment Coordinator',
@@ -316,9 +316,9 @@ export const EVENT_INFO = {
   venue: 'Guru Nanak Dev Engineering College, Bidar',
   contactEmail: 'hacktober@gndec.ac.in',
   contactPhone: '+91 7019025650 / +91 8431008974 / +91 7975449981',
-  paymentUpiId: '7975449981@axl (Swetha Mulge) / 8618058871@axl (Apeksha) / 9353431169@ybl (Nandini)',
-  paymentLink: 'upi://pay?pa=7975449981@axl&pn=Swetha%20Mulge&cu=INR&tn=Hacktober%202026%20Registration',
-  paymentQrImage: '/qr/swetha-mulge.jpg',
+  paymentUpiId: '7975449981@axl (Shweta Mulge) / 8618058871@axl (Apeksha) / 9353431169@ybl (Nandini)',
+  paymentLink: 'upi://pay?pa=7975449981@axl&pn=Shweta%20Mulge&cu=INR&tn=Hacktober%202026%20Registration',
+  paymentQrImage: '/qr/shweta-mulge.jpg',
 };
 
 export const INITIAL_SCHEDULE = [

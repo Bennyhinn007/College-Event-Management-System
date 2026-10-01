@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Which UPI IDs and payment QR codes should I use to pay?',
-    a: 'You can transfer the registration fee to any of our 3 official payment coordinators via PhonePe, Google Pay, Paytm, or BHIM UPI: Swetha Mulge (7975449981@axl), Apeksha (8618058871@axl), or Nandini (9353431169@ybl). All 3 QR codes are available directly on the registration portal.',
+    a: 'You can transfer the registration fee to any of our 3 official payment coordinators via PhonePe, Google Pay, Paytm, or BHIM UPI: Shweta Mulge (7975449981@axl), Apeksha (8618058871@axl), or Nandini (9353431169@ybl). All 3 QR codes are available directly on the registration portal.',
   },
   {
     q: 'How does registration work for team events?',
