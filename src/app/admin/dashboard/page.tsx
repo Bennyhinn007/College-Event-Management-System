@@ -288,7 +288,20 @@ export default function AdminDashboardPage() {
                     </td>
                     <td className="py-3 px-3 font-semibold text-slate-900">{item.name}</td>
                     <td className="py-3 px-3 text-slate-600">
-                      {item.events.length} contest{item.events.length > 1 ? 's' : ''}
+                      <div className="flex flex-wrap gap-1 max-w-[220px]">
+                        {item.events.map((id: string) => {
+                          const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+                          return (
+                            <span
+                              key={id}
+                              className="px-2 py-0.5 rounded bg-teal-50 text-teal-800 text-[10px] font-semibold border border-teal-200/80 truncate max-w-full"
+                              title={ev?.name || id}
+                            >
+                              {ev?.name || id}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </td>
                     <td className="py-3 px-3 font-mono font-bold text-slate-900">₹{item.amount}</td>
                     <td className="py-3 px-3">

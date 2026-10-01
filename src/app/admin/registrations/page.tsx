@@ -353,7 +353,25 @@ export default function RegistrationsManagementPage() {
                       {item.primaryParticipant?.usn || 'N/A'}
                     </td>
                     <td className="py-3 px-4 text-slate-600">
-                      {item.registration.eventIds.length} event(s)
+                      <div className="flex flex-col gap-1 max-w-[200px] sm:max-w-xs">
+                        <div className="flex flex-wrap gap-1">
+                          {item.registration.eventIds.map((id: string) => {
+                            const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+                            return (
+                              <span
+                                key={id}
+                                className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-teal-50 text-teal-800 border border-teal-200/80 truncate max-w-full"
+                                title={ev?.name || id}
+                              >
+                                {ev?.name || id}
+                              </span>
+                            );
+                          })}
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-mono">
+                          {item.registration.eventIds.length} event{item.registration.eventIds.length > 1 ? 's' : ''} ({item.registration.type})
+                        </span>
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-slate-600 font-medium">
                       {item.teamName || '—'}
@@ -519,6 +537,46 @@ export default function RegistrationsManagementPage() {
                       </div>
                     );
                   })}
+                </div>
+
+                {/* Registered Competitions */}
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-bold text-slate-900 text-sm">
+                      Registered Competitions ({detailData.registration.eventIds?.length || 0})
+                    </h4>
+                    <span className="text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                      Format: {detailData.registration.type}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {detailData.registration.eventIds?.map((id: string) => {
+                      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+                      return (
+                        <div
+                          key={id}
+                          className="p-3 rounded-lg bg-white border border-slate-200 shadow-2xs space-y-1"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <strong className="text-slate-900 text-xs font-bold block leading-snug">
+                              {ev?.name || id}
+                            </strong>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 shrink-0">
+                              {ev?.eventType || 'Contest'}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-500 font-medium">
+                            {ev?.duration && <span>⏱️ {ev.duration}</span>}
+                            {ev?.format && <span>• 📋 {ev.format}</span>}
+                            <span className="font-mono font-semibold text-emerald-700 ml-auto">
+                              💰 {ev?.feeDisplay || 'Included'}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Team Info if Applicable */}

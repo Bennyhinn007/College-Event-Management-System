@@ -13,6 +13,7 @@ import {
   Eye,
   FileText,
 } from 'lucide-react';
+import { OFFICIAL_EVENTS } from '@/lib/constants';
 
 export default function PaymentsVerificationQueue() {
   const [items, setItems] = useState<any[]>([]);
@@ -159,6 +160,21 @@ export default function PaymentsVerificationQueue() {
                         </span>
                       )}
                     </div>
+                    {/* Event Badges */}
+                    <div className="flex flex-wrap gap-1 pt-0.5">
+                      {item.registration.eventIds?.map((id: string) => {
+                        const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+                        return (
+                          <span
+                            key={id}
+                            className="px-1.5 py-0.2 rounded text-[10px] font-semibold bg-teal-50 text-teal-800 border border-teal-200/80"
+                            title={ev?.name || id}
+                          >
+                            {ev?.name || id}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-3">
@@ -223,6 +239,26 @@ export default function PaymentsVerificationQueue() {
                   <strong className="text-base font-black text-slate-900 font-mono">
                     ₹{selectedPayment.payment?.amount || selectedPayment.registration.totalAmount}
                   </strong>
+                </div>
+
+                {/* Registered Competitions */}
+                <div className="pt-2 border-t border-slate-100 space-y-1.5">
+                  <span className="text-slate-500 font-semibold block text-[11px]">
+                    Registered Competitions ({selectedPayment.registration.eventIds?.length || 0}):
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedPayment.registration.eventIds?.map((id: string) => {
+                      const ev = OFFICIAL_EVENTS.find((e) => e.id === id);
+                      return (
+                        <span
+                          key={id}
+                          className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-teal-50 text-teal-900 border border-teal-200"
+                        >
+                          {ev?.name || id}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 

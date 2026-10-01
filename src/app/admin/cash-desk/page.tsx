@@ -443,7 +443,7 @@ export default function CashDeskPage() {
       `"${item.primaryParticipant?.phone || ''}"`,
       `"${item.primaryParticipant?.email || ''}"`,
       `"${item.teamName || 'Individual'}"`,
-      `"${(item.registration.eventIds || []).join(', ')}"`,
+      `"${(item.registration.eventIds || []).map((id) => OFFICIAL_EVENTS.find((e) => e.id === id)?.name || id).join('; ')}"`,
       item.amount,
       `"${item.paymentStatus}"`,
       `"${item.collectedBy || ''}"`,
