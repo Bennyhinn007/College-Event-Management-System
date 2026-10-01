@@ -388,6 +388,30 @@ export default function CashDeskPage() {
     }
   };
 
+  // Delete Cash Registration (Super Admin Only)
+  const handleDeleteCashRegistration = async (regId: string, candidateName?: string) => {
+    const confirmed = window.confirm(
+      `⚠️ PERMANENT DELETE (SUPER ADMIN)\n\nAre you sure you want to permanently delete registration ${regId} (${
+        candidateName || 'Candidate'
+      })?\n\nThis will completely remove this cash registration record from the database and cash drawer balance. This cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`/api/admin/registrations/${regId}`, {
+        method: 'DELETE',
+      });
+      const json = await res.json();
+      if (json.success) {
+        fetchLedger();
+      } else {
+        alert(json.error || 'Failed to delete registration');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Error deleting registration');
+    }
+  };
+
   // Export Cash Register as CSV
   const handleExportCsv = () => {
     if (cashList.length === 0) return;
@@ -1092,13 +1116,30 @@ export default function CashDeskPage() {
                           })}
                         </td>
                         <td className="py-3.5 px-4 text-right">
-                          <button
-                            onClick={() => handleInspectRow(item)}
-                            className="px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-teal-700 transition-colors inline-flex items-center gap-1.5 shadow-2xs"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            <span>View Pass</span>
-                          </button>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => handleInspectRow(item)}
+                              className="px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-teal-700 transition-colors inline-flex items-center gap-1.5 shadow-2xs"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View Pass</span>
+                            </button>
+                            {admin?.role === 'SUPER_ADMIN' && (
+                              <button
+                                onClick={() =>
+                                  handleDeleteCashRegistration(
+                                    item.registration.registrationId,
+                                    item.primaryParticipant?.fullName
+                                  )
+                                }
+                                title="Permanently delete test registration (Super Admin)"
+                                className="px-2 py-1.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 transition-colors inline-flex items-center gap-1 font-semibold text-[11px]"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Delete</span>
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}

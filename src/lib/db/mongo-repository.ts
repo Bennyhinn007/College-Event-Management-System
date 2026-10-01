@@ -466,6 +466,34 @@ export const mongoRepository = {
     return true;
   },
 
+  async deleteRegistration(registrationId: string, adminEmail: string): Promise<boolean> {
+    await connect();
+    const reg = await getRegistrationModel().findOne({
+      $or: [{ registrationId }, { _id: registrationId }],
+    });
+    if (!reg) return false;
+    const actualRegId = reg.registrationId;
+
+    await Promise.all([
+      getRegistrationModel().deleteOne({ registrationId: actualRegId }),
+      getParticipantModel().deleteMany({ registrationId: actualRegId }),
+      getTeamModel().deleteMany({ registrationId: actualRegId }),
+      getPaymentModel().deleteMany({ registrationId: actualRegId }),
+      getAttendanceModel().deleteMany({ registrationId: actualRegId }),
+    ]);
+
+    this.addAuditLog({
+      adminId: adminEmail,
+      adminEmail,
+      action: 'REGISTRATION_DELETED',
+      resource: 'REGISTRATION',
+      resourceId: actualRegId,
+      metadata: { deletedBy: adminEmail },
+    });
+
+    return true;
+  },
+
   // ── Attendance ─────────────────────────────────────────────────────────────
   async markAttendance(data: { registrationId: string; participantId: string; eventId: string; adminEmail: string; }): Promise<{ success: boolean; alreadyMarked: boolean; attendance?: IAttendance }> {
     await connect();

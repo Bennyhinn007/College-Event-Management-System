@@ -458,6 +458,33 @@ export const dbRepository = {
     return true;
   },
 
+  async deleteRegistration(registrationId: string, adminEmail: string): Promise<boolean> {
+    const store = getStore();
+    const idx = store.registrations.findIndex(
+      (r) => r.registrationId === registrationId || r.id === registrationId
+    );
+    if (idx === -1) return false;
+    const actualRegId = store.registrations[idx].registrationId;
+
+    store.registrations.splice(idx, 1);
+    store.participants = store.participants.filter((p) => p.registrationId !== actualRegId);
+    store.teams = store.teams.filter((t) => t.registrationId !== actualRegId);
+    store.payments = store.payments.filter((p) => p.registrationId !== actualRegId);
+    store.attendance = store.attendance.filter((a) => a.registrationId !== actualRegId);
+
+    this.addAuditLog({
+      adminId: adminEmail,
+      adminEmail,
+      action: 'REGISTRATION_DELETED',
+      resource: 'REGISTRATION',
+      resourceId: actualRegId,
+      metadata: { deletedBy: adminEmail },
+    });
+
+    saveStore();
+    return true;
+  },
+
   // Attendance
   async markAttendance(data: {
     registrationId: string;

@@ -17,6 +17,7 @@ import {
   X,
   ExternalLink,
   ShieldAlert,
+  Trash2,
 } from 'lucide-react';
 import { OFFICIAL_EVENTS } from '@/lib/constants';
 
@@ -40,6 +41,21 @@ export default function RegistrationsManagementPage() {
   const [detailData, setDetailData] = useState<any | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [currentAdmin, setCurrentAdmin] = useState<any | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadAdmin() {
+      try {
+        const res = await fetch('/api/auth/me');
+        const json = await res.json();
+        if (json.success) setCurrentAdmin(json.user);
+      } catch (err) {
+        console.error('Failed to load admin session:', err);
+      }
+    }
+    loadAdmin();
+  }, []);
 
   const fetchRegistrations = useCallback(async () => {
     setLoading(true);
@@ -127,6 +143,37 @@ export default function RegistrationsManagementPage() {
       }
     } catch (err: any) {
       setActionMessage(err.message || 'Archive error');
+    }
+  };
+
+  const handleDeleteRegistration = async (regId: string, candidateName?: string) => {
+    const confirmed = window.confirm(
+      `⚠️ PERMANENT DELETE (SUPER ADMIN)\n\nAre you sure you want to permanently delete registration ${regId} (${
+        candidateName || 'Candidate'
+      })?\n\nThis will completely remove their registration record, team data, payment records, and attendance scans from the database. This action CANNOT be undone.`
+    );
+    if (!confirmed) return;
+
+    setDeletingId(regId);
+    try {
+      const res = await fetch(`/api/admin/registrations/${regId}`, {
+        method: 'DELETE',
+      });
+      const json = await res.json();
+      if (json.success) {
+        setActionMessage(`Registration ${regId} permanently deleted.`);
+        if (selectedRegId === regId) {
+          setSelectedRegId(null);
+          setDetailData(null);
+        }
+        fetchRegistrations();
+      } else {
+        alert(json.error || 'Failed to delete registration');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Error deleting registration');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -340,13 +387,31 @@ export default function RegistrationsManagementPage() {
                       </span>
                     </td>
                     <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => handleOpenDetail(item.registration.registrationId)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors font-semibold text-[11px]"
-                      >
-                        <Eye className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Inspect</span>
-                      </button>
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={() => handleOpenDetail(item.registration.registrationId)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors font-semibold text-[11px]"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Inspect</span>
+                        </button>
+                        {currentAdmin?.role === 'SUPER_ADMIN' && (
+                          <button
+                            onClick={() =>
+                              handleDeleteRegistration(
+                                item.registration.registrationId,
+                                item.primaryParticipant?.fullName
+                              )
+                            }
+                            disabled={deletingId === item.registration.registrationId}
+                            title="Permanently delete test registration (Super Admin)"
+                            className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 transition-colors font-semibold text-[11px]"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span className="hidden xl:inline">Delete</span>
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -547,25 +612,41 @@ export default function RegistrationsManagementPage() {
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {detailData.registration.isArchived ? (
-                      <button
-                        onClick={() => handleToggleArchive(false)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50"
-                      >
-                        <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Restore Record</span>
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleToggleArchive(true)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50"
-                      >
-                        <Archive className="w-3.5 h-3.5" />
-                        <span>Soft Delete (Archive)</span>
-                      </button>
-                    )}
-                  </div>
+                    <div className="flex items-center gap-2">
+                      {detailData.registration.isArchived ? (
+                        <button
+                          onClick={() => handleToggleArchive(false)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Restore Record</span>
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleToggleArchive(true)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50"
+                        >
+                          <Archive className="w-3.5 h-3.5" />
+                          <span>Soft Delete (Archive)</span>
+                        </button>
+                      )}
+
+                      {currentAdmin?.role === 'SUPER_ADMIN' && (
+                        <button
+                          onClick={() =>
+                            handleDeleteRegistration(
+                              detailData.registration.registrationId,
+                              detailData.participants?.find((p: any) => p.isPrimary)?.fullName
+                            )
+                          }
+                          disabled={deletingId === detailData.registration.registrationId}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors shadow-xs"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Permanent Delete</span>
+                        </button>
+                      )}
+                    </div>
                 </div>
               </div>
             ) : null}

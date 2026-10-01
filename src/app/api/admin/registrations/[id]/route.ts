@@ -70,3 +70,39 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getAdminSessionFromRequest(req);
+    if (!session) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Role check: Strictly SUPER_ADMIN only
+    if (!isAuthorizedRole(session.role, 'SUPER_ADMIN')) {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden: Only Super Admins can permanently delete registrations.' },
+        { status: 403 }
+      );
+    }
+
+    const { id } = await params;
+    const ok = await dbRepository.deleteRegistration(id, session.email);
+    if (!ok) {
+      return NextResponse.json({ success: false, error: 'Registration not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Registration and all associated records permanently deleted.',
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { success: false, error: error.message || 'Error deleting registration' },
+      { status: 500 }
+    );
+  }
+}
