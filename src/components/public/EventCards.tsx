@@ -73,15 +73,15 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
         </div>
 
         {/* Prominent Winners & Prizes Banner */}
-        <div className="mb-10 sm:mb-12 p-4 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-amber-500/10 border-2 border-amber-300 shadow-sm relative overflow-hidden cyber-corner text-center sm:text-left">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+        <div className="mb-10 sm:mb-12 p-4 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-2 border-orange-300/80 shadow-sm relative overflow-hidden cyber-corner text-center sm:text-left">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-400/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
           <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white shadow-md shrink-0">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-orange-600 flex items-center justify-center text-white shadow-md shrink-0">
                 <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-amber-50" />
               </div>
               <div className="space-y-1 text-center sm:text-left">
-                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase tracking-wider">
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-orange-100 text-orange-950 border border-orange-300/80 text-xs font-black uppercase tracking-wider">
                   <span>Grand Prize Pool</span>
                 </div>
                 <h3 className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
@@ -93,7 +93,7 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
               </div>
             </div>
             <div className="shrink-0 text-center sm:text-right">
-              <span className="block text-[11px] font-mono font-bold text-amber-800 uppercase tracking-widest">
+              <span className="block text-[11px] font-mono font-bold text-orange-800 uppercase tracking-widest">
                 PRIZES & GADGETS
               </span>
               <span className="text-2xl sm:text-4xl font-black font-mono text-slate-900 drop-shadow-xs">

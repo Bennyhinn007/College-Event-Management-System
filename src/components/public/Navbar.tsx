@@ -107,7 +107,7 @@ export default function Navbar() {
 
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 text-white text-sm font-bold shadow-sm hover:bg-teal-700 hover:shadow transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 text-white text-sm font-bold shadow-sm hover:bg-orange-600 hover:shadow-orange-500/20 hover:shadow transition-all active:scale-95"
             >
               <span>REGISTER NOW</span>
               <ArrowRight className="w-4 h-4" />
