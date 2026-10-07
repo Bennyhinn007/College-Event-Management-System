@@ -44,7 +44,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Brand Logo & Title */}
           <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group shrink-0">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-teal-50 flex items-center justify-center shadow-xs border border-teal-200 shrink-0 transition-transform group-hover:scale-105">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-xs border border-teal-200 shrink-0 transition-transform group-hover:scale-105">
               <Image
                 src="/logo-circle.png"
                 alt="Hacktober 2026 Logo - Cyber Samurai Association GNDEC"

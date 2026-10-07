@@ -231,7 +231,7 @@ export default function ConfirmationPage({
             {/* Header: Institution & Logo */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b-2 border-slate-200 gap-4">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-teal-50 border border-teal-200 shrink-0 shadow-2xs">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-white border border-teal-200 shrink-0 shadow-2xs">
                   <Image
                     src="/logo-circle.png"
                     alt="Cyber Samurai Association Logo"

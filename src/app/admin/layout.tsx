@@ -113,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Mobile Top Header */}
       <div className="md:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full overflow-hidden bg-teal-50 border border-teal-200 shrink-0">
+          <div className="w-8 h-8 rounded-full overflow-hidden bg-white border border-teal-200 shrink-0">
             <Image
               src="/logo-circle.png"
               alt="Hacktober 2026 Logo"
@@ -149,7 +149,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Brand Header */}
         <div className="p-4 border-b border-slate-100">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-teal-50 border border-teal-200 shrink-0 shadow-2xs">
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-white border border-teal-200 shrink-0 shadow-2xs">
               <Image
                 src="/logo-circle.png"
                 alt="Hacktober 2026 Logo"

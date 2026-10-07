@@ -73,17 +73,17 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
           {/* Official Emblem Banner */}
           <div className="flex flex-col items-center justify-center gap-3">
             <div className="relative group">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white border-2 border-teal-500/30 p-1 shadow-md hover:border-teal-500 transition-all hover:scale-105 duration-300">
+              <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden bg-white border-2 border-teal-500/40 p-0.5 shadow-lg hover:border-teal-500 transition-all hover:scale-105 duration-300">
                 <Image
                   src="/logo-circle.png"
                   alt="Cyber Samurai Association - Hacktober 2026 Official Logo"
-                  width={112}
-                  height={112}
+                  width={144}
+                  height={144}
                   className="w-full h-full object-contain"
                   priority
                 />
               </div>
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-teal-400/15 via-orange-400/20 to-teal-400/15 blur-sm -z-10 group-hover:from-teal-400/25 group-hover:to-orange-500/25 transition-all" />
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-teal-400/20 via-orange-400/25 to-teal-400/20 blur-md -z-10 group-hover:from-teal-400/35 group-hover:to-orange-500/35 transition-all" />
             </div>
 
             {/* Institutional Header Pill */}
