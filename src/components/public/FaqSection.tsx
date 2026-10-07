@@ -7,7 +7,7 @@ import { EVENT_INFO, EVENT_COORDINATORS, PAYMENT_ORGANIZERS } from '@/lib/consta
 const FAQ_ITEMS = [
   {
     q: 'How does event pricing work?',
-    a: 'Each event has a specific registration fee: Individual events range from ₹79 to ₹199 per person (Learnathon ₹199, Debugging ₹99, Painting ₹99, Quiz ₹99, Debate ₹79, Reels & Memes ₹79), while Team events (Hackathon, Business & Master Case Study, Cyber Hunt, and Project Expo) range from ₹199 to ₹600 per team. Team event fees are charged once per team regardless of whether you have 1, 2, 3, or 4 members.',
+    a: 'Each event has a specific registration fee: Individual events range from ₹79 to ₹199 per person (Learnathon ₹199, Debugging ₹99, Painting ₹99, Quiz ₹99, Debate ₹79, Reels & Memes ₹79), while Team events (Hackathon, Business & Master Case Study, Cyber Hunt, and Project Expo) range from ₹199 to ₹750 per team. Team event fees are charged once per team regardless of whether you have 1, 2, 3, or 4 members.',
   },
   {
     q: 'Which UPI IDs and payment QR codes should I use to pay?',

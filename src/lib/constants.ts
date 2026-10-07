@@ -25,9 +25,9 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     type: 'TEAM',
     minTeamSize: 1,
     maxTeamSize: 4,
-    fee: 600,
-    feeDisplay: '₹600 / Team',
-    duration: '6 Hours',
+    fee: 750,
+    feeDisplay: '₹750 / Team',
+    duration: '8 Hours',
     icon: 'Terminal',
   },
   {
@@ -144,7 +144,7 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
 
 // Centralized Event Pricing Record
 export const INITIAL_PRICING_CONFIG: Record<string, number> = {
-  'hackathon': 600,
+  'hackathon': 750,
   'technical-debugging': 99,
   'cybersecurity-debate': 79,
   'business-master-case-study': 199,
