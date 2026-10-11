@@ -33,46 +33,38 @@ async function runTests() {
   // 1. DYNAMIC PRICING ENGINE TESTS
   // ==========================================
   console.log('1. Testing Pricing Calculation:');
-  const price1 = calculateRegistrationPrice(['cyber-quiz']);
-  assert(price1.amount === 79 && price1.canProceed === true, '1 event = ₹79 (ACTIVE)');
+  const price1 = calculateRegistrationPrice(['cybersecurity-quiz']);
+  assert(price1.amount === 99 && price1.canProceed === true, '1 event (Quiz) = ₹99 (ACTIVE)');
 
-  const price2 = calculateRegistrationPrice(['cyber-quiz', 'cyber-debate']);
-  assert(price2.amount === 150 && price2.canProceed === true, '2 events = ₹150 (ACTIVE)');
+  const price2 = calculateRegistrationPrice(['cybersecurity-quiz', 'cybersecurity-debate']);
+  assert(price2.amount === 178 && price2.canProceed === true, '2 events (Quiz + Debate) = ₹178 (ACTIVE)');
 
-  const price3 = calculateRegistrationPrice(['cyber-quiz', 'cyber-debate', 'tech-debug']);
-  assert(price3.amount === 199 && price3.canProceed === true, '3 events = ₹199 (ACTIVE)');
+  const price3 = calculateRegistrationPrice(['technical-debugging', 'learnathon']);
+  assert(price3.amount === 298 && price3.canProceed === true, '2 events (Debugging + Learnathon) = ₹298 (ACTIVE)');
 
-  const price4 = calculateRegistrationPrice(['cyber-quiz', 'cyber-debate', 'mini-hackathon', 'cyber-hunt']);
-  assert(price4.amount === 300 && price4.canProceed === true, '4 events = ₹300 (ACTIVE)');
+  const price4 = calculateRegistrationPrice(['hackathon']);
+  assert(price4.amount === 750 && price4.canProceed === true, 'Hackathon Team = ₹750 (ACTIVE)');
 
-  const price5 = calculateRegistrationPrice(OFFICIAL_EVENTS.map((e) => e.id));
-  assert(price5.amount === 350 && price5.canProceed === true, '5 events = ₹350 (ACTIVE)');
-
-  // Test dynamic TBD behavior with customConfig override
-  const customTbdPrice = calculateRegistrationPrice(['cyber-quiz', 'cyber-debate'], {
-    2: { eventCount: 2, price: null, status: 'TBD', notice: 'Custom organizer hold' },
-  });
-  assert(
-    customTbdPrice.amount === null &&
-      customTbdPrice.canProceed === false &&
-      Boolean(customTbdPrice.notice?.includes('Custom organizer hold')),
-    'TBD tier dynamically blocks payment submission with notice'
-  );
+  const priceFaculty = calculateRegistrationPrice(['cyber-hygiene']);
+  assert(priceFaculty.amount === 0 && priceFaculty.canProceed === true, 'Cyber Hygiene (Teachers) = ₹0 (ACTIVE)');
 
   // ==========================================
   // 2. EVENT CATALOG CONSTRAINTS
   // ==========================================
   console.log('\n2. Testing Event Catalog & Team Sizes:');
-  assert(OFFICIAL_EVENTS.length === 5, 'Exactly 5 official contests defined');
+  assert(OFFICIAL_EVENTS.length === 11, 'All 11 official events and workshops defined');
 
-  const quiz = OFFICIAL_EVENTS.find((e) => e.id === 'cyber-quiz');
-  assert(quiz?.type === 'INDIVIDUAL' && quiz?.maxTeamSize === 1, 'Cybersecurity Quiz is individual (max 1)');
+  const quiz = OFFICIAL_EVENTS.find((e) => e.id === 'cybersecurity-quiz');
+  assert(quiz?.type === 'INDIVIDUAL' && quiz?.maxTeamSize === 1, 'Cyber Security Quiz is individual (max 1)');
 
-  const hackathon = OFFICIAL_EVENTS.find((e) => e.id === 'mini-hackathon');
-  assert(hackathon?.type === 'TEAM' && hackathon?.maxTeamSize === 4, 'Mini Hackathon is team (max 4 members)');
+  const hackathon = OFFICIAL_EVENTS.find((e) => e.id === 'hackathon');
+  assert(hackathon?.type === 'TEAM' && hackathon?.maxTeamSize === 4, 'Hackathon is team (max 4 members)');
 
   const hunt = OFFICIAL_EVENTS.find((e) => e.id === 'cyber-hunt');
   assert(hunt?.type === 'TEAM' && hunt?.maxTeamSize === 4, 'Cyber Hunt is team (max 4 members)');
+
+  const hygiene = OFFICIAL_EVENTS.find((e) => e.id === 'cyber-hygiene');
+  assert(hygiene?.type === 'INDIVIDUAL' && hygiene?.fee === 0, 'Cyber Hygiene is faculty workshop (free)');
 
   // ==========================================
   // 3. INDIVIDUAL REGISTRATION VALIDATION
@@ -80,7 +72,7 @@ async function runTests() {
   console.log('\n3. Testing Individual Registration Validation:');
 
   const validIndividualPayload = {
-    selectedEventIds: ['mini-hackathon', 'cyber-hunt'],
+    selectedEventIds: ['cybersecurity-quiz', 'technical-debugging'],
     primaryParticipant: {
       fullName: 'Rahul Sharma',
       email: 'rahul@example.com',
@@ -95,7 +87,7 @@ async function runTests() {
   };
 
   const indParsed = RegistrationWizardSchema.safeParse(validIndividualPayload);
-  assert(indParsed.success, 'Individual registration without team fields accepted for all events');
+  assert(indParsed.success, 'Individual registration without team fields accepted for individual events');
 
   // Semester Validation: Only 1st, 3rd, 5th, 7th Sem accepted
   for (const sem of ALLOWED_SEMESTERS) {
@@ -317,6 +309,7 @@ async function runTests() {
   console.log(`\n=========================================`);
   console.log(`TEST RESULTS: ${passedTests}/${totalTests} PASSED (100%)`);
   console.log(`=========================================\n`);
+  process.exit(passedTests === totalTests ? 0 : 1);
 }
 
 runTests().catch((err) => {

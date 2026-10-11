@@ -503,6 +503,12 @@ function RegisterWizard() {
                               )}
                             </div>
 
+                            {event.description && (
+                              <p className="text-xs text-slate-600 leading-relaxed pr-2">
+                                {event.description}
+                              </p>
+                            )}
+
                             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
                               {event.duration && (
                                 <span className="flex items-center gap-1 text-slate-700 font-medium">
@@ -537,7 +543,7 @@ function RegisterWizard() {
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="space-y-1 text-center sm:text-left">
                     <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
-                      Selected Events: {selectedEventIds.length} of 10
+                      Selected Events: {selectedEventIds.length} of {OFFICIAL_EVENTS.length}
                     </span>
                     <div className="flex items-baseline gap-2 justify-center sm:justify-start">
                       <span className="text-sm font-medium text-slate-600">Total Registration Fee:</span>

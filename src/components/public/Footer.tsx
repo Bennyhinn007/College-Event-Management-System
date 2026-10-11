@@ -67,7 +67,7 @@ export default function Footer({ initialEventInfo }: FooterProps = {}) {
               </li>
               <li>
                 <Link href="/events" className="hover:text-teal-700 transition-colors">
-                  10 Official Events
+                  Official Events
                 </Link>
               </li>
               <li>

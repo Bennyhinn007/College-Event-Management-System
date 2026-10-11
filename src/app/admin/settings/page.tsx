@@ -260,7 +260,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.contactEmail || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, contactEmail: e.target.value })}
-                placeholder="[TBD] or hacktober@gndec.ac.in"
+                placeholder="aiml.harishjoshi@gmail.com"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-slate-900"
               />
             </div>

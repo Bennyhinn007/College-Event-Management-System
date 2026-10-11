@@ -662,6 +662,11 @@ export default function CashDeskPage() {
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-500 line-clamp-1">{event.eventType}</p>
+                          {event.description && (
+                            <p className="text-[10px] text-slate-600 line-clamp-2 leading-tight">
+                              {event.description}
+                            </p>
+                          )}
                         </div>
                         <div
                           className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border ${

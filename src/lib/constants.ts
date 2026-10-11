@@ -14,6 +14,7 @@ export interface EventDefinition {
   duration?: string;
   format?: string;
   icon: string;
+  description: string;
 }
 
 export const OFFICIAL_EVENTS: EventDefinition[] = [
@@ -29,10 +30,12 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     feeDisplay: '₹750 / Team',
     duration: '8 Hours',
     icon: 'Terminal',
+    description:
+      'Build innovative solutions to real-world problems through coding, creativity, and teamwork in an intensive 8-hour competition.',
   },
   {
     id: 'technical-debugging',
-    name: 'Technical Debugging',
+    name: 'Debugging',
     slug: 'technical-debugging',
     eventType: 'Technical Competition',
     type: 'INDIVIDUAL',
@@ -41,10 +44,12 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 99,
     feeDisplay: '₹99 / Person',
     icon: 'Bug',
+    description:
+      'Identify programming errors, fix bugs, and solve challenging coding problems with speed and accuracy.',
   },
   {
     id: 'cybersecurity-debate',
-    name: 'Cybersecurity Debate',
+    name: 'Debate on Cyber Security',
     slug: 'cybersecurity-debate',
     eventType: 'Debate',
     type: 'INDIVIDUAL',
@@ -53,10 +58,12 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 79,
     feeDisplay: '₹79 / Person',
     icon: 'MessageSquareText',
+    description:
+      'Express your views, challenge perspectives, and discuss cybersecurity issues, digital privacy, and online safety.',
   },
   {
     id: 'business-master-case-study',
-    name: 'Business & Master Case Study',
+    name: 'Business & Masters Case Study',
     slug: 'business-master-case-study',
     eventType: 'Case Study Competition',
     type: 'TEAM',
@@ -65,6 +72,8 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 199,
     feeDisplay: '₹199 / Team',
     icon: 'Briefcase',
+    description:
+      'Analyze real-world business scenarios, develop strategic solutions, and demonstrate critical thinking and decision-making skills.',
   },
   {
     id: 'cyber-hunt',
@@ -78,6 +87,8 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 360,
     feeDisplay: '₹360 / Team',
     icon: 'ShieldAlert',
+    description:
+      'Solve cybersecurity challenges, uncover hidden clues, and test your investigation and problem-solving abilities.',
   },
   {
     id: 'learnathon',
@@ -91,10 +102,12 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 199,
     feeDisplay: '₹199 / Person',
     icon: 'Code',
+    description:
+      'Showcase your creativity and web development skills by building an impressive website within the given time limit.',
   },
   {
     id: 'project-expo',
-    name: 'Project Expo',
+    name: 'LATENT: Project Innovation Expo',
     slug: 'project-expo',
     eventType: 'Project Exhibition',
     type: 'TEAM',
@@ -103,6 +116,8 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 200,
     feeDisplay: '₹200 / Team',
     icon: 'Cpu',
+    description:
+      'Present innovative projects, demonstrate technical expertise, and share creative solutions with fellow innovators.',
   },
   {
     id: 'reels-memes',
@@ -115,10 +130,12 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 79,
     feeDisplay: '₹79 / Person',
     icon: 'Video',
+    description:
+      'Combine creativity, humour, and technology to create engaging reels or memes promoting cybersecurity awareness and digital safety.',
   },
   {
     id: 'on-spot-painting-sketch',
-    name: 'On-Spot Painting & Sketch',
+    name: 'On-Spot Painting / Sketch',
     slug: 'on-spot-painting-sketch',
     eventType: 'Art Competition',
     type: 'INDIVIDUAL',
@@ -127,10 +144,12 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 99,
     feeDisplay: '₹99 / Person',
     icon: 'Palette',
+    description:
+      'Showcase your artistic talent through original paintings or sketches inspired by the given theme.',
   },
   {
     id: 'cybersecurity-quiz',
-    name: 'Cybersecurity Quiz',
+    name: 'Cyber Security Quiz',
     slug: 'cybersecurity-quiz',
     eventType: 'Cybersecurity Quiz',
     type: 'INDIVIDUAL',
@@ -139,6 +158,22 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     fee: 99,
     feeDisplay: '₹99 / Person',
     icon: 'BrainCircuit',
+    description:
+      'Test your knowledge of cybersecurity, ethical hacking, networking, digital privacy, and emerging security technologies.',
+  },
+  {
+    id: 'cyber-hygiene',
+    name: 'Cyber Hygiene',
+    slug: 'cyber-hygiene',
+    eventType: 'Faculty Workshop',
+    type: 'INDIVIDUAL',
+    minTeamSize: 1,
+    maxTeamSize: 1,
+    fee: 0,
+    feeDisplay: 'Free (Teachers Only)',
+    icon: 'GraduationCap',
+    description:
+      'For teachers only. Explore essential cyber hygiene practices, recognize online threats, and learn how to protect personal and professional information from cyberattacks.',
   },
 ];
 
@@ -154,6 +189,7 @@ export const INITIAL_PRICING_CONFIG: Record<string, number> = {
   'reels-memes': 79,
   'on-spot-painting-sketch': 99,
   'cybersecurity-quiz': 99,
+  'cyber-hygiene': 0,
 };
 
 export interface PricingTierConfig {
@@ -329,27 +365,28 @@ export const INITIAL_SCHEDULE = [
     items: [
       { event: 'Inauguration & Keynote Address (Cybersecurity Awareness Month)', time: '9:30 AM', venue: 'Main Auditorium, GNDEC Bidar', type: 'GENERAL' },
       { event: 'Hackathon (Kickoff & Problem Statements)', time: '11:00 AM', venue: 'CSE Computing Lab', type: 'EVENT' },
-      { event: 'Technical Debugging', time: '2:00 PM', venue: 'IoT & Blockchain Lab', type: 'EVENT' },
-      { event: 'Cybersecurity Debate', time: '3:30 PM', venue: 'Seminar Hall', type: 'EVENT' },
+      { event: 'Debugging', time: '2:00 PM', venue: 'IoT & Blockchain Lab', type: 'EVENT' },
+      { event: 'Debate on Cyber Security', time: '3:30 PM', venue: 'Seminar Hall', type: 'EVENT' },
     ],
   },
   {
     day: 'Day 2',
     date: '30 October 2026',
     items: [
-      { event: 'Business & Master Case Study', time: '10:00 AM', venue: 'Department Conference Hall', type: 'EVENT' },
+      { event: 'Business & Masters Case Study', time: '10:00 AM', venue: 'Department Conference Hall', type: 'EVENT' },
       { event: 'Cyber Hunt (50 Cyber Hunt Challenges)', time: '11:30 AM', venue: 'Campus & Cyber Lab', type: 'EVENT' },
       { event: 'Learnathon (Website Building Competition)', time: '2:30 PM', venue: 'Computing Lab', type: 'EVENT' },
+      { event: 'Cyber Hygiene (Teachers Workshop)', time: '4:00 PM', venue: 'Faculty Seminar Hall', type: 'EVENT' },
     ],
   },
   {
     day: 'Day 3',
     date: '31 October 2026',
     items: [
-      { event: 'Project Expo', time: '10:00 AM', venue: 'Exhibition Hall', type: 'EVENT' },
+      { event: 'LATENT: Project Innovation Expo', time: '10:00 AM', venue: 'Exhibition Hall', type: 'EVENT' },
       { event: 'Reels & Memes', time: '11:30 AM', venue: 'Media Center', type: 'EVENT' },
-      { event: 'On-Spot Painting & Sketch', time: '1:30 PM', venue: 'Design Studio', type: 'EVENT' },
-      { event: 'Cybersecurity Quiz', time: '3:00 PM', venue: 'Seminar Hall', type: 'EVENT' },
+      { event: 'On-Spot Painting / Sketch', time: '1:30 PM', venue: 'Design Studio', type: 'EVENT' },
+      { event: 'Cyber Security Quiz', time: '3:00 PM', venue: 'Seminar Hall', type: 'EVENT' },
       { event: 'Valedictory & Prize Distribution', time: '4:30 PM', venue: 'Main Auditorium', type: 'GENERAL' },
     ],
   },
@@ -373,5 +410,5 @@ export const GENERAL_RULES = [
 export const DISQUALIFICATION_DISCLAIMER =
   'Disclaimer: Final schedule, rules, and venue allocations may be updated by the organizing committee. Official announcements will be notified via registered email and the notice board.';
 
-export const ALLOWED_SEMESTERS = ['1st Sem', '3rd Sem', '5th Sem', '7th Sem'] as const;
+export const ALLOWED_SEMESTERS = ['1st Sem', '3rd Sem', '5th Sem', '7th Sem', 'Faculty'] as const;
 export type AllowedSemester = (typeof ALLOWED_SEMESTERS)[number];

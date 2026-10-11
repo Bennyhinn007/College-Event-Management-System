@@ -12,6 +12,7 @@ import {
   Video,
   Palette,
   BrainCircuit,
+  GraduationCap,
   Clock,
   Sparkles,
   Users,
@@ -33,6 +34,7 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   Video: <Video className="w-6 h-6 text-pink-600" />,
   Palette: <Palette className="w-6 h-6 text-orange-600" />,
   BrainCircuit: <BrainCircuit className="w-6 h-6 text-cyan-600" />,
+  GraduationCap: <GraduationCap className="w-6 h-6 text-emerald-700" />,
 };
 
 interface EventCardsProps {
@@ -49,13 +51,13 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-wider mb-3">
-            <span>10 Official Competitions</span>
+            <span>{OFFICIAL_EVENTS.length} Official Competitions & Events</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Challenge Your Technical Intellect
           </h2>
           <p className="mt-3 text-base text-slate-600">
-            Official competitions for Hacktober 2026 at Guru Nanak Dev Engineering College, Bidar (29, 30 & 31 October 2026).
+            Official competitions and workshops for Hacktober 2026 at Guru Nanak Dev Engineering College, Bidar (29, 30 & 31 October 2026).
           </p>
 
           {/* Category Summary Pill */}
@@ -139,6 +141,13 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
                       {event.eventType}
                     </div>
                   </div>
+
+                  {/* Event Description */}
+                  {event.description && (
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {event.description}
+                    </p>
+                  )}
 
                   {/* Event Metadata (Duration, Format, Team Size, Registration Fee) */}
                   <div className="pt-3 border-t border-slate-100 space-y-2.5 text-xs text-slate-600">

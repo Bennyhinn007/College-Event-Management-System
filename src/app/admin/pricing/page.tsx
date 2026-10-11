@@ -121,7 +121,7 @@ export default function AdminPricingPage() {
             Event Pricing Engine
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Configure registration fees for all 10 official Hacktober 2026 events.
+            Configure registration fees for all {OFFICIAL_EVENTS.length} official Hacktober 2026 events.
           </p>
         </div>
 
