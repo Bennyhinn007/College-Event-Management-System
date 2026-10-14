@@ -34,10 +34,10 @@ async function runTests() {
   // ==========================================
   console.log('1. Testing Pricing Calculation:');
   const price1 = calculateRegistrationPrice(['cybersecurity-quiz']);
-  assert(price1.amount === 99 && price1.canProceed === true, '1 event (Quiz) = ₹99 (ACTIVE)');
+  assert(price1.amount === 79 && price1.canProceed === true, '1 event (Quiz) = ₹79 (ACTIVE)');
 
   const price2 = calculateRegistrationPrice(['cybersecurity-quiz', 'cybersecurity-debate']);
-  assert(price2.amount === 178 && price2.canProceed === true, '2 events (Quiz + Debate) = ₹178 (ACTIVE)');
+  assert(price2.amount === 158 && price2.canProceed === true, '2 events (Quiz + Debate) = ₹158 (ACTIVE)');
 
   const price3 = calculateRegistrationPrice(['technical-debugging', 'learnathon']);
   assert(price3.amount === 298 && price3.canProceed === true, '2 events (Debugging + Learnathon) = ₹298 (ACTIVE)');

@@ -155,8 +155,8 @@ export const OFFICIAL_EVENTS: EventDefinition[] = [
     type: 'INDIVIDUAL',
     minTeamSize: 1,
     maxTeamSize: 1,
-    fee: 99,
-    feeDisplay: '₹99 / Person',
+    fee: 79,
+    feeDisplay: '₹79 / Person',
     icon: 'BrainCircuit',
     description:
       'Test your knowledge of cybersecurity, ethical hacking, networking, digital privacy, and emerging security technologies.',
@@ -188,7 +188,7 @@ export const INITIAL_PRICING_CONFIG: Record<string, number> = {
   'project-expo': 200,
   'reels-memes': 79,
   'on-spot-painting-sketch': 99,
-  'cybersecurity-quiz': 99,
+  'cybersecurity-quiz': 79,
   'cyber-hygiene': 0,
 };
 
