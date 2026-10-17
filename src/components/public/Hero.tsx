@@ -40,7 +40,7 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
   }, [initialEventInfo]);
 
   useEffect(() => {
-    const targetDate = new Date(eventInfo.startDate || '2026-10-29T09:00:00+05:30').getTime();
+    const targetDate = new Date(eventInfo.startDate || '2026-11-05T09:00:00+05:30').getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -134,7 +134,7 @@ export default function Hero({ initialEventInfo }: HeroProps = {}) {
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-sm font-medium text-slate-700 pt-3">
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 shadow-xs">
               <Calendar className="w-4 h-4 text-teal-600 shrink-0" />
-              <span className="font-bold text-slate-900">{eventInfo.dates || '29, 30 & 31 October 2026'}</span>
+              <span className="font-bold text-slate-900">{eventInfo.dates || '5, 6 & 7 November 2026'}</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 shadow-xs">
               <MapPin className="w-4 h-4 text-teal-600 shrink-0" />

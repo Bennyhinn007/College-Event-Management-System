@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: `${EVENT_INFO.name} | National Level Event | GNDEC Bidar`,
-  description: `Official portal for ${EVENT_INFO.name} (29, 30 & 31 October 2026), a National Level Event conducted as part of Cybersecurity Awareness Month at ${EVENT_INFO.institution}.`,
+  description: `Official portal for ${EVENT_INFO.name} (5, 6 & 7 November 2026), a National Level Event conducted as part of Cybersecurity Awareness Month at ${EVENT_INFO.institution}.`,
   keywords: [
     'Hacktober 2026',
     'National Level Event',
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://hacktober.gndec.ac.in',
     title: `${EVENT_INFO.name} — National Level Event | Cybersecurity Awareness Month`,
-    description: `29, 30 & 31 October 2026 • ${EVENT_INFO.institution}. National Level Event conducted as part of Cybersecurity Awareness Month featuring official competitions and workshops.`,
+    description: `5, 6 & 7 November 2026 • ${EVENT_INFO.institution}. National Level Event conducted as part of Cybersecurity Awareness Month featuring official competitions and workshops.`,
     siteName: EVENT_INFO.name,
   },
   twitter: {
     card: 'summary_large_image',
     title: `${EVENT_INFO.name} — National Level Event`,
-    description: `29, 30 & 31 October 2026 • ${EVENT_INFO.institution}. Register now for this National Level Event.`,
+    description: `5, 6 & 7 November 2026 • ${EVENT_INFO.institution}. Register now for this National Level Event.`,
   },
   robots: {
     index: true,

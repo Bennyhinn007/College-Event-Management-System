@@ -342,10 +342,10 @@ export const EVENT_INFO = {
   tagline: 'Think. Hack. Defend. Debug.',
   classification: 'NATIONAL LEVEL EVENT',
   initiative: 'Cybersecurity Awareness Month',
-  dates: '29, 30 & 31 October 2026',
-  datesShort: '29–31 October 2026',
-  startDate: '2026-10-29T09:00:00+05:30',
-  endDate: '2026-10-31T18:00:00+05:30',
+  dates: '5, 6 & 7 November 2026',
+  datesShort: '5–7 November 2026',
+  startDate: '2026-11-05T09:00:00+05:30',
+  endDate: '2026-11-07T18:00:00+05:30',
   institution: 'Guru Nanak Dev Engineering College, Bidar',
   department: 'Department of CSE, IoT and Cybersecurity including Blockchain Technology',
   prizeNotice: 'Cash prizes and gadgets worth up to ₹15,000!',
@@ -361,7 +361,7 @@ export const EVENT_INFO = {
 export const INITIAL_SCHEDULE = [
   {
     day: 'Day 1',
-    date: '29 October 2026',
+    date: '5 November 2026',
     items: [
       { event: 'Inauguration & Keynote Address (Cybersecurity Awareness Month)', time: '9:30 AM', venue: 'Main Auditorium, GNDEC Bidar', type: 'GENERAL' },
       { event: 'Hackathon (Kickoff & Problem Statements)', time: '11:00 AM', venue: 'CSE Computing Lab', type: 'EVENT' },
@@ -371,7 +371,7 @@ export const INITIAL_SCHEDULE = [
   },
   {
     day: 'Day 2',
-    date: '30 October 2026',
+    date: '6 November 2026',
     items: [
       { event: 'Business & Masters Case Study', time: '10:00 AM', venue: 'Department Conference Hall', type: 'EVENT' },
       { event: 'Cyber Hunt (50 Cyber Hunt Challenges)', time: '11:30 AM', venue: 'Campus & Cyber Lab', type: 'EVENT' },
@@ -381,7 +381,7 @@ export const INITIAL_SCHEDULE = [
   },
   {
     day: 'Day 3',
-    date: '31 October 2026',
+    date: '7 November 2026',
     items: [
       { event: 'LATENT: Project Innovation Expo', time: '10:00 AM', venue: 'Exhibition Hall', type: 'EVENT' },
       { event: 'Reels & Memes', time: '11:30 AM', venue: 'Media Center', type: 'EVENT' },

@@ -57,7 +57,7 @@ export default function EventCards({ initialPricing }: EventCardsProps = {}) {
             Challenge Your Technical Intellect
           </h2>
           <p className="mt-3 text-base text-slate-600">
-            Official competitions and workshops for Hacktober 2026 at Guru Nanak Dev Engineering College, Bidar (29, 30 & 31 October 2026).
+            Official competitions and workshops for Hacktober 2026 at Guru Nanak Dev Engineering College, Bidar (5, 6 & 7 November 2026).
           </p>
 
           {/* Category Summary Pill */}

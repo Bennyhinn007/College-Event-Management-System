@@ -45,7 +45,7 @@ export default function Footer({ initialEventInfo }: FooterProps = {}) {
             <div className="space-y-2 pt-2 text-xs text-slate-500">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-teal-600 shrink-0" />
-                <span>{eventInfo.dates || '29, 30 & 31 October 2026'}</span>
+                <span>{eventInfo.dates || '5, 6 & 7 November 2026'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-teal-600 shrink-0" />

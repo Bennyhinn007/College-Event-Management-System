@@ -157,7 +157,7 @@ export default function ConfirmationPage({
               Official Participant Pass
             </h1>
             <p className="text-xs text-slate-500">
-              Please download or print this badge. Present the QR pass at Guru Nanak Dev Engineering College, Bidar on 29 October 2026.
+              Please download or print this badge. Present the QR pass at Guru Nanak Dev Engineering College, Bidar on 5 November 2026.
             </p>
           </div>
 

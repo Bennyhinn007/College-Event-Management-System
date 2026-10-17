@@ -75,7 +75,7 @@ export default function AdminSchedulePage() {
     const nextDayNum = updated.length + 1;
     updated.push({
       day: `Day ${nextDayNum}`,
-      date: '31 October 2026',
+      date: '7 November 2026',
       items: [
         {
           event: 'New Session',
@@ -136,7 +136,7 @@ export default function AdminSchedulePage() {
             Schedule & Venue Allocations
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Update official dates (e.g. 29, 30 & 31 October 2026), timings, and room numbers for Hacktober 2026 sessions.
+            Update official dates (e.g. 5, 6 & 7 November 2026), timings, and room numbers for Hacktober 2026 sessions.
           </p>
         </div>
 
@@ -191,7 +191,7 @@ export default function AdminSchedulePage() {
                   type="text"
                   value={dayGroup.date || ''}
                   onChange={(e) => handleDayChange(dIdx, 'date', e.target.value)}
-                  placeholder="29 October 2026"
+                  placeholder="5 November 2026"
                   className="px-2.5 py-1 rounded-lg border border-slate-200 text-sm font-bold text-slate-900 w-44 bg-slate-50 focus:bg-white"
                 />
               </div>

@@ -30,7 +30,7 @@ const FAQ_ITEMS = [
     a: 'Yes! The entire Hacktober 2026 event and all its competitions are conducted as a National Level Event as part of Cybersecurity Awareness Month at Guru Nanak Dev Engineering College, Bidar.',
   },
   {
-    q: 'What should I bring on event days (29, 30 & 31 October 2026)?',
+    q: 'What should I bring on event days (5, 6 & 7 November 2026)?',
     a: 'All participants must bring their original College Student ID card and their digital or printed Hacktober 2026 Confirmation Pass containing their QR code for event check-in.',
   },
   {

@@ -392,7 +392,7 @@ function RegisterWizard() {
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-xs font-bold uppercase tracking-wider text-teal-800 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
-              Registration Portal • 29, 30 & 31 October 2026
+              Registration Portal • 5, 6 & 7 November 2026
             </span>
             <h1 className="font-mokoto text-2xl sm:text-3xl tracking-wider text-slate-900 uppercase mt-3">
               HACKTOBER <span className="text-teal-600">2026</span> REGISTRATION

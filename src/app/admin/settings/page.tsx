@@ -114,7 +114,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.dates || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, dates: e.target.value })}
-                placeholder="29, 30 & 31 October 2026"
+                placeholder="5, 6 & 7 November 2026"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:ring-2 focus:ring-slate-900"
               />
               <span className="text-[10px] text-slate-400 mt-0.5 block">
@@ -130,7 +130,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.datesShort || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, datesShort: e.target.value })}
-                placeholder="29, 30 & 31 October 2026"
+                placeholder="5–7 November 2026"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:ring-2 focus:ring-slate-900"
               />
             </div>
@@ -169,7 +169,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={eventInfo.startDate || ''}
                 onChange={(e) => setEventInfo({ ...eventInfo, startDate: e.target.value })}
-                placeholder="2026-10-03T09:00:00+05:30"
+                placeholder="2026-11-05T09:00:00+05:30"
                 className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono focus:ring-2 focus:ring-slate-900"
               />
               <span className="text-[10px] text-slate-400 mt-0.5 block">
