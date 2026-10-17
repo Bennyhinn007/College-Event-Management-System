@@ -32,14 +32,15 @@ async function main() {
   await dbRepository.updateSetting('schedule', INITIAL_SCHEDULE, 'system@gndec.ac.in');
   console.log('✓ Updated schedule to 3-day schedule (5, 6 & 7 November 2026)');
 
-  // Also update pricing for cybersecurity-quiz to Rs. 79
+  // Also update pricing for cybersecurity-quiz to Rs. 79 and learnathon to Rs. 99
   const currentPricing = ((current.pricing as Record<string, unknown>) || {});
   const updatedPricing = {
     ...currentPricing,
     'cybersecurity-quiz': { price: 79, status: 'ACTIVE' },
+    'learnathon': { price: 99, status: 'ACTIVE' },
   };
   await dbRepository.updateSetting('pricing', updatedPricing, 'system@gndec.ac.in');
-  console.log('✓ Updated pricing for cybersecurity-quiz to Rs. 79');
+  console.log('✓ Updated pricing: cybersecurity-quiz to Rs. 79, learnathon to Rs. 99');
 
   const refreshed = await dbRepository.getSettings();
   console.log('Refreshed eventInfo classification:', (refreshed.eventInfo as any)?.classification);

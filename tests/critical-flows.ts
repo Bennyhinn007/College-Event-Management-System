@@ -40,7 +40,7 @@ async function runTests() {
   assert(price2.amount === 158 && price2.canProceed === true, '2 events (Quiz + Debate) = ₹158 (ACTIVE)');
 
   const price3 = calculateRegistrationPrice(['technical-debugging', 'learnathon']);
-  assert(price3.amount === 298 && price3.canProceed === true, '2 events (Debugging + Learnathon) = ₹298 (ACTIVE)');
+  assert(price3.amount === 198 && price3.canProceed === true, '2 events (Debugging + Learnathon) = ₹198 (ACTIVE)');
 
   const price4 = calculateRegistrationPrice(['hackathon']);
   assert(price4.amount === 750 && price4.canProceed === true, 'Hackathon Team = ₹750 (ACTIVE)');
