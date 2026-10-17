@@ -55,8 +55,8 @@ export default function AdminSchedulePage() {
     const updated = JSON.parse(JSON.stringify(schedule));
     updated[dayIdx].items.push({
       event: 'New Session / Competition',
-      time: '10:00 AM',
-      venue: 'GNDEC Bidar',
+      time: 'TBD',
+      venue: 'TBD',
       type: 'EVENT',
     });
     setSchedule(updated);
@@ -79,8 +79,8 @@ export default function AdminSchedulePage() {
       items: [
         {
           event: 'New Session',
-          time: '10:00 AM',
-          venue: 'GNDEC Bidar',
+          time: 'TBD',
+          venue: 'TBD',
           type: 'EVENT',
         },
       ],
